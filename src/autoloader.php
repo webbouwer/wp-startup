@@ -4,6 +4,8 @@
  *
  * @package WP_Startup
  * @subpackage Autoloader
+ *
+ * https://forums.dotnetfoundation.org/t/file-headers-and-copyright-statements/1276
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
