@@ -5,6 +5,8 @@
  * @package WP_Startup
  */
 
+
+
 /**
  * This is the plugin class and acts as container for component instances and
  * basic properties of a plugin. Using container like this will avoid polluting
@@ -37,12 +39,15 @@ class WP_Startup_Plugin {
 		$this->plugin_url    = trailingslashit( plugin_dir_url( $path ) );
 		$this->includes_path = $this->plugin_path . trailingslashit( 'src' );
 
-		// Instances.
-		$this->post_type       = new WP_Slack_Post_Type( $this );
+		
+		
+		/* Instances.
+		$this->post_type       = new WP_Startup_Post_Type( $this );
 		$this->notifier        = new WP_Slack_Notifier( $this );
 		$this->post_meta_box   = new WP_Slack_Post_Meta_Box( $this );
 		$this->submit_meta_box = new WP_Slack_Submit_Meta_Box( $this );
 		$this->event_manager   = new WP_Slack_Event_Manager( $this );
+		*/
 	}
 
 	/**
