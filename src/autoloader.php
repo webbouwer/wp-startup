@@ -12,6 +12,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+
+
+/**
+ * Link Manager
+ * https://core.trac.wordpress.org/ticket/21307
+ */
+add_filter( 'pre_option_link_manager_enabled', '__return_true' );
+
+
+
 /**
  * Class loader using SPL autoloader.
  */
