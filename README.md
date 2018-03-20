@@ -1,5 +1,7 @@
-# WP Startup 'Early Bird' version
+# WP Startup 
 Do more with basic Wordpress
+
+#### 'Early Bird' version
 
 The WP Startup plugin hooks into your basic Wordpress installation options to enable and disable Wordpress core functionalities and extra functionalities to tweak your website layout and performance. 
 
