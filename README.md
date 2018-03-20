@@ -1,9 +1,10 @@
-# wp-startup
-Do more with a basic WP install
+# WP Startup 'Early Bird' version
+Do more with basic Wordpress
 
-The WP Startup plugin hooks into your basic Wordpress installation and provides options to enable or disables Wordpress core functionalities and extra functionalities to tweak your website layout and performance. 
+The WP Startup plugin hooks into your basic Wordpress installation options to enable and disable Wordpress core functionalities and extra functionalities to tweak your website layout and performance. 
 
-setup & testing:
+Early Bird features:
+
 - enable Theme background image
 - enable Link Manager component
 - disable Gravatars
@@ -13,3 +14,5 @@ setup & testing:
 - enable php coding in text widget
 - add custom css
 - add custom javascript
+
+'Early Bird' is a development build version, released for experienced wordpress users or code study. This version does not provide any warranty or future updates. A full release is in development. 
