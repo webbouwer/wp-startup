@@ -5,26 +5,27 @@ Do more with basic Wordpress
 
 The WP Startup plugin hooks into your basic Wordpress installation providing options to enable and disable Wordpress core functionalities, and extra functionalities to tweak your website layout and performance. 
 
+
 ###### Features:
 
-##### Extend WP theme options
+##### Enable WP theme options
 - enable Theme background image
 
-##### Extend WP components
+##### Enable WP components
 - enable Link Manager component
 
 ##### Remove WP overhead
 - disable Gravatars
 - disable Emojicons
 
-##### Admin tweaks
+##### WP Dashboard Tweaking
 - enable Categories metabox forced hierarchy display
 
-##### Extend Basic widget
+##### WP Widget Tweaking
 - enable shortcodes in text widget
 - enable php coding in text widget
 
-##### Add code
+##### Add custom code
 - add custom css
 - add custom javascript
 
