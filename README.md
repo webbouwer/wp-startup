@@ -1,32 +1,31 @@
 # WP Startup 
 Do more with basic Wordpress
 
-### 'Early Bird' version
+### Development version
 
-The WP Startup plugin hooks into your basic Wordpress installation providing options to enable and disable Wordpress core functionalities, and extra functionalities to tweak your website layout and performance. 
+The WP Startup plugin hooks into your basic Wordpress installation providing options to enable and disable some obvious Wordpress core functionalities.
 
 
 ###### Features:
 
-##### Enable WP theme options
-- enable Theme background image
+##### WP theme options
+- Custom page templates!
+- Theme background image
 
-##### Enable WP components
-- enable Link Manager component
+##### WP components
+- Link Manager component
 
-##### Remove WP overhead
+##### WP overhead
 - disable Gravatars
 - disable Emojicons
 
-##### WP Dashboard Tweaking
-- enable Categories metabox forced hierarchy display
+##### WP Tweaking
+- Categories metabox forced hierarchy display
+- Shortcodes in text widget
+- PHP coding in text widget!
 
-##### WP Widget Tweaking
-- enable shortcodes in text widget
-- enable php coding in text widget
+##### WP custom code
+- add custom css!
+- add custom javascript!
 
-##### Add custom code
-- add custom css
-- add custom javascript
-
-'Early Bird' is a development build version, released for experienced wordpress users or code study. This version does not provide any warranty or future updates. A full release is in development. 
+This is a development build version, released for experienced wordpress users or code study. This version does not provide any warranty or future updates. Working towards a full release. 
