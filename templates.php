@@ -70,9 +70,23 @@ class PageTemplater {
 
 
 		// Add your templates to this array.
-		$this->templates = array(
-			'blank-template.php' => 'Blank Template',
+		/*$this->templates = array(
+			'blank-template.php' => 'Blank 2 Template',
 		);
+        */
+
+        $templatefolder = WP_PLUGIN_DIR.'/wp-startup/templates/';
+
+        $files=glob( $templatefolder."*.php" );
+        foreach ($files as $file) {
+
+            $path = pathinfo($file);
+            $this->templates[$path['basename']] = $path['filename'];
+        }
+
+
+
+
 
 	}
 
@@ -120,6 +134,7 @@ class PageTemplater {
 	 * Checks if the template is assigned to the page
 	 */
 	public function view_project_template( $template ) {
+
 		// Return the search template if we're searching (instead of the template for the first result)
 		if ( is_search() ) {
 			return $template;
@@ -141,7 +156,8 @@ class PageTemplater {
 		}
 
 		// Allows filtering of file path
-		$filepath = apply_filters( 'page_templater_plugin_dir_path', plugin_dir_path( __FILE__ ) );
+        $filepath = apply_filters( 'page_templater_plugin_dir_path',  plugin_dir_path( __FILE__ ) .'templates/' );
+
 
 		$file =  $filepath . get_post_meta(
 			$post->ID, '_wp_page_template', true
