@@ -1,9 +1,9 @@
 <?php
 /*
-Plugin Name: WP Startup 'Earlybird'
+Plugin Name: WP Startup
 Plugin URI:  https://github.com/webbouwer/wp-startup
 Description: Do more with a basic WP install
-Version:     0.1
+Version:     0.2
 Author:      Webbouwer
 Author URI:  http://webdesigndenhaag.net
 Text Domain: wp-startup
@@ -19,16 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
 /**
  * Load textdomain languages  
  */
-
 add_action('plugins_loaded', 'ws_load_textdomain');
 function wan_load_textdomain() {
 	load_plugin_textdomain( 'wp-startup', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
 }
-
 
 
 /**
@@ -37,51 +34,54 @@ function wan_load_textdomain() {
 require_once( 'settings.php' );
 
 
-
 /**
  * Components
  * https://core.trac.wordpress.org/ticket/21307
  */
 function wpstartup_components_global() {
 
-	// Link Manager
-	if( get_option( 'ws_linkmanager_option' ) != '' && get_option( 'ws_linkmanager_option' ) == true ){
-		add_filter( 'pre_option_link_manager_enabled', '__return_true' );
-	}
-	// Keep category select list in hiÎarchy
-	// source http://wordpress.stackexchange.com/questions/61922/add-post-screen-keep-category-structure
-	if( get_option( 'ws_categoryhierarchy_option' ) != '' && get_option( 'ws_categoryhierarchy_option' ) == true ){
-		add_filter( 'widget_text', 'do_shortcode' );
-		add_filter( 'wp_terms_checklist_args', 'imagazine_wp_terms_checklist_args', 1, 2 );
-		function imagazine_wp_terms_checklist_args( $args, $post_id ) {
-			 $args[ 'checked_ontop' ] = false;
-			 return $args;
-		}
-	}	
-	// Text widget shortcodes 
-	if( get_option( 'ws_shortcodesintextwidget_option' ) != '' && get_option( 'ws_shortcodesintextwidget_option' ) == true ){
-		add_filter( 'widget_text', 'do_shortcode' );
-	}
-	// Text widget php
-	if( get_option( 'ws_phpintextwidget_option' ) != '' && get_option( 'ws_phpintextwidget_option' ) == true ){
-		
-		// Execute PHP in the default text-widget
-		add_filter('widget_text','php_execute',100);
-		function php_execute($html){
-			if(strpos($html,"<"."?php")!==false){ ob_start(); eval("?".">".$html);
-				$html=ob_get_contents();
-				ob_end_clean();
-			}
-			return $html;
-		}
-	}
-	
+        // Use page templates
+        if( get_option( 'ws_pagetemplates_option' ) != '' && get_option( 'ws_pagetemplates_option' ) == true ){
+            require_once( 'templates.php' );
+            add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
+        }
+
+        // Link Manager
+        if( get_option( 'ws_linkmanager_option' ) != '' && get_option( 'ws_linkmanager_option' ) == true ){
+            add_filter( 'pre_option_link_manager_enabled', '__return_true' );
+        }
+        // Keep category select list in hiÎarchy
+        // source http://wordpress.stackexchange.com/questions/61922/add-post-screen-keep-category-structure
+        if( get_option( 'ws_categoryhierarchy_option' ) != '' && get_option( 'ws_categoryhierarchy_option' ) == true ){
+            add_filter( 'widget_text', 'do_shortcode' );
+            add_filter( 'wp_terms_checklist_args', 'imagazine_wp_terms_checklist_args', 1, 2 );
+            function imagazine_wp_terms_checklist_args( $args, $post_id ) {
+                 $args[ 'checked_ontop' ] = false;
+                 return $args;
+            }
+        }
+        // Text widget shortcodes
+        if( get_option( 'ws_shortcodesintextwidget_option' ) != '' && get_option( 'ws_shortcodesintextwidget_option' ) == true ){
+            add_filter( 'widget_text', 'do_shortcode' );
+        }
+        // Text widget php
+        if( get_option( 'ws_phpintextwidget_option' ) != '' && get_option( 'ws_phpintextwidget_option' ) == true ){
+
+            // Execute PHP in the default text-widget
+            add_filter('widget_text','php_execute',100);
+            function php_execute($html){
+                if(strpos($html,"<"."?php")!==false){ ob_start(); eval("?".">".$html);
+                    $html=ob_get_contents();
+                    ob_end_clean();
+                }
+                return $html;
+            }
+        }
+
 }
+
 // on startup
 wpstartup_components_global();
-
-
-
 
 /** Customized Header */
 

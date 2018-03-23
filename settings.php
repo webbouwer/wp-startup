@@ -42,6 +42,14 @@ function ws_options_select_phpintextwidget(){
 }
 
 
+
+function ws_options_select_pagetemplates(){
+
+	$options = get_option( 'ws_pagetemplates_option' );
+	echo '<p><input name="ws_pagetemplates_option" id="ws_pagetemplates_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable theme extension with custom page templates</p>';
+
+}
+
 function ws_options_select_themebgimage(){
 
 	$options = get_option( 'ws_themebgimage_option' );
@@ -94,6 +102,11 @@ function wp_startup_plugin_settings(){
 
 	add_settings_section( 'global_section', 'Global Settings','plugin_section_description','wp_startup_optionpage');
 	
+
+	add_option('ws_pagetemplates_option',1);// add option
+	add_settings_field('ws_pagetemplates_option','Theme page templates','ws_options_select_pagetemplates','wp_startup_optionpage','global_section');
+	register_setting( 'wp_startup_optionpage_grp', 'ws_pagetemplates_option');
+
 	add_option('ws_themebgimage_option',1);// add option
 	add_settings_field('ws_themebgimage_option','Theme background image','ws_options_select_themebgimage','wp_startup_optionpage','global_section');
 	register_setting( 'wp_startup_optionpage_grp', 'ws_themebgimage_option');
