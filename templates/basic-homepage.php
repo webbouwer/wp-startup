@@ -1,7 +1,7 @@
 <?php
 /**
- * Template name: Basic Template
- * Description: A minimal (blank) template to make anything you like.
+ * Template name: WP-Startup Basic Homepage
+ * Description: A minimal (blank) homepage template to make anything you like.
  */
 
 get_header();
