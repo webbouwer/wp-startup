@@ -19,6 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+
+
 /**
  * Load textdomain languages  
  */
@@ -28,10 +30,15 @@ function wan_load_textdomain() {
 }
 
 
+
+
 /**
- * include settings.php
+ * Includes
  */
 require_once( 'settings.php' );
+require_once( 'widgets/postlist.php' );
+
+
 
 
 /**
@@ -39,6 +46,7 @@ require_once( 'settings.php' );
  * https://core.trac.wordpress.org/ticket/21307
  */
 function wpstartup_components_global() {
+
 
         // Use page templates
         if( get_option( 'ws_pagetemplates_option' ) != '' && get_option( 'ws_pagetemplates_option' ) == true ){
@@ -84,11 +92,43 @@ function wpstartup_components_global() {
 wpstartup_components_global();
 
 
+
+
+
+
+
+/** Customized Widgets & Areas  */
+add_action( 'widgets_init', 'wpstartup_widgets_init' );
+
+function wpstartup_widgets_init() {
+
+    /** Register widgets area's */
+    register_sidebar( array(
+        'name' => __( 'Area custom1', 'wp-startup' ),
+        'id' => 'area-custom1',
+        'before_widget' => '<div>',
+        'after_widget' => '</div>',
+        'before_title' => '<h1>',
+        'after_title' => '</h1>',
+    ) );
+
+}
+
+
+add_action( 'widgets_init', 'wpstartup_widgets_register' );
+
+function wpstartup_widgets_register() {
+
+    register_widget( 'wpstartup_postlist_widget' );
+
+}
+
+
 /**
  * Register Theme and (default) Support
  * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
  */
-add_action( 'after_setup_theme', 'wpstartup_theme_global' ); 
+add_action( 'after_setup_theme', 'wpstartup_theme_global' );
 function wpstartup_theme_global() {
 
 
@@ -101,27 +141,6 @@ function wpstartup_theme_global() {
 
 
 }
-
-
-
-/** Customized Widgets  */
-add_action( 'widgets_init', 'wpstartup_widgets_init' );
-function wpstartup_widgets_init() {
-    register_sidebar( array(
-        'name' => __( 'Area custom1', 'wp-startup' ),
-        'id' => 'area-custom1',
-        'before_widget' => '<div>',
-        'after_widget' => '</div>',
-        'before_title' => '<h1>',
-        'after_title' => '</h1>',
-    ) );
-}
-
-
-
-
-
-
 
 /** 
  * Add custom css
@@ -209,6 +228,76 @@ if( get_option( 'ws_removeemojicons_option' ) != '' && get_option( 'ws_removeemo
 	add_action( 'init', 'disable_wp_emojicons' );
 }
 
+
+
+
+
+
+// Global used
+
+
+ // time ago
+function wp_time_ago( $t ) {
+    // https://codex.wordpress.org/Function_Reference/human_time_diff
+    //get_the_time( 'U' )
+    printf( _x( '%s '.__('geleden','wp-startup'), '%s = human-readable time difference', 'imagazine' ), human_time_diff( $t, current_time( 'timestamp' ) ) );
+}
+
+// words in excerpts
+function the_excerpt_length( $words = null, $links = true ) {
+		global $_the_excerpt_length_filter;
+		if( isset($words) ) {
+			$_the_excerpt_length_filter = $words;
+		}
+		add_filter( 'excerpt_length', '_the_excerpt_length_filter' );
+		if( $links == false){
+			echo preg_replace('/(?i)<a([^>]+)>(.+?)<\/a>/','', get_the_excerpt() );
+		}else{
+			the_excerpt();
+		}
+		remove_filter( 'excerpt_length', '_the_excerpt_length_filter' );
+		// reset the global
+		$_the_excerpt_length_filter = null;
+	}
+
+function _the_excerpt_length_filter( $default ) {
+    global $_the_excerpt_length_filter;
+    if( isset($_the_excerpt_length_filter) ) {
+        return $_the_excerpt_length_filter;
+    }
+    return $default;
+}
+
+
+// image orient
+function check_image_orientation($pid){
+	$orient = 'square';
+    $image = wp_get_attachment_image_src( get_post_thumbnail_id($pid), '');
+    $image_w = $image[1];
+    $image_h = $image[2];
+			if ($image_w > $image_h) {
+				$orient = 'landscape';
+			}elseif ($image_w == $image_h) {
+				$orient = 'square';
+			}else {
+				$orient = 'portrait';
+			}
+			return $orient;
+}
+
+// get categories
+function get_categories_select(){
+    $get_cats = get_categories();
+    $results;
+    $count = count($get_cats);
+			for ($i=0; $i < $count; $i++) {
+				if (isset($get_cats[$i]))
+					$results[$get_cats[$i]->slug] = $get_cats[$i]->name;
+				else
+					$count++;
+			}
+    return $results;
+}
 
 
 ?>
