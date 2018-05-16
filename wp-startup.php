@@ -83,19 +83,45 @@ function wpstartup_components_global() {
 // on startup
 wpstartup_components_global();
 
-/** Customized Header */
 
 /**
- * Register Theme (default) Support
+ * Register Theme and (default) Support
+ * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
  */
 add_action( 'after_setup_theme', 'wpstartup_theme_global' ); 
 function wpstartup_theme_global() {
+
+
+    // add_theme_support()
 	//add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
+
 	if( get_option( 'ws_themebgimage_option' ) != '' && get_option( 'ws_themebgimage_option' ) == true ){
 		add_theme_support( 'custom-background' );
 	}
 
+
 }
+
+
+
+/** Customized Widgets  */
+add_action( 'widgets_init', 'wpstartup_widgets_init' );
+function wpstartup_widgets_init() {
+    register_sidebar( array(
+        'name' => __( 'Area custom1', 'wp-startup' ),
+        'id' => 'area-custom1',
+        'before_widget' => '<div>',
+        'after_widget' => '</div>',
+        'before_title' => '<h1>',
+        'after_title' => '</h1>',
+    ) );
+}
+
+
+
+
+
+
 
 /** 
  * Add custom css
