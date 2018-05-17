@@ -36,7 +36,6 @@ function wan_load_textdomain() {
  * Includes
  */
 require_once( 'settings.php' );
-require_once( 'widgets/postlist.php' );
 
 
 
@@ -47,6 +46,14 @@ require_once( 'widgets/postlist.php' );
  */
 function wpstartup_components_global() {
 
+
+        // Use widget bundle
+        if( get_option( 'ws_widgets_option' ) != '' && get_option( 'ws_widgets_option' ) == true ){
+
+            require_once( 'widgets/postlist.php' );
+            add_action( 'widgets_init', 'wpstartup_widgets_register' );
+
+        }
 
         // Use page templates
         if( get_option( 'ws_pagetemplates_option' ) != '' && get_option( 'ws_pagetemplates_option' ) == true ){
@@ -114,9 +121,7 @@ function wpstartup_widgets_init() {
 
 }
 
-
-add_action( 'widgets_init', 'wpstartup_widgets_register' );
-
+// register widgets if used
 function wpstartup_widgets_register() {
 
     register_widget( 'wpstartup_postlist_widget' );

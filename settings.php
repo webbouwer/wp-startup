@@ -16,6 +16,12 @@ function plugin_option_page() {
 <?php
 }
 
+
+function ws_options_select_widgets(){
+
+	$options = get_option( 'ws_widgets_option' );
+	echo '<p><input name="ws_widgets_option" id="ws_widgets_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable the WP-startup widgets</p>';
+}
  
 function plugin_section_description(){
 	echo '<p>WP Startup hooks into your Wordpress installation and adds or removes Wordpress core functionalities. When all these options are blank you are working with a basic Wordpress setup.</p>';
@@ -102,6 +108,9 @@ function wp_startup_plugin_settings(){
 
 	add_settings_section( 'global_section', 'Global Settings','plugin_section_description','wp_startup_optionpage');
 	
+    add_option('ws_widgets_option',1);// add option
+	add_settings_field('ws_widgets_option','WP Startup Widgets','ws_options_select_widgets','wp_startup_optionpage','global_section');
+	register_setting( 'wp_startup_optionpage_grp', 'ws_widgets_option');
 
 	add_option('ws_pagetemplates_option',1);// add option
 	add_settings_field('ws_pagetemplates_option','Theme page templates','ws_options_select_pagetemplates','wp_startup_optionpage','global_section');
