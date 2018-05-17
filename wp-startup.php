@@ -103,6 +103,7 @@ function wpstartup_components_global() {
         add_action( 'after_setup_theme', 'wpstartup_theme_global' );
         add_action( 'wp_head', 'wpstartup_load_custom_css', 9999 );
         add_action( 'wp_head', 'wpstartup_load_custom_js', 9998 );
+        add_action( 'wp_head', 'wpstartup_theme_stylesheet', 9997 );
 
 }
 
@@ -138,16 +139,11 @@ function wpstartup_widgets_register() {
 function wpstartup_theme_global() {
     // add_theme_support()
 	//add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
-
 	if( get_option( 'ws_themebgimage_option' ) != '' && get_option( 'ws_themebgimage_option' ) == true ){
 		add_theme_support( 'custom-background' );
 	}
 
-
 }
-
-
-
 
 
 /** 
