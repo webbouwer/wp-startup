@@ -19,26 +19,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-
-
-/**
- * Load textdomain languages  
- */
-add_action('plugins_loaded', 'ws_load_textdomain');
-function wan_load_textdomain() {
-	load_plugin_textdomain( 'wp-startup', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
-}
-
-
-
-
 /**
  * Includes
  */
 require_once( 'settings.php' );
 
-
-
+// on startup
+wpstartup_components_global();
 
 /**
  * Components
@@ -46,13 +33,16 @@ require_once( 'settings.php' );
  */
 function wpstartup_components_global() {
 
+        // Load textdomain languages
+        add_action('plugins_loaded', 'ws_load_textdomain');
+        function wan_load_textdomain() {
+            load_plugin_textdomain( 'wp-startup', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+        }
 
         // Use widget bundle
         if( get_option( 'ws_widgets_option' ) != '' && get_option( 'ws_widgets_option' ) == true ){
-
             require_once( 'widgets/postlist.php' );
             add_action( 'widgets_init', 'wpstartup_widgets_register' );
-
         }
 
         // Use page templates
@@ -65,6 +55,7 @@ function wpstartup_components_global() {
         if( get_option( 'ws_linkmanager_option' ) != '' && get_option( 'ws_linkmanager_option' ) == true ){
             add_filter( 'pre_option_link_manager_enabled', '__return_true' );
         }
+
         // Keep category select list in hiÎarchy
         // source http://wordpress.stackexchange.com/questions/61922/add-post-screen-keep-category-structure
         if( get_option( 'ws_categoryhierarchy_option' ) != '' && get_option( 'ws_categoryhierarchy_option' ) == true ){
@@ -75,10 +66,12 @@ function wpstartup_components_global() {
                  return $args;
             }
         }
+
         // Text widget shortcodes
         if( get_option( 'ws_shortcodesintextwidget_option' ) != '' && get_option( 'ws_shortcodesintextwidget_option' ) == true ){
             add_filter( 'widget_text', 'do_shortcode' );
         }
+
         // Text widget php
         if( get_option( 'ws_phpintextwidget_option' ) != '' && get_option( 'ws_phpintextwidget_option' ) == true ){
 
@@ -93,20 +86,29 @@ function wpstartup_components_global() {
             }
         }
 
+        // disable gravatar
+        if( get_option( 'ws_removegravatar_option' ) != '' && get_option( 'ws_removegravatar_option' ) == true ){
+        add_filter('bp_core_fetch_avatar', 'bp_remove_gravatar', 1, 9 );
+        add_filter('get_avatar', 'remove_gravatar', 1, 5);
+        add_filter('bp_get_signup_avatar', 'bp_remove_signup_gravatar', 1, 1 );
+        }
+
+        // disable gravatar
+        if( get_option( 'ws_removeemojicons_option' ) != '' && get_option( 'ws_removeemojicons_option' ) == true ){
+            add_action( 'init', 'disable_wp_emojicons' );
+        }
+
+        /* basic */
+        add_action( 'widgets_init', 'wpstartup_widgets_init' );
+        add_action( 'after_setup_theme', 'wpstartup_theme_global' );
+        add_action( 'wp_head', 'wpstartup_load_custom_css', 9999 );
+        add_action( 'wp_head', 'wpstartup_load_custom_js', 9998 );
+
 }
-
-// on startup
-wpstartup_components_global();
-
-
-
-
 
 
 
 /** Customized Widgets & Areas  */
-add_action( 'widgets_init', 'wpstartup_widgets_init' );
-
 function wpstartup_widgets_init() {
 
     /** Register widgets area's */
@@ -133,10 +135,7 @@ function wpstartup_widgets_register() {
  * Register Theme and (default) Support
  * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
  */
-add_action( 'after_setup_theme', 'wpstartup_theme_global' );
 function wpstartup_theme_global() {
-
-
     // add_theme_support()
 	//add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
 
@@ -147,11 +146,14 @@ function wpstartup_theme_global() {
 
 }
 
+
+
+
+
 /** 
  * Add custom css
  */
-add_action( 'wp_head', 'ws_load_custom_css', 9999 );
-function ws_load_custom_css() {
+function wpstartup_load_custom_css() {
 	if( get_option( 'ws_custom_css' ) != '' && get_option( 'ws_custom_css' ) != 1){
 		$csscode = get_option( 'ws_custom_css' );
 		echo '<style>'.$csscode.'</style>';
@@ -161,8 +163,7 @@ function ws_load_custom_css() {
 /** 
  * Add custom javascript
  */
-add_action( 'wp_head', 'ws_load_custom_js', 9998 );
-function ws_load_custom_js() {
+function wpstartup_load_custom_js() {
 	if( get_option( 'ws_custom_js' ) != '' && get_option( 'ws_custom_js' ) != 1){
 		$jscode = get_option( 'ws_custom_js' );
 		echo '<script>'.$jscode.'</script>';
@@ -198,11 +199,8 @@ function bp_remove_signup_gravatar ($image) {
 	}
 }
 
-if( get_option( 'ws_removegravatar_option' ) != '' && get_option( 'ws_removegravatar_option' ) == true ){
-	add_filter('bp_core_fetch_avatar', 'bp_remove_gravatar', 1, 9 );
-	add_filter('get_avatar', 'remove_gravatar', 1, 5);
-	add_filter('bp_get_signup_avatar', 'bp_remove_signup_gravatar', 1, 1 );
-}
+
+
 
 
 
@@ -226,11 +224,6 @@ function disable_emojicons_tinymce( $plugins ) {
   } else {
     return array();
   }
-}
-
-
-if( get_option( 'ws_removeemojicons_option' ) != '' && get_option( 'ws_removeemojicons_option' ) == true ){
-	add_action( 'init', 'disable_wp_emojicons' );
 }
 
 

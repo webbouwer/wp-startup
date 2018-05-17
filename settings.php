@@ -17,19 +17,14 @@ function plugin_option_page() {
 }
 
 
+function ws_plugin_section_description(){
+	echo '<p>WP Startup hooks into your Wordpress installation and adds or removes Wordpress core functionalities. When all these options are blank you are working with a basic Wordpress setup.</p>';
+}
 function ws_options_select_widgets(){
-
 	$options = get_option( 'ws_widgets_option' );
 	echo '<p><input name="ws_widgets_option" id="ws_widgets_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable the WP-startup widgets</p>';
 }
- 
-function plugin_section_description(){
-	echo '<p>WP Startup hooks into your Wordpress installation and adds or removes Wordpress core functionalities. When all these options are blank you are working with a basic Wordpress setup.</p>';
-}
-
-
 function ws_options_select_linkmanager(){
-
 	$options = get_option( 'ws_linkmanager_option' );
 	echo '<p><input name="ws_linkmanager_option" id="ws_linkmanager_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable the wordpress build-in link manager</p>';
 }
@@ -46,28 +41,17 @@ function ws_options_select_phpintextwidget(){
 	$options = get_option( 'ws_phpintextwidget_option' );
 	echo '<p><input name="ws_phpintextwidget_option" id="ws_phpintextwidget_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable php code in the text widget</p>';
 }
-
-
-
 function ws_options_select_pagetemplates(){
-
 	$options = get_option( 'ws_pagetemplates_option' );
 	echo '<p><input name="ws_pagetemplates_option" id="ws_pagetemplates_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable theme extension with custom page templates</p>';
 
 }
-
 function ws_options_select_themebgimage(){
-
 	$options = get_option( 'ws_themebgimage_option' );
 	echo '<p><input name="ws_themebgimage_option" id="ws_themebgimage_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable the wordpress build-in theme background image options</p>';
 
 }
-
-
-
-
 function ws_options_css_output(){
-
 	$ws_custom_css = '';
 	if( get_option( 'ws_custom_css' ) != '' && get_option( 'ws_custom_css' ) != 1 ){
 		$ws_custom_css = get_option( 'ws_custom_css' );
@@ -75,7 +59,6 @@ function ws_options_css_output(){
 	echo '<p><textarea name="ws_custom_css" id="ws_custom_css" rows="7" cols="50" type="textarea">'.$ws_custom_css.'</textarea></p>';
 	
 }
-
 function ws_options_js_output(){
 
 	$ws_custom_js = '';
@@ -85,29 +68,27 @@ function ws_options_js_output(){
 	echo '<p><textarea name="ws_custom_js" id="ws_custom_js" rows="7" cols="50" type="textarea">'.$ws_custom_js.'</textarea></p>';
 	
 }
-
-
-
 function ws_options_select_removegravatar(){
 
 	$options = get_option( 'ws_removegravatar_option' );
 	echo '<p><input name="ws_removegravatar_option" id="ws_removegravatar_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Disable WP Gravatar function</p>';
 
 }
-
 function ws_options_select_removeemojicons(){
-
 	$options = get_option( 'ws_removeemojicons_option' );
 	echo '<p><input name="ws_removeemojicons_option" id="ws_removeemojicons_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Disable WP Emojicons function</p>';
-
 }
 
 
 
+/** Plugin settings  */
+add_action('admin_init','wp_startup_plugin_settings');
+
 function wp_startup_plugin_settings(){
 
-	add_settings_section( 'global_section', 'Global Settings','plugin_section_description','wp_startup_optionpage');
+	add_settings_section( 'global_section', 'Global Settings','ws_plugin_section_description','wp_startup_optionpage');
 	
+    // extends
     add_option('ws_widgets_option',1);// add option
 	add_settings_field('ws_widgets_option','WP Startup Widgets','ws_options_select_widgets','wp_startup_optionpage','global_section');
 	register_setting( 'wp_startup_optionpage_grp', 'ws_widgets_option');
@@ -136,12 +117,10 @@ function wp_startup_plugin_settings(){
 	add_option('ws_categoryhierarchy_option',1);// add option
 	add_settings_field('ws_categoryhierarchy_option','Categories hierarchy','ws_options_select_categoryhierarchy','wp_startup_optionpage','global_section');
 	register_setting( 'wp_startup_optionpage_grp', 'ws_categoryhierarchy_option');
-	
 		
 	add_option('ws_shortcodesintextwidget_option',1);// add option
 	add_settings_field('ws_shortcodesintextwidget_option','Shortcodes in text-widget','ws_options_select_shortcodesintextwidget','wp_startup_optionpage','global_section');
 	register_setting( 'wp_startup_optionpage_grp', 'ws_shortcodesintextwidget_option');
-	
 		
 	add_option('ws_phpintextwidget_option',1);// add option
 	add_settings_field('ws_phpintextwidget_option','PHP coding in text-widget','ws_options_select_phpintextwidget','wp_startup_optionpage','global_section');
@@ -157,10 +136,11 @@ function wp_startup_plugin_settings(){
 	register_setting( 'wp_startup_optionpage_grp', 'ws_custom_js');
 
 }
-add_action('admin_init','wp_startup_plugin_settings');
 
 
 
+/** Plugin Admin Menu */
+add_action('admin_menu', 'wp_startup_admin_menu');
 function wp_startup_admin_menu(){
     $page_title = 'wp_startup plugin Options';
     $menu_title = 'WP Startup';
@@ -171,6 +151,6 @@ function wp_startup_admin_menu(){
     $position = 60;
     add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 }
-add_action('admin_menu', 'wp_startup_admin_menu');
+
 
 ?>
