@@ -4,9 +4,31 @@
  * Description: A minimal (blank) homepage template to make anything you like.
  */
 
+
+
+
 get_header();
 
 
+function frontpagesections(){
+
+   // Get each of our panels and show the post data.
+   if ( 0 !== twentyseventeen_panel_count() || is_customize_preview() ) { // If we have pages to show.
+    /** Filter number of front page sections in Twenty Seventeen.
+    * @since Twenty Seventeen 1.0
+	* @param int $num_sections Number of front page sections.
+    */
+			$num_sections = apply_filters( 'twentyseventeen_front_page_sections', 4 );
+			global $twentyseventeencounter;
+
+			// Create a setting and control for each of the sections available in the theme.
+			for ( $i = 1; $i < ( 1 + $num_sections ); $i++ ) {
+				$twentyseventeencounter = $i;
+				twentyseventeen_front_page_section( null, $i );
+			}
+   } // The if ( 0 !== twentyseventeen_panel_count() ) ends here.
+
+}
 
 // post or list content
 if ( have_posts() ) :
@@ -18,14 +40,8 @@ if ( is_page() ) { // this must be a page template
 
     // basic Twenty Seventeen theme Homepage sections
     if( is_front_page() && get_option( 'page_on_front' ) == get_the_ID() && twentyseventeen_panel_count() !== 0 ){
-			$num_sections = apply_filters( 'twentyseventeen_front_page_sections', 4 );
-			global $twentyseventeencounter;
 
-			// Create a setting and control for each of the sections available in the theme.
-			for ( $i = 1; $i < ( 1 + $num_sections ); $i++ ) {
-				$twentyseventeencounter = $i;
-				twentyseventeen_front_page_section( null, $i );
-			}
+        frontpagesections();
 
     }else{
 

@@ -25,13 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once( 'settings.php' );
 
 // on startup
-wpstartup_components_global();
-
-/**
- * Components
- * https://core.trac.wordpress.org/ticket/21307
- */
-function wpstartup_components_global() {
+function wpstartup_components_global(){
 
         // Load textdomain languages
         add_action('plugins_loaded', 'ws_load_textdomain');
@@ -74,8 +68,10 @@ function wpstartup_components_global() {
             // Add widget param check for empty html correction
             add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
 
+            // Adjust customizer options  ( if function defined in template file )
+            //add_action( 'customize_register', 'wpstartup_theme_adjust_customizer' );
 
-            // Add theme stylesheet automatically ( if defined in template folder )
+            // Add theme stylesheet automatically ( if function defined in template file )
             add_action( 'wp_head', 'wpstartup_theme_stylesheet', 9997 );
 
         }
@@ -141,7 +137,15 @@ function wpstartup_components_global() {
         add_action( 'wp_head', 'wpstartup_load_custom_css', 9999 );
         add_action( 'wp_head', 'wpstartup_load_custom_js', 9998 );
 
-}
+    }
+
+
+wpstartup_components_global();
+
+/**
+ * Components
+ * https://core.trac.wordpress.org/ticket/21307
+ */
 
 
 
@@ -333,8 +337,6 @@ function wpstartup_deregister_styles() {
   wp_deregister_style('twentyfifteen-fonts');
 
 }
-
-
 
 
 /** 

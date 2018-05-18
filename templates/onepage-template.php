@@ -6,13 +6,17 @@
 
 
 
-// remove the default common theme styles
+// remove the default common theme styles (comment out to keep)
 add_action('wp_print_styles', 'wpstartup_deregister_styles', 100);
 
-// Add theme stylesheet with action hook (before custom code is implemented)
+// Add theme stylesheet link
+// called by action hook (function wpstartup_components_global - wpstartup.php)
+// this before custom code is implemented)
 function wpstartup_theme_stylesheet(){
+
     $stylesheet = str_replace('-template.php', '', basename(__FILE__) ) . '-style.css';
     echo '<link rel="stylesheet" id="onepage-style"  href="'.plugins_url( $stylesheet , __FILE__ ).'" type="text/css" media="all" />';
+
 }
 
 
@@ -21,8 +25,6 @@ global $post;
 
 // determine header image
 $header_image = get_header_image();
-
-
 
 // theme html output toplogo (custom_logo) or site title home link
 function wpstartup_toplogo_html(){
@@ -91,13 +93,15 @@ function wpstartup_widgetarea_html( $id, $type = false ){
                 $class = 'widgetbox widget-'.$type;
             }
 
-            echo '<div id="'.$id.'" class="'.$class.' colset'.is_sidebar_active( $id ).'">';
+            echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.is_sidebar_active( $id ).'">';
             dynamic_sidebar( $id );
             echo '<div class="clr"></div></div>';
 
         }
     }
 }
+
+
 
 ?>
 
@@ -188,6 +192,15 @@ function wpstartup_widgetarea_html( $id, $type = false ){
                 </div>
             </div>
             <!-- header & topbar -->
+
+            <?php if ( get_header_image() ){ ?>
+				<div class="header-image">
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
+						<img src="<?php header_image(); ?>" width="100%" height="auto" alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
+					</a>
+				</div><!-- .header-image -->
+            <?php } // End header image check. ?>
+
             <div id="header" class="outermargin">
                 <header>
 
@@ -195,8 +208,11 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 
                         <?php
                         wpstartup_widgetarea_html( 'header-widget-1' );
-                        ?>
 
+
+                    //if( get_theme_mod('display_header_text', '') != '' ){}
+
+                    ?>
                     <div id="titlebox">
                         <!-- the header title -->
                         <h1 class="sitetitle">
@@ -209,7 +225,6 @@ function wpstartup_widgetarea_html( $id, $type = false ){
                     </div>
 
                     <div class="clr"></div>
-
 
                 </header>
             </div>
@@ -238,7 +253,12 @@ function wpstartup_widgetarea_html( $id, $type = false ){
         </div>
 
         <div id="maincontainer">
+
+
             <!-- main content -->
+
+
+
             <div id="content" class="outermargin">
 
                 <section>
@@ -256,6 +276,7 @@ function wpstartup_widgetarea_html( $id, $type = false ){
                         <?php
                         wpstartup_widgetarea_html( 'topcontent-widget-2' );
                         ?>
+
 
 
                         <?php

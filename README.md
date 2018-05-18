@@ -1,6 +1,6 @@
 # WP Startup 
 Do more with basic Wordpress
-
+ 
 ### Development version
 
 The WP Startup plugin hooks into your basic Wordpress installation providing options to enable and disable some obvious Wordpress core functionalities.
