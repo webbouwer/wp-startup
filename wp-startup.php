@@ -47,8 +47,37 @@ function wpstartup_components_global() {
 
         // Use page templates
         if( get_option( 'ws_pagetemplates_option' ) != '' && get_option( 'ws_pagetemplates_option' ) == true ){
+
+            /**
+             * PageTemplater
+             * templates.php
+             * prepare all theme-only stuff here (like menu's, widgets etc.)
+             */
+
             require_once( 'templates.php' );
             add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
+
+            // Extend theme wp_nav_menu() locations for wp-startup themes
+            register_nav_menus(
+                array(
+                    'main'    => __( 'Main Menu', 'wp-startup' ),
+                    'side'    => __( 'Sidebar Menu', 'wp-startup' ),
+                    'bottom'    => __( 'Bottom Menu', 'wp-startup' ),
+                    // + twentyseventeen: 'top' = twentysixteen/twentyfifteen 'primary'
+                    // + 'social'
+                )
+            );
+
+
+            // Extend theme widget locations for wp-startup themes
+            add_action( 'widgets_init', 'wpstartup_widgets_init' );
+            // Add widget param check for empty html correction
+            add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
+
+
+            // Add theme stylesheet automatically ( if defined in template folder )
+            add_action( 'wp_head', 'wpstartup_theme_stylesheet', 9997 );
+
         }
 
         // Link Manager
@@ -88,9 +117,9 @@ function wpstartup_components_global() {
 
         // disable gravatar
         if( get_option( 'ws_removegravatar_option' ) != '' && get_option( 'ws_removegravatar_option' ) == true ){
-        add_filter('bp_core_fetch_avatar', 'bp_remove_gravatar', 1, 9 );
-        add_filter('get_avatar', 'remove_gravatar', 1, 5);
-        add_filter('bp_get_signup_avatar', 'bp_remove_signup_gravatar', 1, 1 );
+            add_filter('bp_core_fetch_avatar', 'bp_remove_gravatar', 1, 9 );
+            add_filter('get_avatar', 'remove_gravatar', 1, 5);
+            add_filter('bp_get_signup_avatar', 'bp_remove_signup_gravatar', 1, 1 );
         }
 
         // disable gravatar
@@ -99,11 +128,18 @@ function wpstartup_components_global() {
         }
 
         /* basic */
-        add_action( 'widgets_init', 'wpstartup_widgets_init' );
+        if( get_option( 'ws_pagetemplates_option' ) != '' && get_option( 'ws_pagetemplates_option' ) == true ){
+
+
+
+        }
+
+        // wp core theme extensions
         add_action( 'after_setup_theme', 'wpstartup_theme_global' );
+
+        // custom head code
         add_action( 'wp_head', 'wpstartup_load_custom_css', 9999 );
         add_action( 'wp_head', 'wpstartup_load_custom_js', 9998 );
-        add_action( 'wp_head', 'wpstartup_theme_stylesheet', 9997 );
 
 }
 
@@ -112,19 +148,171 @@ function wpstartup_components_global() {
 /** Customized Widgets & Areas  */
 function wpstartup_widgets_init() {
 
+
+    // first inspect current sidebars
+    // wp_get_sidebars_widgets()
+
     /** Register widgets area's */
     register_sidebar( array(
-        'name' => __( 'Area custom1', 'wp-startup' ),
-        'id' => 'area-custom1',
-        'before_widget' => '<div>',
-        'after_widget' => '</div>',
-        'before_title' => '<h1>',
-        'after_title' => '</h1>',
+        'name' => __( 'topbar widget 1', 'wp-startup' ),
+        'id' => 'topbar-widget-1',
+        'description'   => 'Topbar widgets 1 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
     ) );
+    register_sidebar( array(
+        'name' => __( 'topbar widget 2', 'wp-startup' ),
+        'id' => 'topbar-widget-2',
+        'description'   => 'Topbar widgets 2 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Header widget 1', 'wp-startup' ),
+        'id' => 'header-widget-1',
+        'description'   => 'Header widgets 1 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Header widget 2', 'wp-startup' ),
+        'id' => 'header-widget-2',
+        'description'   => 'Header widgets 3 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Topcontent widget 1', 'wp-startup' ),
+        'id' => 'topcontent-widget-1',
+        'description'   => 'Topcontent widgets 1 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Topcontent widget 2', 'wp-startup' ),
+        'id' => 'topcontent-widget-2',
+        'description'   => 'Topcontent widgets 2 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Before widget', 'wp-startup' ),
+        'id' => 'before-widget',
+        'description'   => 'Before content widgets wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'After widget', 'wp-startup' ),
+        'id' => 'after-widget',
+        'description'   => 'After content widgets wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">',
+    ) );
+    // mainsidebar
+
+
+    register_sidebar( array(
+        'name' => __( 'Subcontent widget 1', 'wp-startup' ),
+        'id' => 'subcontent-widget-1',
+        'description'   => 'Subcontent widgets 1 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Subcontent widget 2', 'wp-startup' ),
+        'id' => 'subcontent-widget-2',
+        'description'   => 'Subcontent widgets 2 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+
+     register_sidebar( array(
+        'name' => __( 'Bottom widget 1', 'wp-startup' ),
+        'id' => 'bottom-widget-1',
+        'description'   => 'Bottom widgets 1 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
+        'name' => __( 'Bottom widget 2', 'wp-startup' ),
+        'id' => 'bottom-widget-2',
+        'description'   => 'Bottom widgets 2 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+
+    register_sidebar( array(
+        'name' => __( 'Footer widget 1', 'wp-startup' ),
+        'id' => 'footer-widget-1',
+        'description'   => 'Footer widgets 1 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+
+    register_sidebar( array(
+        'name' => __( 'Footer widget 2', 'wp-startup' ),
+        'id' => 'footer-widget-2',
+        'description'   => 'Footer widgets 2 wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+}
+
+
+
+
+/**
+ * Register Theme and (default) Support
+ * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
+ */
+function wpstartup_theme_global() {
+
+    // add_theme_support()
+	// add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
+
+	if( get_option( 'ws_themebgimage_option' ) != '' && get_option( 'ws_themebgimage_option' ) == true ){
+		add_theme_support( 'custom-background' );
+	}
 
 }
 
-// register widgets if used
+
+
+
+
+
+/**
+ * register widgets if used
+ */
 function wpstartup_widgets_register() {
 
     register_widget( 'wpstartup_postlist_widget' );
@@ -133,17 +321,20 @@ function wpstartup_widgets_register() {
 
 
 /**
- * Register Theme and (default) Support
- * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
+ * De-register default theme styles (used in specifc page templates)
  */
-function wpstartup_theme_global() {
-    // add_theme_support()
-	//add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
-	if( get_option( 'ws_themebgimage_option' ) != '' && get_option( 'ws_themebgimage_option' ) == true ){
-		add_theme_support( 'custom-background' );
-	}
+function wpstartup_deregister_styles() {
+
+  wp_deregister_style('twentyseventeen-style');
+  wp_deregister_style('twentyseventeen-fonts');
+  wp_deregister_style('twentysixteen-style');
+  wp_deregister_style('twentysixteen-fonts');
+  wp_deregister_style('twentyfifteen-style');
+  wp_deregister_style('twentyfifteen-fonts');
 
 }
+
+
 
 
 /** 
@@ -293,5 +484,26 @@ function get_categories_select(){
     return $results;
 }
 
+
+// check active widgets
+function is_sidebar_active( $sidebar_id ){
+    $the_sidebars = wp_get_sidebars_widgets();
+    if( !isset( $the_sidebars[$sidebar_id] ) )
+        return false;
+    else
+        return count( $the_sidebars[$sidebar_id] );
+}
+
+// widget empty title content wrapper fix
+function check_sidebar_params( $params ) {
+    global $wp_registered_widgets;
+    $settings_getter = $wp_registered_widgets[ $params[0]['widget_id'] ]['callback'][0];
+    $settings = $settings_getter->get_settings();
+    $settings = $settings[ $params[1]['number'] ];
+    if ( $params[0][ 'after_widget' ] == '<div class="clr"></div></div></div>' && isset( $settings[ 'title' ] ) &&  empty( $settings[ 'title' ] ) ){
+        $params[0][ 'before_widget' ] .= '<div class="widget-contentbox">';
+    }
+    return $params;
+}
 
 ?>
