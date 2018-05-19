@@ -34,7 +34,7 @@ class WPstartupData{
                 'menu_title' => 'WP Startup',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_optionpage',
-                'parent_slug' => 'wp_startup_optionpage',
+                'parent_slug' => 'wp_startup_optionpage', // 'options-general.php',
                 'icon_url' => 'dashicons-editor-kitchensink',
                 'position' => 60
 
@@ -90,11 +90,18 @@ class WPstartupData{
     public function WPstartup_data_options(){
 
         $options = array(
+            'wp_startup_pagethemes_option' => array(
 
-            'wp_startup_linkmanager_option' => array(
+                'id'=>'wp_startup_pagethemes_option',
+                'title'=>'Page Themes',
+                'page'=>'wp_startup_optionpage',
+                'section'=>'global_section'
 
-                'id'=>'wp_startup_linkmanager_option',
-                'title'=>'Link Manager component',
+            ),
+            'wp_startup_widgets_option' => array(
+
+                'id'=>'wp_startup_widgets_option',
+                'title'=>'Widgets',
                 'page'=>'wp_startup_optionpage',
                 'section'=>'global_section'
 
@@ -107,6 +114,14 @@ class WPstartupData{
                 'section'=>'sub1_section'
 
             ),
+            'wp_startup_linkmanager_option' => array(
+
+                'id'=>'wp_startup_linkmanager_option',
+                'title'=>'Link Manager component',
+                'page'=>'wp_startup_option_subpage1',
+                'section'=>'sub1_section'
+
+            ),
             'wp_startup_dumbemoji_option' => array(
 
                 'id'=>'wp_startup_dumbemoji_option',
@@ -114,7 +129,18 @@ class WPstartupData{
                 'page'=>'wp_startup_option_subpage2',
                 'section'=>'sub2_section'
 
+            ),
+            'wp_startup_removegravatar_option' => array(
+
+                'id'=>'wp_startup_removegravatar_option',
+                'title'=>'Remove Gravatar stuff',
+                'page'=>'wp_startup_option_subpage2',
+                'section'=>'sub2_section'
+
             )
+
+
+            //..
         );
 
         $this->check_options_value( $options );
@@ -252,30 +278,78 @@ class WPstartupData{
     }
 
 
+    // Enable WP startup page themes
+    public function wp_startup_pagethemes_option_settings_field(){
+
+        $options = get_option( 'wp_startup_pagethemes_option' );
+        echo '<p><input name="wp_startup_pagethemes_option" id="wp_startup_pagethemes_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup page themes</p>';
+
+    }
+    public function wp_startup_pagethemes_option_init(){
+
+        if( get_option( 'wp_startup_pagethemes_option' ) != '' && get_option( 'wp_startup_pagethemes_option' ) == true ){
+
+           wp_startup_pagethemes_func();
+
+        }
+
+    }
+
+    // WP Startup widgets
+    public function wp_startup_widgets_option_settings_field(){
+
+        $options = get_option( 'wp_startup_widgets_option' );
+        echo '<p><input name="wp_startup_widgets_option" id="wp_startup_widgets_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup widgets</p>';
+
+    }
+
+    public function wp_startup_widgets_option_init(){
+
+        if( get_option( 'wp_startup_widgets_option' ) != '' && get_option( 'wp_startup_widgets_option' ) == true ){
+
+           wp_startup_widgets_func();
+
+        }
+
+    }
+
+
 
     // Activatie build-in Link Manager
     // pre_option_link_manager_enabled
     public function wp_startup_linkmanager_option_settings_field(){
+
         $options = get_option( 'wp_startup_linkmanager_option' );
         echo '<p><input name="wp_startup_linkmanager_option" id="wp_startup_linkmanager_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable the wordpress build-in link manager</p>';
+
     }
 
     public function wp_startup_linkmanager_option_init(){
+
         if( get_option( 'wp_startup_linkmanager_option' ) != '' && get_option( 'wp_startup_linkmanager_option' ) == true ){
+
             add_filter( 'pre_option_link_manager_enabled', '__return_true' );
+
         }
+
     }
 
 
     // Category Hierarchy
     public function wp_startup_categoryhierarchy_option_settings_field(){
+
         $options = get_option( 'wp_startup_categoryhierarchy_option' );
         echo '<p><input name="wp_startup_categoryhierarchy_option" id="wp_startup_categoryhierarchy_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable category hierarchy display in post metabox</p>';
+
     }
     public function wp_startup_categoryhierarchy_option_init(){
+
         if( get_option( 'wp_startup_categoryhierarchy_option' ) != '' && get_option( 'wp_startup_categoryhierarchy_option' ) == true ){
+
             wp_startup_keep_category_hierarchy_func();
+
         }
+
     }
 
 
@@ -283,15 +357,40 @@ class WPstartupData{
     // source http://wordpress.stackexchange.com/questions/61922/add-post-screen-keep-category-structure
     // source http://wordpress.stackexchange.com/questions/185577/disable-emojicons-introduced-with-wp-4-2
     public function wp_startup_dumbemoji_option_settings_field(){
+
         $options = get_option( 'wp_startup_dumbemoji_option' );
         echo '<p><input name="wp_startup_dumbemoji_option" id="wp_startup_dumbemoji_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Remove Emojicons junk code</p>';
+
     }
 
     public function wp_startup_dumbemoji_option_init(){
+
         if( get_option( 'wp_startup_dumbemoji_option' ) != '' && get_option( 'wp_startup_dumbemoji_option' ) == true ){
+
             wp_startup_disable_wp_emojicons_func();
+
         }
+
     }
+
+    // wp_startup_removegravatar_option
+    public function wp_startup_removegravatar_option_settings_field(){
+
+        $options = get_option( 'wp_startup_removegravatar_option' );
+        echo '<p><input name="wp_startup_removegravatar_option" id="wp_startup_removegravatar_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Disable WP Gravatar function</p>';
+
+    }
+
+    public function wp_startup_removegravatar_option_init(){
+
+        if( get_option( 'wp_startup_removegravatar_option' ) != '' && get_option( 'wp_startup_removegravatar_option' ) == true ){
+
+            wp_startup_disable_gravatar_func();
+
+        }
+
+    }
+
 }
 
 ?>

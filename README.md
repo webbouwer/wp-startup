@@ -13,12 +13,12 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [x] Link Manager component
 
 ##### Theme 
-- [ ] Custom page templates! (incl. widget area's)
+- [x] Custom page templates! (incl. widget area's)
 - [ ] Theme background image
 
 ##### Widget
 - Extra widgets
-    - [ ] Postlist widget
+    - [x] Postlist widget
     - [ ] ..
 - [ ] Shortcodes in text widget
 - [ ] PHP coding in text widget!
@@ -28,7 +28,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [x] Categories metabox forced hierarchy display
 
 ##### Tweak
-- [ ] disable Gravatars
+- [x] disable Gravatars
 - [x] disable Emojicons
 
 ##### Code

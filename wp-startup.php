@@ -55,12 +55,20 @@ class WPstartup{
 
     public function plugin_settings(){
 
+        // Load textdomain languages
+        add_action( 'plugins_loaded', array( $this, 'wp_startup_load_textdomain' ) );
+
         // load and check options
         add_action( 'admin_init', array( $this, 'wp_startup_admin_settings' ) );
 
         // add admin hooks
         add_action( 'admin_menu', array( $this, 'wp_startup_admin_menu' ) );
 
+    }
+
+
+    public function wp_startup_load_textdomain() {
+        load_plugin_textdomain( 'wp-startup', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
     }
 
     public function wp_startup_admin_settings(){
