@@ -20,7 +20,7 @@ function wp_startup_pagethemes_func(){
     );
 
     // Extend theme widget locations for wp-startup themes
-    add_action( 'widgets_init', 'wpstartup_widgets_init' );
+    add_action( 'widgets_init', 'wp_startup_widgets_init' );
     // Add widget param check for empty html correction
     add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
 
@@ -29,7 +29,7 @@ function wp_startup_pagethemes_func(){
 /**
  * WP startup Customized Widgets & Areas
  */
-function wpstartup_widgets_init() {
+function wp_startup_widgets_init() {
 
     // first inspect current sidebars
     // wp_get_sidebars_widgets()
@@ -186,6 +186,14 @@ function wpstartup_widgets_register() {
 
 }
 
+/**
+ * Shortcode in text widget
+ */
+function wp_startup_shortcodeintextwidget_func(){
+
+    add_filter( 'widget_text', 'do_shortcode' );
+
+}
 
 
 
@@ -203,6 +211,22 @@ function wp_startup_keep_category_hierarchy_func(){
 
 }
 
+
+/**
+ * PHP in text widget
+ */
+function wp_startup_phpintextwidget_func(){
+
+    add_filter('widget_text','php_execute',100);
+    function php_execute($html){
+        if(strpos($html,"<"."?php")!==false){ ob_start(); eval("?".">".$html);
+            $html=ob_get_contents();
+            ob_end_clean();
+        }
+        return $html;
+    }
+
+}
 
 
 /** Remove Emoji junk by Christine Cooper
