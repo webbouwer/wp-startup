@@ -22,6 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Includes
  */
+require_once('settings.php');
 require_once('data.php');
 require_once('functions.php');
 
@@ -37,6 +38,7 @@ class WPstartup{
 
 
     public function WPstartup() {
+
 
         // get plugin data
         $this->data = new WPstartupData;
@@ -54,14 +56,14 @@ class WPstartup{
     public function plugin_settings(){
 
         // load and check options
-        add_action( 'admin_init', array( $this, 'plugin_settings_page_sections' ) );
+        add_action( 'admin_init', array( $this, 'wp_startup_admin_settings' ) );
 
         // add admin hooks
         add_action( 'admin_menu', array( $this, 'wp_startup_admin_menu' ) );
 
     }
 
-    public function plugin_settings_page_sections(){
+    public function wp_startup_admin_settings(){
 
         /**
          * Sections loaded from the data class for settings register
@@ -109,29 +111,20 @@ class WPstartup{
     }
 
     public function wp_startup_admin_menu(){
+
         // !page 1? => oop from sections array for more pages
         $page_title = 'wp_startup plugin Options';
         $menu_title = 'WP Startup';
         $capability = 'edit_posts';
         $menu_slug = 'wp_startup_optionpage';
-        $function = array( $this, 'wp_startup_optionpage_html'); //'plugin_option_page';
+        $function = array( $this->data, 'wp_startup_optionpage_html'); //'plugin_option_page';
         $icon_url = 'dashicons-editor-kitchensink';
         $position = 60;
         add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 
     }
 
-    function wp_startup_optionpage_html() {
-        // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options</h1><form method="post" action="options.php">';
-        // display all sections for plugin-options page
-        settings_fields("wp_startup_optionpage_grp");
-        do_settings_sections("wp_startup_optionpage");
-        submit_button();
 
-        echo '</form></div>';
-
-    }
 
 
     public function plugin_load_options(){
