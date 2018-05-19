@@ -13,7 +13,8 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [x] Link Manager component
 
 ##### Theme 
-- [x] Custom page templates! (incl. widget area's)
+- [x] Custom page templates! 
+    - incl. own stylesheet & widget area's
 - [ ] Theme background image
 
 ##### Widget
