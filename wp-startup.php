@@ -112,16 +112,39 @@ class WPstartup{
 
     public function wp_startup_admin_menu(){
 
-        // !page 1? => oop from sections array for more pages
-        $page_title = 'wp_startup plugin Options';
-        $menu_title = 'WP Startup';
-        $capability = 'edit_posts';
-        $menu_slug = 'wp_startup_optionpage';
-        $function = array( $this->data, 'wp_startup_optionpage_html'); //'plugin_option_page';
-        $icon_url = 'dashicons-editor-kitchensink';
-        $position = 60;
-        add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 
+        /**
+         * Pages loaded from the data class for settings register
+         */
+        $pages = $this->data->get_wpstartup_pages();
+
+
+        if( is_array( $pages ) && count( $pages ) > 0 ){
+
+            foreach( $pages as $id => $page ){
+
+                if( $page['parent_slug'] == $page['menu_slug'] ){
+                    add_menu_page(
+                        $page['title'],
+                        $page['menu_title'],
+                        $page['capability'],
+                        $page['menu_slug'],
+                        array( $this->data, $page['menu_slug'].'_html' ),
+                        $page['icon_url'],
+                        $page['position']
+                    );
+                }else{
+                    add_submenu_page(
+                        $page['parent_slug'],
+                        $page['title'],
+                        $page['menu_title'],
+                        $page['capability'],
+                        $page['menu_slug'],
+                        array( $this->data, $page['menu_slug'].'_html' )
+                    );
+                }
+            }
+        }
     }
 
 

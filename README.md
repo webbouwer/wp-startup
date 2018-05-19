@@ -8,24 +8,31 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 
 ###### Features:
 
-##### WP theme options
-- Custom page templates!
-- Theme background image
 
-##### WP components
-- Link Manager component
+##### Component
+- [x] Link Manager component
 
-##### WP overhead
-- disable Gravatars
-- disable Emojicons
+##### Theme 
+- [ ] Custom page templates! (incl. widget area's)
+- [ ] Theme background image
 
-##### WP Tweaking
-- Categories metabox forced hierarchy display
-- Shortcodes in text widget
-- PHP coding in text widget!
+##### Widget
+- Extra widgets
+    - [ ] Postlist widget
+    - [ ] ..
+- [ ] Shortcodes in text widget
+- [ ] PHP coding in text widget!
 
-##### WP custom code
-- add custom css!
-- add custom javascript!
 
-This is a development build version, released for experienced wordpress users or code study. This version does not provide any warranty or future updates. Working towards a full release. 
+##### UI
+- [x] Categories metabox forced hierarchy display
+
+##### Tweak
+- [ ] disable Gravatars
+- [x] disable Emojicons
+
+##### Code
+- [ ] add custom css!
+- [ ] add custom javascript!
+
+This is a development build version in progress, working towards a full release. 

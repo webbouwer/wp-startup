@@ -1,6 +1,8 @@
 <?php
 class WPstartupData{
 
+    /** @var pages[] */
+    public $pages = [];
 
     /** @var sections[] */
     public $sections = [];
@@ -13,44 +15,53 @@ class WPstartupData{
     /** @var new data */
     public function WPstartupData(){
 
+        $this->WPstartup_data_pages();
+
         $this->WPstartup_data_sections();
 
         $this->WPstartup_data_options();
 
     }
 
+    // @pages data
+    public function WPstartup_data_pages(){
 
-
-    // @section data
-    public function WPstartup_data_sections(){
-        /*
         $pages = array(
 
-            'wp_startup_optionpage' = array(
+            'wp_startup_optionpage' => array(
 
                 'title' => 'WP startup plugin options',
-                'menu_title' => 'WP Startup Options',
+                'menu_title' => 'WP Startup',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_optionpage',
-                //$function = array( $this, 'wp_startup_optionpage_html'); //'plugin_option_page';
+                'parent_slug' => 'wp_startup_optionpage',
                 'icon_url' => 'dashicons-editor-kitchensink',
                 'position' => 60
 
             ),
-            'wp_startup_testpage' = array(
+            'wp_startup_option_subpage1' => array(
 
-                'title' => 'WP startup test options',
-                'menu_title' => 'WP Startup tests',
+                'title' => 'WP startup test options 1',
+                'menu_title' => 'Test Options 1',
                 'capability' => 'edit_posts',
-                'menu_slug' => 'wp_startup_testpage',
-                //'function' = array( $this, 'wp_startup_optionpage_html'); //'plugin_option_page';
-                'icon_url' => 'dashicons-editor-kitchensink',
-                'position' => 60
+                'menu_slug' => 'wp_startup_option_subpage1',
+                'parent_slug' => 'wp_startup_optionpage',
+            ),
+            'wp_startup_option_subpage2' => array(
 
+                'title' => 'WP startup test options 2',
+                'menu_title' => 'Test Options 2',
+                'capability' => 'edit_posts',
+                'menu_slug' => 'wp_startup_option_subpage2',
+                'parent_slug' => 'wp_startup_optionpage',
             ),
         );
         $this->pages = $pages;
-        */
+
+    }
+    // @sections data
+    public function WPstartup_data_sections(){
+
         $sections = array(
 
             'global_section' => array(
@@ -58,10 +69,15 @@ class WPstartupData{
                 'title'=>'Global Settings',
                 'page'=>'wp_startup_optionpage'
             ),
-            'developer_section' => array(
-                'id'=>'developer_section',
-                'title'=>'Developer Settings',
-                'page'=>'wp_startup_optionpage'
+            'sub1_section' => array(
+                'id'=>'sub1_section',
+                'title'=>'Sub 1 Settings',
+                'page'=>'wp_startup_option_subpage1'
+            ),
+            'sub2_section' => array(
+                'id'=>'sub2_section',
+                'title'=>'Sub 2 Settings',
+                'page'=>'wp_startup_option_subpage2'
             )
 
 
@@ -83,12 +99,20 @@ class WPstartupData{
                 'section'=>'global_section'
 
             ),
+            'wp_startup_categoryhierarchy_option' => array(
+
+                'id'=>'wp_startup_categoryhierarchy_option',
+                'title'=>'Category Hierarchy',
+                'page'=>'wp_startup_option_subpage1',
+                'section'=>'sub1_section'
+
+            ),
             'wp_startup_dumbemoji_option' => array(
 
                 'id'=>'wp_startup_dumbemoji_option',
                 'title'=>'Remove Emoji junk',
-                'page'=>'wp_startup_optionpage',
-                'section'=>'developer_section'
+                'page'=>'wp_startup_option_subpage2',
+                'section'=>'sub2_section'
 
             )
         );
@@ -114,10 +138,10 @@ class WPstartupData{
     }
 
 
-    /** @var sections[] return
+    /** @var pages[] return  */
     public function get_wpstartup_pages(){
 
-        $this->WPstartup_data_sections(); // latest data
+        $this->WPstartup_data_pages(); // latest data
 
         if( is_array( $this->pages ) && count( $this->pages ) > 0 ){
             return $this->pages;
@@ -126,7 +150,7 @@ class WPstartupData{
         }
 
     }
-    */
+
 
     /** @var sections[] return */
     public function get_wpstartup_sections(){
@@ -157,6 +181,9 @@ class WPstartupData{
 
 
 
+
+
+
     /** TODO - oop these functions by data arrays
 
     /** 1a. Page settings (page id + _html) */
@@ -181,18 +208,53 @@ class WPstartupData{
 
     }
 
-    // optionpage sections
+    // sub optionpage 1
+    function wp_startup_option_subpage1_html() {
+        // !page 1? => oop from sections array for more pages
+        echo '<div class="wrap"><h1>WP startup options subpage 1</h1><form method="post" action="options.php">';
+        // display all sections for plugin-options page
+        settings_fields("wp_startup_option_subpage1_grp");
+        do_settings_sections("wp_startup_option_subpage1");
+        submit_button();
+
+        echo '</form></div>';
+
+    }
+
+     // sub optionpage 2
+    function wp_startup_option_subpage2_html() {
+        // !page 1? => oop from sections array for more pages
+        echo '<div class="wrap"><h1>WP startup options subpage 2</h1><form method="post" action="options.php">';
+        // display all sections for plugin-options page
+        settings_fields("wp_startup_option_subpage2_grp");
+        do_settings_sections("wp_startup_option_subpage2");
+        submit_button();
+
+        echo '</form></div>';
+
+    }
+
+
+
+
+    // Sections
     public function global_section_settings_description(){
         echo '<p>WP Startup hooks into your Wordpress installation and adds or removes Wordpress core functionalities. When all these options are blank you are working with a basic Wordpress setup.</p>';
     }
 
-    public function developer_section_settings_description(){
+    public function sub1_section_settings_description(){
         echo '<p>Testpage developer section</p>';
+    }
+
+
+    public function sub2_section_settings_description(){
+        echo '<p>Testpage 2 developer section</p>';
     }
 
 
 
     // Activatie build-in Link Manager
+    // pre_option_link_manager_enabled
     public function wp_startup_linkmanager_option_settings_field(){
         $options = get_option( 'wp_startup_linkmanager_option' );
         echo '<p><input name="wp_startup_linkmanager_option" id="wp_startup_linkmanager_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable the wordpress build-in link manager</p>';
@@ -205,9 +267,21 @@ class WPstartupData{
     }
 
 
+    // Category Hierarchy
+    public function wp_startup_categoryhierarchy_option_settings_field(){
+        $options = get_option( 'wp_startup_categoryhierarchy_option' );
+        echo '<p><input name="wp_startup_categoryhierarchy_option" id="wp_startup_categoryhierarchy_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable category hierarchy display in post metabox</p>';
+    }
+    public function wp_startup_categoryhierarchy_option_init(){
+        if( get_option( 'wp_startup_categoryhierarchy_option' ) != '' && get_option( 'wp_startup_categoryhierarchy_option' ) == true ){
+            wp_startup_keep_category_hierarchy_func();
+        }
+    }
+
 
     // Remove Emojicon code
     // source http://wordpress.stackexchange.com/questions/61922/add-post-screen-keep-category-structure
+    // source http://wordpress.stackexchange.com/questions/185577/disable-emojicons-introduced-with-wp-4-2
     public function wp_startup_dumbemoji_option_settings_field(){
         $options = get_option( 'wp_startup_dumbemoji_option' );
         echo '<p><input name="wp_startup_dumbemoji_option" id="wp_startup_dumbemoji_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Remove Emojicons junk code</p>';
@@ -215,7 +289,7 @@ class WPstartupData{
 
     public function wp_startup_dumbemoji_option_init(){
         if( get_option( 'wp_startup_dumbemoji_option' ) != '' && get_option( 'wp_startup_dumbemoji_option' ) == true ){
-            disable_wp_emojicons();
+            wp_startup_disable_wp_emojicons_func();
         }
     }
 }
