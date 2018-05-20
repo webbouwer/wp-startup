@@ -13,14 +13,16 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
     - [x] stylesheet 
     - [x] menu's
     - [x] widget area's
-    - [ ] background image customizer option
+    - [x] background image customizer option
+    - [x] blank theme
+    - [ ] onepage theme (in development)
 -  [ ] webicons
 -  [ ] webfonts
     
 ##### Widget
 - Widgets
     - [x] Postlist widget
-    - [ ] ..
+    - [ ] Login widget
 - [x] Shortcodes in text widget
 
 ##### Component
@@ -28,19 +30,19 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 
 ##### Extend
 - [ ] Menu images
-- [ ] 
+- [ ] ..
 
 
 ##### Overhead
 - [x] Categories metabox forced hierarchy display
 
-
 ##### Develop
 - Widgets
+    - [ ] WP Startup dashboard widget
     - [ ] ..
 - [x] PHP coding in text widget
-- [ ] add custom css!
-- [ ] add custom javascript!
+- [x] add custom css!
+- [x] add custom javascript!
 
 ##### Tweak
 - [x] disable Gravatars

@@ -19,17 +19,50 @@ function wp_startup_pagethemes_func(){
         )
     );
 
+    // wp core theme extensions
+    add_action( 'after_setup_theme', 'wp_startup_theme_global_func' );
+
     // Extend theme widget locations for wp-startup themes
-    add_action( 'widgets_init', 'wp_startup_widgets_init' );
+    add_action( 'widgets_init', 'wp_startup_widgets_init_func' );
+
     // Add widget param check for empty html correction
     add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
 
 }
 
 /**
+ * Register Theme and (default) Support
+ * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
+ */
+function wp_startup_theme_global_func() {
+
+    // add_theme_support()
+	// add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
+    add_theme_support( 'custom-background' );
+
+}
+
+/**
+ * De-register default theme styles (used in specifc page templates)
+ */
+function wp_startup_theme_deregister_func() {
+
+  wp_deregister_style('twentyseventeen-style');
+  wp_deregister_style('twentyseventeen-fonts');
+  wp_deregister_style('twentysixteen-style');
+  wp_deregister_style('twentysixteen-fonts');
+  wp_deregister_style('twentyfifteen-style');
+  wp_deregister_style('twentyfifteen-fonts');
+
+}
+
+
+
+
+/**
  * WP startup Customized Widgets & Areas
  */
-function wp_startup_widgets_init() {
+function wp_startup_widgets_init_func() {
 
     // first inspect current sidebars
     // wp_get_sidebars_widgets()
@@ -228,6 +261,24 @@ function wp_startup_phpintextwidget_func(){
 
 }
 
+/**
+ * Custom CSS code
+ */
+function wp_startup_addcustomcss_func(){
+
+    $csscode = get_option( 'wp_startup_addcustomcss_option' );
+    echo '<style id="wp-startup-custom-css">'.$csscode.'</style>';
+
+}
+/**
+ * Custom JS code
+ */
+function wp_startup_addcustomjs_func(){
+
+    $jscode = get_option( 'wp_startup_addcustomjs_option' );
+    echo '<script id="wp-startup-custom-js">'.$jscode.'</script>';
+
+}
 
 /** Remove Emoji junk by Christine Cooper
  * Found on http://wordpress.stackexchange.com/questions/185577/disable-emojicons-introduced-with-wp-4-2

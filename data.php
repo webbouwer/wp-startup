@@ -166,6 +166,22 @@ class WPstartupData{
                 'section'=>'overhead_section'
 
             ),
+            'wp_startup_addcustomcss_option' => array(
+
+                'id'=>'wp_startup_addcustomcss_option',
+                'title'=>'CSS code',
+                'page'=>'wp_startup_option_subpage1',
+                'section'=>'development_section'
+
+            ),
+            'wp_startup_addcustomjs_option' => array(
+
+                'id'=>'wp_startup_addcustomjs_option',
+                'title'=>'JS code',
+                'page'=>'wp_startup_option_subpage1',
+                'section'=>'development_section'
+
+            ),
             'wp_startup_phpintextwidget_option' => array(
 
                 'id'=>'wp_startup_phpintextwidget_option',
@@ -491,6 +507,58 @@ class WPstartupData{
 
 
     /**
+     * Custom CSS code
+     */
+    function wp_startup_addcustomcss_option_settings_field(){
+
+        $custom_css = '';
+        if( get_option( 'wp_startup_addcustomcss_option' ) != '' && get_option( 'wp_startup_addcustomcss_option' ) != 1 ){
+            $custom_css = get_option( 'wp_startup_addcustomcss_option' );
+        }
+        echo '<p><textarea name="wp_startup_addcustomcss_option" id="wp_startup_addcustomcss_option" rows="7" cols="50" type="textarea">'.$custom_css.'</textarea></p>';
+
+    }
+
+    function wp_startup_addcustomcss_option_init(){
+
+        if( get_option( 'wp_startup_addcustomcss_option' ) != '' && get_option( 'wp_startup_addcustomcss_option' ) != 1 ){
+
+            add_action( 'wp_head', 'wp_startup_addcustomcss_func', 9999 );
+            //wp_startup_addcustomcss_func();
+
+        }
+    }
+
+
+
+
+    /**
+     * Custom JS code
+     */
+    function wp_startup_addcustomjs_option_settings_field(){
+
+        $custom_js = '';
+        if( get_option( 'wp_startup_addcustomjs_option' ) != '' && get_option( 'wp_startup_addcustomjs_option' ) != 1 ){
+		$custom_js = get_option( 'wp_startup_addcustomjs_option' );
+        }
+        echo '<p><textarea name="wp_startup_addcustomjs_option" id="wp_startup_addcustomjs_option" rows="7" cols="50" type="textarea">'.$custom_js.'</textarea></p>';
+
+    }
+
+    function wp_startup_addcustomjs_option_init(){
+
+        if( get_option( 'wp_startup_addcustomjs_option' ) != '' && get_option( 'wp_startup_addcustomjs_option' ) != 1 ){
+
+            add_action( 'wp_head', 'wp_startup_addcustomjs_func', 9998 );
+            //wp_startup_addcustomjs_func();
+
+        }
+
+    }
+
+
+
+    /**
      * PHP in text widget
      */
     function wp_startup_phpintextwidget_option_settings_field(){
@@ -507,7 +575,6 @@ class WPstartupData{
 
         }
     }
-
 
 
 
