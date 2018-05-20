@@ -11,7 +11,6 @@ License:     © Oddsized All rights reserved
 License URI: http://webdesigndenhaag.net
 */
 
-
 /**
  * Verify code usage in WP
  */
@@ -22,9 +21,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Includes
  */
+
 require_once('settings.php');
 require_once('data.php');
 require_once('functions.php');
+
 
 /**
  * Main Plugin Object
@@ -68,6 +69,7 @@ class WPstartup{
 
 
     public function wp_startup_load_textdomain() {
+
         load_plugin_textdomain( 'wp-startup', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
     }
 
@@ -157,7 +159,9 @@ class WPstartup{
 
 
 
-
+    /**
+     * Innitiate plugin options
+     */
     public function plugin_load_options(){
 
         $options = $this->data->get_wpstartup_options();

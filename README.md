@@ -38,7 +38,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 
 ##### Develop
 - Widgets
-    - [ ] WP Startup dashboard widget
+    - [x] WP Startup @ Github dashboard widget
     - [ ] ..
 - [x] PHP coding in text widget
 - [x] add custom css!

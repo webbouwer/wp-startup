@@ -210,10 +210,12 @@ function wp_startup_widgets_init_func() {
 function wp_startup_widgets_func(){
 
     require_once( 'widgets/postlist.php' );
-    add_action( 'widgets_init', 'wpstartup_widgets_register' );
+    require_once( 'widgets/dashboard.php' );
+
+    add_action( 'widgets_init', 'wp_startup_widgets_register_func' );
 
 }
-function wpstartup_widgets_register() {
+function wp_startup_widgets_register_func() {
 
     register_widget( 'wpstartup_postlist_widget' );
 
