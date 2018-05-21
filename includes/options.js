@@ -1,7 +1,7 @@
 jQuery( document ).ready( function( $ ) {
     // Tabs
     var $view = $( '.nav-view' );
-    var $navi = $( '.tabboard' );
+    var $navi = $( '.nav-tab-wrapper' );
     var $navs = $( '.nav-tab' );
     var $tabs = $( '.tabs' );
     var $lt    = '';
@@ -40,9 +40,10 @@ jQuery( document ).ready( function( $ ) {
 
     };
 
-    if( !window.location.hash || window.location.hash == '' ){
+    if( !window.location.hash || window.location.hash == '' || !$( 'a[href=' + window.location.hash + ']' ) ){
 
         $tabs.hide();
+        $navs.first().addClass( 'nav-tab-active' );
         $tabs.first().show();
 
     }else{
@@ -54,7 +55,7 @@ jQuery( document ).ready( function( $ ) {
     $view.on( 'click', function( e ) {
 
         e.preventDefault();
-        var hash = e.target.hash;
+        //var hash = e.target.hash;
         toggleView();
 
     });

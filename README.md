@@ -6,7 +6,7 @@ Do more with basic Wordpress
 The WP Startup plugin hooks into your basic Wordpress installation providing options to enable and disable some obvious Wordpress core functionalities.
 
 
-###### Features:
+###### Implementing:
 
 ##### Theme 
 - Page themes including  
@@ -23,6 +23,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 ##### Widget
 - [x] Widgets
     - [x] Postlist widget
+      - [ ] include frontend basic styling
     - [x] WP Startup @ Github dashboard widget
     - [ ] Login widget (in progress)
 - [x] Shortcodes in text widget
@@ -34,16 +35,19 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [ ] Menu images (todo: plugin application class)
 
 ##### Overhead
-- [x] Categories metabox forced hierarchy display
+- [x] Categories metabox forced hierarchy display 
 
 ##### Develop
 - [x] PHP coding in text widget
 - [x] add custom css!
 - [x] add custom javascript!
+- [ ] add custom php? (todo: plugin application class)
 
 ##### Tweak
 - [x] disable Gravatars
 - [x] disable Emojicons
 
+##### Plugin
+- [ ] language translations
 
 This is a development build version in progress, working towards a full release. 

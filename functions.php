@@ -204,21 +204,33 @@ function wp_startup_widgets_init_func() {
 
 
 /**
- * WP startup Extra widgets
+ * WP startup Website widgets
  */
 function wp_startup_widgets_func(){
 
     require_once( 'widgets/postlist.php' );
-    require_once( 'widgets/dashboard.php' );
 
     add_action( 'widgets_init', 'wp_startup_widgets_register_func' );
+
+
+    require_once( 'widgets/dashboard.php' );
+
 
 }
 function wp_startup_widgets_register_func() {
 
+    // @widgets/postlist.php
     register_widget( 'wpstartup_postlist_widget' );
 
+
+    // @widgets/dashboard.php
+    add_action( 'wp_dashboard_setup', 'wp_startup_dashboard_github_widget' );
+
 }
+
+
+
+
 
 /**
  * Shortcode in text widget

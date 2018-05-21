@@ -175,8 +175,8 @@ class WPstartup{
        //wp_enqueue_style( 'galettewp-backend-css', THEPLUGIN_URL . 'css/backend.css', array(), null );
        //$page_id = get_current_screen()->id;
        //if( $page_id == 'toplevel_page_galettewp' ) {
-          //wp_enqueue_style( 'galettewp-css', THEPLUGIN_URL . 'css/galettewp.css', array(), null );
-          wp_enqueue_script( 'options-js', WPSTARTUP_PLUGIN_URL . 'includes/options.js', array( 'jquery' ), null, true );
+          wp_enqueue_style( 'wp-startup-options-css', WPSTARTUP_PLUGIN_URL . 'includes/options.css', array(), null );
+          wp_enqueue_script( 'wp-startup-options-js', WPSTARTUP_PLUGIN_URL . 'includes/options.js', array( 'jquery' ), null, true );
        //}
     }
 

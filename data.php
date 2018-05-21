@@ -31,26 +31,26 @@ class WPstartupData{
             'wp_startup_optionpage' => array(
 
                 'title' => 'WP startup plugin options',
-                'menu_title' => 'WP Startup',
+                'menu_title' => 'Startup',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_optionpage',
                 'parent_slug' => 'wp_startup_optionpage', // 'options-general.php',
                 'icon_url' => 'dashicons-editor-kitchensink',
-                'position' => 60
+                'position' => 80
 
             ),
             'wp_startup_option_subpage1' => array(
 
-                'title' => 'WP startup test options 1',
-                'menu_title' => 'Test Options 1',
+                'title' => 'WP startup control',
+                'menu_title' => 'Admin & User',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_option_subpage1',
                 'parent_slug' => 'wp_startup_optionpage',
             ),
             'wp_startup_option_subpage2' => array(
 
-                'title' => 'WP startup test options 2',
-                'menu_title' => 'Test Options 2',
+                'title' => 'WP startup development',
+                'menu_title' => 'Developer',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_option_subpage2',
                 'parent_slug' => 'wp_startup_optionpage',
@@ -67,7 +67,7 @@ class WPstartupData{
 
             'global_section' => array(
                 'id'=>'global_section',
-                'title'=>'Global Settings',
+                'title'=>'Global',
                 'page'=>'wp_startup_optionpage'
             ),
             'theme_section' => array(
@@ -89,25 +89,25 @@ class WPstartupData{
                 'id'=>'extend_section',
                 'title'=>'Extend',
                 'page'=>'wp_startup_optionpage'
-            ),
+            ),/*
             'sub1_section' => array(
                 'id'=>'sub1_section',
                 'title'=>'Sub 1 Settings',
                 'page'=>'wp_startup_option_subpage1'
-            ),
+            ),*/
             'overhead_section' => array(
                 'id'=>'overhead_section',
                 'title'=>'Overhead',
                 'page'=>'wp_startup_option_subpage1'
-            ),
-            'development_section' => array(
-                'id'=>'development_section',
-                'title'=>'Development',
-                'page'=>'wp_startup_option_subpage1'
-            ),
+            ),/*
             'sub2_section' => array(
                 'id'=>'sub2_section',
                 'title'=>'Sub 2 Settings',
+                'page'=>'wp_startup_option_subpage2'
+            ),*/
+            'development_section' => array(
+                'id'=>'development_section',
+                'title'=>'Code',
                 'page'=>'wp_startup_option_subpage2'
             ),
             'tweak_section' => array(
@@ -170,7 +170,7 @@ class WPstartupData{
 
                 'id'=>'wp_startup_addcustomcss_option',
                 'title'=>'CSS code',
-                'page'=>'wp_startup_option_subpage1',
+                'page'=>'wp_startup_option_subpage2',
                 'section'=>'development_section'
 
             ),
@@ -178,7 +178,7 @@ class WPstartupData{
 
                 'id'=>'wp_startup_addcustomjs_option',
                 'title'=>'JS code',
-                'page'=>'wp_startup_option_subpage1',
+                'page'=>'wp_startup_option_subpage2',
                 'section'=>'development_section'
 
             ),
@@ -186,7 +186,7 @@ class WPstartupData{
 
                 'id'=>'wp_startup_phpintextwidget_option',
                 'title'=>'PHP in textwidget',
-                'page'=>'wp_startup_option_subpage1',
+                'page'=>'wp_startup_option_subpage2',
                 'section'=>'development_section'
 
             ),
@@ -291,7 +291,7 @@ class WPstartupData{
     function wp_startup_optionpage_html() {
 
 
-        echo '<div class="wrap"><h1>WP startup options</h1>';
+        echo '<div class="wrap"><h1>WP startup</h1>';
 
         echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
 
@@ -301,12 +301,14 @@ class WPstartupData{
 
         echo '</form></div>';
 
+        $this->wp_startup_optionpage_html_footer();
+
     }
 
     // sub optionpage 1
     public function wp_startup_option_subpage1_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options subpage 1</h1>';
+        echo '<div class="wrap"><h1>Admin & User</h1>';
 
         echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
 
@@ -316,12 +318,15 @@ class WPstartupData{
 
         echo '</form></div>';
 
+
+        $this->wp_startup_optionpage_html_footer();
+
     }
 
     // sub optionpage 2
     public function wp_startup_option_subpage2_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options subpage 2</h1>';
+        echo '<div class="wrap"><h1>Developer</h1>';
 
         echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
 
@@ -330,6 +335,9 @@ class WPstartupData{
         submit_button();
 
         echo '</form></div>';
+
+
+        $this->wp_startup_optionpage_html_footer();
 
     }
 
@@ -343,6 +351,7 @@ class WPstartupData{
     function wp_startup_optionpage_html_section_tabs( $page, $fieldgroup ){
 
         // dependence : WPstartup class plugin_settings() enqueue wp_startup_admin_style() options tabs code
+        // source https://murviel-info-beziers.com/onglets-tabs-plugin-wordpress/
 
         global $wp_settings_sections, $wp_settings_fields;
 
@@ -353,9 +362,9 @@ class WPstartupData{
         // count sections (set minimum for tab view)
         if( count( $wp_settings_sections[$page] ) > 1 ){
 
-            echo '<a href="#view" class="nav-view">view</a>';
+            echo '<span class="nav-view"></span>';
 
-            echo '<div class="tabboard"><ul>';
+            echo '<h2 class="nav-tab-wrapper">';
 
             // section titles
             foreach((array)$wp_settings_sections[$page] as $section) :
@@ -363,16 +372,14 @@ class WPstartupData{
                 if(!isset($section['title']))
                     continue;
 
-                echo '<li><a class="nav-tab" href="#'.$section['id'].'">'.$section['title'].'</a></li>';
+                echo '<a class="nav-tab" href="#'.$section['id'].'">'.$section['title'].'</a>';
 
             endforeach;
 
-            echo '</ul></div><div style="clear:both;"></div>';
+            echo '</h2>';
 
              // section content
             settings_fields( $fieldgroup );
-
-            echo '<div class="tabfields">';
 
             foreach((array)$wp_settings_sections[$page] as $section) :
 
@@ -385,13 +392,13 @@ class WPstartupData{
                 $html = $section['id'].'_settings_description';
                 $this->$html();
 
-                do_settings_fields($page, $section['id']);
+                do_settings_fields( $page, $section['id']);
 
                 echo  '</div>';
 
-            endforeach;
 
-            echo '</div>';
+
+            endforeach;
 
         }else{
 
@@ -403,6 +410,14 @@ class WPstartupData{
 
     }
 
+    /**
+     * Option page footer html
+     */
+     function wp_startup_optionpage_html_footer(){
+
+        echo '<p><a href="https://webdesigndenhaag.net" target="_blank"><img src="https://img.shields.io/badge/Made by-Webdesign Den Haag-blue.svg" alt="Webbouwer Webdesign Den Haag" /></a> <a href="https://github.com/webbouwer/wp-startup" target="_blank"><img src="https://img.shields.io/badge/WP--startup-@github-lightgrey.svg" alt="Github repo" /></a> <a href="https://github.com/webbouwer" target="_blank"><img src="https://img.shields.io/badge/Webbouwer-@github-lightgrey.svg" alt="Webbouwer github" /></a></p>';
+     }
+
 
 
     /**
@@ -411,8 +426,7 @@ class WPstartupData{
 
     public function global_section_settings_description(){
 
-        echo '<p>WP Startup hooks into your Wordpress installation and adds or removes Wordpress core functionalities.
-        <br />Get started with the options below</p>';
+        echo '<p>WP Startup hooks into your Wordpress installation and adds or removes Wordpress core functionalities.</p>';
 
     }
 
@@ -508,6 +522,9 @@ class WPstartupData{
         $options = get_option( 'wp_startup_widgets_option' );
         echo '<p><input name="wp_startup_widgets_option" id="wp_startup_widgets_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup widgets</p>';
 
+        echo '<ul><li>- Postlist widget including category selection, relation by category and/or tags and post image display.</li>';
+        echo '<li>- Dashboard widget with the latest updates at the WP-startup Github repository.</li></ul>';
+        echo '<p>Save this and see <a href="widgets.php" target="_blank">widgets page</a> and <a href="index.php" target="_blank">dashboard page</a>.</p><br />';
     }
 
     public function wp_startup_widgets_option_init(){
