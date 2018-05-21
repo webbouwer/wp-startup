@@ -19,6 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Define WP Satrtup plugin url
+ */
+define( 'WPSTARTUP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
+/**
  * Includes
  */
 
@@ -64,6 +69,9 @@ class WPstartup{
 
         // add admin hooks
         add_action( 'admin_menu', array( $this, 'wp_startup_admin_menu' ) );
+
+        // add backend JS script
+        add_action( 'admin_enqueue_scripts', array( $this, 'wp_startup_admin_style' ) );
 
     }
 
@@ -119,13 +127,13 @@ class WPstartup{
             }
         }
     }
-
+    /**
+     * Pages loaded from the data class for settings register
+     */
     public function wp_startup_admin_menu(){
 
 
-        /**
-         * Pages loaded from the data class for settings register
-         */
+
         $pages = $this->data->get_wpstartup_pages();
 
 
@@ -160,12 +168,26 @@ class WPstartup{
         }
     }
 
+    /**
+     * Enqueue admin optionpage javascript
+     */
+    function wp_startup_admin_style() {
+       //wp_enqueue_style( 'galettewp-backend-css', THEPLUGIN_URL . 'css/backend.css', array(), null );
+       //$page_id = get_current_screen()->id;
+       //if( $page_id == 'toplevel_page_galettewp' ) {
+          //wp_enqueue_style( 'galettewp-css', THEPLUGIN_URL . 'css/galettewp.css', array(), null );
+          wp_enqueue_script( 'options-js', WPSTARTUP_PLUGIN_URL . 'includes/options.js', array( 'jquery' ), null, true );
+       //}
+    }
+
+
 
 
     /**
      * Innitiate plugin options
      */
     public function plugin_load_options(){
+
 
         $options = $this->data->get_wpstartup_options();
 

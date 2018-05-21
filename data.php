@@ -211,6 +211,7 @@ class WPstartupData{
             //..
         );
 
+        // insert latest value from wp
         $this->check_options_value( $options );
 
     }
@@ -294,67 +295,7 @@ class WPstartupData{
 
         echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
 
-        /**
-         * Tabs (1.0)
-         */
-        global $wp_settings_sections, $wp_settings_fields;
-
-        $page = 'wp_startup_optionpage';
-
-        if (!isset($wp_settings_sections[$page])) {
-            return;
-        }
-
-        // count sections (set minimum for tab view)
-        if( count( $wp_settings_sections[$page] ) > 1 ){
-
-            echo '<a href="#view" class="nav-view">view</a>';
-
-
-            echo '<div class="tabboard"><ul>';
-
-            // section titles
-            foreach((array)$wp_settings_sections[$page] as $section) :
-
-                if(!isset($section['title']))
-                continue;
-
-                echo '<li><a class="nav-tab" href="#'.$section['id'].'">'.$section['title'].'</a></li>';
-
-            endforeach;
-
-            echo '</ul></div><div style="clear:both;"></div>';
-
-            // section content
-            settings_fields("wp_startup_optionpage_grp");
-
-            echo '<div class="tabfields">';
-
-
-                foreach((array)$wp_settings_sections[$page] as $section) :
-
-                    if(!isset($section['title']))
-                    continue;
-
-                    echo  '<div id="'.$section['id'].'" class="tabs">';
-                    echo  '<h3>'.$section['title'] .'</h3>';
-
-                    $html = $section['id'].'_settings_description';
-                    $this->$html();
-
-                    do_settings_fields($page, $section['id']);
-
-                    echo  '</div>';
-
-                endforeach;
-
-            echo '</div>';
-
-        }else{
-            // display (all) section for plugin-options page
-            settings_fields("wp_startup_optionpage_grp");
-            do_settings_sections("wp_startup_optionpage");
-        }
+        $this->wp_startup_optionpage_html_section_tabs( 'wp_startup_optionpage', 'wp_startup_optionpage_grp' );
 
         submit_button();
 
@@ -365,28 +306,102 @@ class WPstartupData{
     // sub optionpage 1
     public function wp_startup_option_subpage1_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options subpage 1</h1><form method="post" action="options.php">';
-        // display all sections for plugin-options page
-        settings_fields("wp_startup_option_subpage1_grp");
-        do_settings_sections("wp_startup_option_subpage1");
+        echo '<div class="wrap"><h1>WP startup options subpage 1</h1>';
+
+        echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
+
+        $this->wp_startup_optionpage_html_section_tabs( 'wp_startup_option_subpage1', 'wp_startup_option_subpage1_grp' );
+
         submit_button();
 
         echo '</form></div>';
 
     }
+
     // sub optionpage 2
     public function wp_startup_option_subpage2_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options subpage 2</h1><form method="post" action="options.php">';
-        // display all sections for plugin-options page
-        settings_fields("wp_startup_option_subpage2_grp");
-        do_settings_sections("wp_startup_option_subpage2");
+        echo '<div class="wrap"><h1>WP startup options subpage 2</h1>';
+
+        echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
+
+        $this->wp_startup_optionpage_html_section_tabs( 'wp_startup_option_subpage2', 'wp_startup_option_subpage2_grp' );
+
         submit_button();
 
         echo '</form></div>';
 
     }
 
+    /**
+     * Tabs (1.0)
+     * Option page section tabs (or basic)
+     * $page
+     * $fields (=) $page.'_grp';
+     *
+     */
+    function wp_startup_optionpage_html_section_tabs( $page, $fieldgroup ){
+
+        // dependence : WPstartup class plugin_settings() enqueue wp_startup_admin_style() options tabs code
+
+        global $wp_settings_sections, $wp_settings_fields;
+
+        if (!isset($wp_settings_sections[$page])) {
+            return;
+        }
+
+        // count sections (set minimum for tab view)
+        if( count( $wp_settings_sections[$page] ) > 1 ){
+
+            echo '<a href="#view" class="nav-view">view</a>';
+
+            echo '<div class="tabboard"><ul>';
+
+            // section titles
+            foreach((array)$wp_settings_sections[$page] as $section) :
+
+                if(!isset($section['title']))
+                    continue;
+
+                echo '<li><a class="nav-tab" href="#'.$section['id'].'">'.$section['title'].'</a></li>';
+
+            endforeach;
+
+            echo '</ul></div><div style="clear:both;"></div>';
+
+             // section content
+            settings_fields( $fieldgroup );
+
+            echo '<div class="tabfields">';
+
+            foreach((array)$wp_settings_sections[$page] as $section) :
+
+                if(!isset($section['title']))
+                    continue;
+
+                echo  '<div id="'.$section['id'].'" class="tabs">';
+                echo  '<h3>'.$section['title'] .'</h3>';
+
+                $html = $section['id'].'_settings_description';
+                $this->$html();
+
+                do_settings_fields($page, $section['id']);
+
+                echo  '</div>';
+
+            endforeach;
+
+            echo '</div>';
+
+        }else{
+
+            // display (all) section for plugin-options page
+            settings_fields( $fieldgroup );
+            do_settings_sections( $page );
+
+        }
+
+    }
 
 
 
@@ -408,17 +423,19 @@ class WPstartupData{
     }
     public function widget_section_settings_description(){
 
-        echo '<p>Widget activation and adjustment</p>';
+        echo '<p>Widget activation & enhancements</p>';
 
     }
     public function component_section_settings_description(){
 
-        echo '<p>Component activation and adjustment</p>';
+        echo '<p>Component activation & enhancements</p>';
 
     }
     public function extend_section_settings_description(){
 
-        echo '<p>In development: Extend options for basic WP functions</p>';
+        echo '<p>Extend options for basic WP functions</p>';
+
+        echo '<p>In development  (Menu images/icons)</p>';
 
     }
 
