@@ -1,4 +1,18 @@
 <?php
+ define( 'THEPLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
+// Backend Style/Script
+add_action( 'admin_enqueue_scripts', 'wp_startup_admin_style' );
+function wp_startup_admin_style() {
+   //wp_enqueue_style( 'galettewp-backend-css', THEPLUGIN_URL . 'css/backend.css', array(), null );
+   //$page_id = get_current_screen()->id;
+   //if( $page_id == 'toplevel_page_galettewp' ) {
+      //wp_enqueue_style( 'galettewp-css', THEPLUGIN_URL . 'css/galettewp.css', array(), null );
+      wp_enqueue_script( 'options-js', THEPLUGIN_URL . 'includes/options.js', array( 'jquery' ), null, true );
+   //}
+}
+
+
 
 /**
  * WP startup Page themes

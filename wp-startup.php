@@ -143,6 +143,9 @@ class WPstartup{
                         $page['icon_url'],
                         $page['position']
                     );
+
+
+
                 }else{
                     add_submenu_page(
                         $page['parent_slug'],
@@ -176,6 +179,7 @@ class WPstartup{
             }
 
         }
+
     }
 
 }
