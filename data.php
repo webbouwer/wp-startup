@@ -416,6 +416,8 @@ class WPstartupData{
      function wp_startup_optionpage_html_footer(){
 
         echo '<p><a href="https://webdesigndenhaag.net" target="_blank"><img src="https://img.shields.io/badge/Made by-Webdesign Den Haag-blue.svg" alt="Webbouwer Webdesign Den Haag" /></a> <a href="https://github.com/webbouwer/wp-startup" target="_blank"><img src="https://img.shields.io/badge/WP--startup-@github-lightgrey.svg" alt="Github repo" /></a> <a href="https://github.com/webbouwer" target="_blank"><img src="https://img.shields.io/badge/Webbouwer-@github-lightgrey.svg" alt="Webbouwer github" /></a></p>';
+
+         // http://shields.io/#your-badge
      }
 
 

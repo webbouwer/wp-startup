@@ -44,10 +44,18 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [ ] add custom php? (todo: plugin application class)
 
 ##### Tweak
-- [x] disable Gravatars
+- [x] disable Gravatars 
 - [x] disable Emojicons
 
 ##### Plugin
 - [ ] language translations
 
 This is a development build version in progress, working towards a full release. 
+
+
+i[https://img.shields.io/badge/Made by-Webdesign Den Haag-blue.svg](https://webdesigndenhaag.net)
+
+i[https://img.shields.io/badge/WP--startup-@github-lightgrey.svg](https://github.com/webbouwer/wp-startup)
+
+i[https://img.shields.io/badge/Webbouwer-@github-lightgrey.svg](https://github.com/webbouwer) 
+         

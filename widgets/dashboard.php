@@ -1,6 +1,6 @@
 <?php
 /* Custom Dashboard Widget */
-add_action( 'wp_dashboard_setup', 'wp_startup_dashboard_github_widget' );
+
 
 function wp_startup_dashboard_github_widget() {
     add_meta_box( 'wp_startup_dashboard_githubbox', 'WP-startup @ Github', 'wp_startup_dashboard_github_widget_content', 'dashboard', 'side', 'high' );
