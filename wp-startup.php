@@ -26,8 +26,6 @@ define( 'WPSTARTUP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 /**
  * Includes
  */
-
-require_once('settings.php');
 require_once('data.php');
 require_once('functions.php');
 
