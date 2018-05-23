@@ -16,6 +16,8 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
     - [x] background image customizer option
     - [x] blank theme
     - [ ] onepage theme (in development)
+      - [x] add and remove customizer theme options
+      - [ ] add post, page and category files
 - Elements
     - [ ] webicons (todo: global application class)
     - [ ] webfonts (todo: global application class)
@@ -23,7 +25,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 ##### Widget
 - [x] Widgets
     - [x] Postlist widget
-      - [ ] include frontend basic styling
+      - [x] frontend styling/javascript file (for future development)
     - [x] WP Startup @ Github dashboard widget
     - [ ] Login widget (in progress)
 - [x] Shortcodes in text widget
@@ -51,7 +53,6 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [ ] language translations
 
 This is a development build version in progress, working towards a full release. 
-
 
 i[https://img.shields.io/badge/Made by-Webdesign Den Haag-blue.svg](https://webdesigndenhaag.net)
 

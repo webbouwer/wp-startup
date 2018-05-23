@@ -1,0 +1,22 @@
+/* Postlist CSS */
+.widget_wpstartup_postlist_widget{
+
+}
+
+.widget_wpstartup_postlist_widget div.post-titlebox h4{
+    padding:0;
+    margin:0;
+}
+
+.widget_wpstartup_postlist_widget > div > ul
+{
+    padding:0;
+    margin:0;
+}
+
+
+.widget_wpstartup_postlist_widget > div > ul > li
+{
+    display: inline-block;
+    list-style-type: none;
+}

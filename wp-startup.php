@@ -68,16 +68,24 @@ class WPstartup{
         // add admin hooks
         add_action( 'admin_menu', array( $this, 'wp_startup_admin_menu' ) );
 
-        // add backend JS script
+        // add backend scripts
         add_action( 'admin_enqueue_scripts', array( $this, 'wp_startup_admin_style' ) );
 
+        // adjust customizer (if theme option enabled)
+        //add_action( 'customize_register', array( $this,  'wp_startup_theme_customizer_register' ), 11 );
+
     }
+
 
 
     public function wp_startup_load_textdomain() {
 
         load_plugin_textdomain( 'wp-startup', false, dirname( plugin_basename(__FILE__) ) . '/lang/' );
+
     }
+
+
+
 
     public function wp_startup_admin_settings(){
 
@@ -170,9 +178,9 @@ class WPstartup{
      * Enqueue admin optionpage javascript
      */
     function wp_startup_admin_style() {
-       //wp_enqueue_style( 'galettewp-backend-css', THEPLUGIN_URL . 'css/backend.css', array(), null );
+
        //$page_id = get_current_screen()->id;
-       //if( $page_id == 'toplevel_page_galettewp' ) {
+       //if( $page_id == 'wp_startup_optionpage' ) {
           wp_enqueue_style( 'wp-startup-options-css', WPSTARTUP_PLUGIN_URL . 'includes/options.css', array(), null );
           wp_enqueue_script( 'wp-startup-options-js', WPSTARTUP_PLUGIN_URL . 'includes/options.js', array( 'jquery' ), null, true );
        //}
@@ -186,6 +194,8 @@ class WPstartup{
      */
     public function plugin_load_options(){
 
+        // load wp startup customizer options
+        add_action( 'customize_register', 'wp_startup_theme_customizer_func' );
 
         $options = $this->data->get_wpstartup_options();
 

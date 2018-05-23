@@ -4,7 +4,9 @@
  */
 function wp_startup_pagethemes_func(){
 
+    // load plugin page templates
     require_once( 'templates.php' );
+
     add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
 
     // Extend theme wp_nav_menu() locations for wp-startup themes
@@ -29,17 +31,22 @@ function wp_startup_pagethemes_func(){
 
 }
 
+
+
 /**
  * Register Theme and (default) Support
  * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
  */
-function wp_startup_theme_global_func() {
+function wp_startup_theme_global_func(){
 
     // add_theme_support()
 	// add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
     add_theme_support( 'custom-background' );
 
 }
+
+
+
 
 /**
  * De-register default theme styles (used in specifc page templates)
@@ -232,6 +239,7 @@ function wp_startup_widgets_register_func() {
 
 
 
+
 /**
  * Shortcode in text widget
  */
@@ -357,6 +365,10 @@ function bp_remove_signup_gravatar ($image) {
  * Global most used functions
  */
 
+  // default (not) sanitize function
+function wp_startup_theme_sanitize_default($obj){
+    return $obj;
+}
 
 // time ago
 function wp_time_ago( $t ) {

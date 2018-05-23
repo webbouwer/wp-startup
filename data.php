@@ -126,6 +126,7 @@ class WPstartupData{
     public function WPstartup_data_options(){
 
         $options = array(
+
             'wp_startup_pagethemes_option' => array(
 
                 'id'=>'wp_startup_pagethemes_option',
@@ -582,7 +583,6 @@ class WPstartupData{
         }
 
     }
-
 
 
     /**

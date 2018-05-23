@@ -6,17 +6,8 @@ margin:0;
 padding:0px;
 }
 
-
 body
 {
-font-family: 'Cabin+Condensed', sans-serif;
-background-image:url(images/achtergrondfoto1.jpg);
-background-position:center -220px;
-background-repeat:no-repeat;
-/*
-background-color:#233E46;
-color:#ffffff;
-*/
 }
 
 .clr
@@ -24,6 +15,7 @@ color:#ffffff;
 height:0;
 clear:both;
 }
+
 #pagecontainer
 {
 display:block;
@@ -51,18 +43,30 @@ padding:0px;
 
 #topcontainer
 {
-min-height:540px;
+height:auto !important;
 /*
 background-color: rgba(61, 75, 81, 0.5);
 color:#ffffff;
 */
 }
+
+#header.header_image
+{
+padding:5% 0px;
+}
+
 #maincontainer,
 #subcontainer
 {
 min-height:245px;
 /*background-color:#FFFFFF;
 color:#233E46;*/
+}
+
+#content .panel-content > .wrap
+{
+padding:0;
+    margin:0;
 }
 
 #bottomcontainer
@@ -101,7 +105,6 @@ h1,h2,h3,h4,h5
 #topbar h1,
 #topbar h2,
 #topbar h3,
-
 #bottomcontent h1,
 #bottomcontent h2,
 #bottomcontent h3,
@@ -113,18 +116,37 @@ h1,h2,h3,h4,h5
 color:#ffffff;
 */
 }
-#logobox,#contactbox
+#contactbox .telephone_textline,
+#contactbox .email_textline
 {
+display: inline-block;
+margin-left:20px;
+}
+#contactbox .email_textline a
+{
+display: inline;
+display: inline;
 }
 
-
-
+.widget-contentbox > ul
+{
+padding:0;
+}
+.widget-contentbox > ul > li
+{
+list-style-type: none;
+}
+.widget-contentbox > ul > li > a
+{
+display: block;
+}
 
 
 /* medium screen layout */
 @media screen and (min-width: 580px) {
 
-.outermargin
+.outermargin,
+.wrap
 {
 margin:0px auto;
 width:96%;
@@ -139,12 +161,19 @@ text-align:left;
 #header
 {
 font-size:1.4em;
-padding-top:5%;
 }
 nav
 {
 }
 
+#content{
+    width:66.66%;
+    float:left;
+}
+#sidebar{
+    width:33.33%;
+    float:left;
+}
 .columnbox,
 .widgetbox
 {
@@ -154,9 +183,21 @@ nav
 {
 display:block;
 text-align:left;
-padding:0px;
+padding:0px 0px;
 }
 
+.widget-sidebar h2.widget-title,
+.widget-sidebar form,
+.widget-sidebar .textwidget
+{
+
+}
+
+div.colset2 div.widget
+{
+float:left;
+width:50%;
+}
 
 div.colset3 div.widget
 {
@@ -165,34 +206,6 @@ width:33.33%;
 }
 
 
-
-.col2_3
-{
-width:66.66%;
-}
-.col1_4,
-.colset4
-{
-width:25%;
-}
-.col3_4
-{
-width:75%;
-}
-
-.col1_5,
-.colset5
-{
-width:20%;
-}
-.col2_5
-{
-width:40%;
-}
-.col3_5
-{
-width:60%;
-}
 
 
 }

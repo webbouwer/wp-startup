@@ -27,6 +27,7 @@ global $post;
 
 // determine header image
 $header_image = get_header_image();
+//$header_text  = get_theme_mod('display_header_text');
 
 // theme html output toplogo (custom_logo) or site title home link
 function wpstartup_toplogo_html(){
@@ -73,8 +74,11 @@ function wpstartup_menu_html( $menu, $default = false ){
             echo '<div id="'.$menu.'menubox"><div id="'.$menu.'menu" class=""><nav><div class="innerpadding">';
             wp_nav_menu( array( 'theme_location' => $menu , 'menu_class' => 'nav-menu' ) );
             echo '<div class="clr"></div></div></nav></div></div>';
+
         }else if( $default != false ){
+
 		    wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) );
+
 	    }
 
     }
@@ -93,9 +97,13 @@ function wpstartup_widgetarea_html( $id, $type = false ){
             if( isset($type) && $type != '' ){
 
                 $class = 'widgetbox widget-'.$type;
-            }
+                echo '<div id="'.$id.'" class="'.$class.'">';
 
-            echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.is_sidebar_active( $id ).'">';
+            }else{
+
+                echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.is_sidebar_active( $id ).'">';
+
+            }
             dynamic_sidebar( $id );
             echo '<div class="clr"></div></div>';
 
@@ -103,6 +111,29 @@ function wpstartup_widgetarea_html( $id, $type = false ){
     }
 }
 
+function wp_startup_get_frontpage_sections(){
+
+    $my_theme = wp_get_theme();
+
+    if ( $my_theme->get( 'Name' ) ==  'Twenty Seventeen' ){
+
+         if ( 0 !== twentyseventeen_panel_count()  ){ // ||  If we have pages to show.
+
+                                $num_sections = apply_filters( 'twentyseventeen_front_page_sections', 4 );
+                                global $twentyseventeencounter;
+
+                                for ( $i = 1; $i < ( 1 + $num_sections ); $i++ ) {
+                                    $twentyseventeencounter = $i;
+                                    twentyseventeen_front_page_section( null, $i );
+                                }
+
+        } else if( is_customize_preview() ){
+
+            echo '<div align="center"> -- Customizer > Theme options:  add info sections -- </div>';
+
+        }
+    }
+}
 
 
 ?>
@@ -141,194 +172,213 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 			echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '"/>';
 		}
 
-    /* or
-
-    function opengraph_doctype( $output ) {
-	   return $output . ' xmlns:og="http://opengraphprotocol.org/schema/" xmlns:fb="http://www.facebook.com/2008/fbml"';
-	}
-	add_filter('language_attributes', 'opengraph_doctype');
-
-    */
     // include wp head
     wp_head();
 
 ?>
 
 </head>
-
-    <body <?php body_class(); ?>>
-
+<body <?php body_class(); ?>>
     <div id="pagecontainer" class="site">
 
         <div id="topcontainer">
-
+            <!-- header & topbar -->
+            <?php // show hide topbar
+            if( get_theme_mod( 'wp_startup_theme_panel_elements_topbar','') != 'hide' ){
+            ?>
             <div id="topbar">
-
                 <div class="outermargin">
-
-                    <div id="logobox">
-                        <?php wpstartup_toplogo_html(); ?>
-                    </div>
-
-
-                    <div id="topmenu">
-
-                    <?php // topbar menu is mainmenu & top & primary || default menu
-                    $topmenu = array( 'main', 'top', 'primary' );
-                    wpstartup_menu_html( $topmenu );
-                    ?>
-
-
-
                         <?php
-                        wpstartup_widgetarea_html( 'topbar-widget-1' );
+                            wpstartup_widgetarea_html( 'topbar-widget-1' );
                         ?>
-
-                         <?php
+                        <div id="logobox">
+                            <?php wpstartup_toplogo_html(); ?>
+                        </div>
+                        <div id="contactbox">
+                        <?php
+                            $tel =  get_theme_mod('wp_startup_theme_panel_content_telephone', '');
+                            $email =  get_theme_mod('wp_startup_theme_panel_content_email', '');
+                            if( $tel != '' ){
+                                echo '<div class="telephone_textline"><a href="tel:'.$tel.'">'.$tel.'</a></div>';
+                            }
+                            if( $email != '' ){
+                                echo '<div class="email_textline"><a href="mailto:'.$email.'">'.$email.'</a></div>';
+                            }
+                        ?>
+                        </div>
+                        <div id="topmenu">
+                            <?php // topbar menu is mainmenu & top & primary || default menu
+                            $topmenu = array( 'main', 'top', 'primary' );
+                            wpstartup_menu_html( $topmenu );
+                            ?>
+                        </div>
+                        <?php
                         wpstartup_widgetarea_html( 'topbar-widget-2' );
                         ?>
-
-                    </div>
-
                     <div class="clr"></div>
                 </div>
             </div>
-            <!-- header & topbar -->
+            <?php } // end topbar ?>
 
-            <?php if ( get_header_image() ){ ?>
-				<div class="header-image">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-						<img src="<?php header_image(); ?>" width="100%" height="auto" alt="<?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>">
-					</a>
-				</div><!-- .header-image -->
-            <?php } // End header image check. ?>
+            <?php
+            if ( get_header_image() ){
+                echo  '<div id="header" class="header_image" style="background-image:url('.get_theme_mod('header_image').');background-position:center;">';
 
-            <div id="header" class="outermargin">
-                <header>
+            }else{
+                echo '<div id="header">';
+            }
+            ?>
 
-
-
-                        <?php
-                        wpstartup_widgetarea_html( 'header-widget-1' );
-
-
-                    //if( get_theme_mod('display_header_text', '') != '' ){}
-
-                    ?>
-                    <div id="titlebox">
-                        <!-- the header title -->
-                        <h1 class="sitetitle">
-                            <?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?>
-                        </h1>
-                        <!-- the subtitle -->
-                        <h2 class="subtitle">
-                           <?php echo get_bloginfo( 'description' ); ?>
-                        </h2>
-                    </div>
-
-                    <div class="clr"></div>
-
-                </header>
-            </div>
-            <div id="subheader" class="outermargin">
-                <section>
-
+                <div class="outermargin">
+                    <header>
 
                         <?php
-                        wpstartup_widgetarea_html( 'header-widget-2' );
-                        ?>
+                        if( is_sidebar_active( 'header-widget-1' ) ){
 
-                    <div id="subheaderbox">
-                        <!-- the subheaderbox -->
-                        <!--
-                        <p>
-                           Contact
-                           <br />mobiel : 06 46216575
-                           <br />kantoor: 026 4457159
-                           <br />email: info@scheepsreparatiebedrijfarnhem.nl
-                        </p>
-                        -->
-                    </div>
-                    <div class="clr"></div>
-                </section>
+                            wpstartup_widgetarea_html( 'header-widget-1' );
+
+                        }else{
+
+                            $header_textcolor = '000000';
+                            if( get_theme_mod('header_textcolor') != 'blank' ){
+                                $color = get_theme_mod('header_textcolor');
+                            }
+                            ?>
+                            <div id="titlebox">
+                                <!-- the header title -->
+                                <h1 class="sitetitle" style="color:#<?php echo $color; ?>">
+                                    <?php
+                                    echo esc_attr( get_bloginfo( 'name', 'display' ) );
+                                    ?>
+                                </h1>
+                                <!-- the subtitle -->
+                                <h2 class="subtitle" style="color:#<?php echo $color; ?>">
+                                    <?php
+                                    echo get_bloginfo( 'description' );
+                                    ?>
+                                </h2>
+                            </div>
+
+                        <?php } ?>
+
+                        <div class="clr"></div>
+
+                    </header>
+                </div>
             </div>
+
+            <?php
+            if( is_sidebar_active( 'header-widget-2' ) ){
+            ?>
+
+                <div id="subheader" class="outermargin">
+                    <section>
+                        <div id="subheaderbox">
+                            <!-- the subheaderbox -->
+                            <?php
+                            wpstartup_widgetarea_html( 'header-widget-2' );
+                            ?>
+
+                        </div>
+                        <div class="clr"></div>
+                    </section>
+                </div>
+
+           <?php } ?>
+
         </div>
 
         <div id="maincontainer">
 
+            <div class="outermargin">
 
-            <!-- main content -->
+                <?php
+                wpstartup_widgetarea_html( 'topcontent-widget-1' );
+                ?>
 
+            </div>
 
-
-            <div id="content" class="outermargin">
-
-                <section>
-                    <!--
-                    <div class="columnbox col1_3"><div class="innerpadding"><h3>Reparatie</h3><p>Korte info tekst</p></div></div>
-                    <div class="columnbox col1_3"><div class="innerpadding"><h3>Onderhoud</h3><p>Korte info tekst</p></div></div>
-                    <div class="columnbox col1_3"><div class="innerpadding"><h3>Nieuwbouw</h3><p>Korte info tekst</p></div></div>
-                    -->
-
-                        <?php
-                        wpstartup_widgetarea_html( 'topcontent-widget-1' );
-                        ?>
+            <?php if( get_theme_mod('page_layout') == 'one-column'){
+                // Get panels on top
+                wp_startup_get_frontpage_sections();
+                echo '<div class="clr"></div>';
+            }
 
 
-                        <?php
-                        wpstartup_widgetarea_html( 'topcontent-widget-2' );
-                        ?>
+
+            ?>
+            <div class="outermargin">
+
+                <?php
+                wpstartup_widgetarea_html( 'topcontent-widget-2' );
 
 
+                ?>
+
+                <!-- main content -->
+                <div id="content">
+                    <section>
 
                         <?php
                         wpstartup_widgetarea_html( 'before-widget' );
                         ?>
 
-                    <!--
-                    <div class="columnbox col2_3"><div class="innerpadding"><h3>Snel Dokken</h3><p>Korte info tekst</p></div></div>
-                    <div class="columnbox col1_3"><div class="innerpadding"><h3>Bok</h3></div><p>Korte info tekst</p></div>
-                    -->
+                        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
+                            <header class="entry-header">
+                                <?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+                            </header>
 
-                        <?php // sidebar menu wp-startup theme
-                        wpstartup_menu_html( 'side', true );
-                        ?>
+                            <div class="entry-content">
+                            <?php
+                                if( have_posts() ) {
+                                  while( have_posts() ) {
+                                  the_post();
+                                    the_content();
+                                  }
+                                }
+                            ?>
+                            </div><!-- .entry-content -->
+
+                        </article>
 
                         <?php
                         wpstartup_widgetarea_html( 'after-widget' );
                         ?>
+                        <div class="clr"></div>
 
+                        <?php
+                        if( get_theme_mod('page_layout') == 'two-column'){
+                            // Get panels here
+                            wp_startup_get_frontpage_sections();
+                            echo '<div class="clr"></div>';
+                        }
+                        ?>
 
-                    <div class="clr"></div>
-                </section>
+                    </section>
+                </div>
 
-            </div>
+                <div id="sidebar">
+                    <?php // sidebar menu wp-startup theme
+                    wpstartup_menu_html( 'side' ); // make this default page menu: wpstartup_menu_html( 'side', true );
+                    wpstartup_widgetarea_html( 'sidebar-1', 'sidebar' );
+                    ?>
+                </div>
+                <div class="clr"></div>
+            </div> <!-- end outermargin -->
 
-        </div>
+        </div><!-- end maincontainer -->
 
         <div id="subcontainer">
-            <!-- main content -->
+            <!-- sub content -->
             <div id="subcontent" class="outermargin">
-
                 <section>
-                    <!--
-                    <div class="columnbox col3_5"><div class="innerpadding"><h3>Route</h3><p>Kaartje</p></div></div>
-                    <div class="columnbox col2_5"><div class="innerpadding"><h3>Geschiedenis</h3><p>Info tekst</p></div></div>
-                    <div class="clr"></div> -->
-
-
                         <?php
                         wpstartup_widgetarea_html( 'subcontent-widget-1' );
                         wpstartup_widgetarea_html( 'subcontent-widget-2' );
                         ?>
-
-
-
                 </section>
-
             </div>
-
         </div>
 
         <div id="bottomcontainer">
@@ -337,54 +387,45 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 
                 <footer>
                     <div id="footerbox">
-                        <!-- the footer
-                        <div class="columnbox col1_3"><div class="innerpadding"><h4>Diensten</h4><p>tekst/links</p></div></div>
-                        <div class="columnbox col1_3"><div class="innerpadding"><h4>Links</h4><p>tekst/links</p></div></div>
-                        <div class="columnbox col1_3"><div class="innerpadding"><h4>Contact</h4><p>tekst/links</p></div></div> -->
 
                         <?php
                         wpstartup_widgetarea_html( 'bottom-widget-1' );
                         wpstartup_widgetarea_html( 'bottom-widget-2' );
                         ?>
 
-
                         <div class="clr"></div>
 
-
-                        <?php // sidebar menu wp-startup theme
+                        <?php
                         wpstartup_menu_html( 'bottom' );
                         ?>
-
 
                         <div id="footerend">
 
                             <?php
-
                                 wpstartup_widgetarea_html( 'footer-widget-1' );
-
                                 wpstartup_widgetarea_html( 'footer-widget-2' );
-
                             ?>
+                            <div class="clr"></div>
 
                             <?php // sidebar menu wp-startup theme
                             wpstartup_menu_html( 'social' );
                             ?>
 
-                            <h6>&copy; 2018 Scheepsreparatiebedrijf Arnhem</h6>
-
+                            <?php
+                            $coypright_textline =  get_theme_mod('wp_startup_theme_panel_content_copyright', '2018 Copyright');
+                            echo '<h6>'.$coypright_textline.'</h6>';
+                            ?>
 
                         </div>
                         <div class="clr"></div>
                     </div>
                 </footer>
-
             </div>
-
         </div>
-
     </div>
 
     <?php wp_footer(); ?>
 
     </body>
+
 </html>

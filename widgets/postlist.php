@@ -1,4 +1,9 @@
 <?php
+/**
+ * Define WP Satrtup plugin url
+ */
+define( 'WPSTARTUP_WIDGET_URL', plugin_dir_url( __FILE__ ) );
+
 /* Postslist Widget */
 class wpstartup_postlist_widget extends WP_Widget {
 
@@ -9,6 +14,10 @@ class wpstartup_postlist_widget extends WP_Widget {
 			__('WP-Startup Postlist Widget', 'wp-startup'), // Widget name and description in UI
 			array( 'description' => __( 'Widget Post Listing with options', 'wp-startup' ), )
 		);
+
+
+        //add_action( 'wp_print_scripts', 'wp_startup_postlist_js_func' );
+        add_action( 'wp_print_styles', array( $this, 'wp_startup_postlist_css_func' ) );
 	}
 
 
@@ -24,6 +33,11 @@ class wpstartup_postlist_widget extends WP_Widget {
 		$dsp_author = 0;
 		$dsp_tags = 0;
 		$currentid = get_queried_object_id();
+
+
+        // add scripts
+
+
 
 
 		if(isset($instance['itemcount']) && $instance['itemcount'] !='' )
@@ -363,6 +377,17 @@ class wpstartup_postlist_widget extends WP_Widget {
 
 		return $instance;
 	}
+
+
+    public function wp_startup_postlist_css_func(){
+
+        if( is_active_widget( '', '', 'wpstartup_postlist_widget' ) ) { // check if postlist widget is used
+            wp_enqueue_script( 'wp-start-postlist-js', WPSTARTUP_WIDGET_URL . 'postlist.js', array( 'jquery' ), null, true );
+            wp_enqueue_style('wp-start-postlist-css', WPSTARTUP_WIDGET_URL .  'postlist.css');
+        }
+
+    }
+
 
 
 } // Class ends here

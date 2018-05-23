@@ -69,7 +69,7 @@ class PageTemplater {
 		);
 
 
-		// Add your templates to this array.
+		// [replace] Add your templates to this array.
 		/*$this->templates = array(
 			'blank-template.php' => 'Blank 2 Template',
 		);
@@ -84,9 +84,8 @@ class PageTemplater {
             $this->templates[$path['basename']] = $path['filename'];
         }
 
-
-
-
+        // add customizer customized
+        add_action( 'customize_register', array( $this,  'customizer_register_project_templates' ), 11 );
 
 	}
 
@@ -174,5 +173,123 @@ class PageTemplater {
 		return $template;
 
 	}
+
+     /**
+     * Adjust customizer
+     * https://kb.wpbeaverbuilder.com/article/357-remove-a-customizer-panel
+     */
+    public function customizer_register_project_templates() {
+
+        global $wp_customize;
+        // default sections: title_tagline, colors, header_image, background_image, nav, and static_front_page
+        //$wp_customize->remove_control('display_header_text');
+        //$wp_customize->remove_section('colors');
+
+        // add panels
+        $wp_customize->add_panel('wp_startup_theme_panel', array(
+            'title'    => __('WP startup theme', 'wp-startup'),
+            'priority' => 10,
+        ));
+
+        // add sections
+        $wp_customize->add_section('wp_startup_theme_panel_content', array(
+            'title'    => __('Content', 'wp-startup'),
+            'panel'  => 'wp_startup_theme_panel',
+            'priority' => 120,
+        ));
+
+        $wp_customize->add_section('wp_startup_theme_panel_elements', array(
+            'title'    => __('Elements', 'wp-startup'),
+            'panel'  => 'wp_startup_theme_panel',
+            'priority' => 122,
+        ));
+
+        $wp_customize->add_section('wp_startup_theme_panel_style', array(
+            'title'    => __('Style', 'wp-startup'),
+            'panel'  => 'wp_startup_theme_panel',
+            'priority' => 124,
+        ));
+
+        // Content mods
+
+        // tel number
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_telephone', array(
+          'default' => '',
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_telephone', array(
+          'type' => 'text',
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
+          'settings'=> 'wp_startup_theme_panel_content_telephone',
+          'label' => __( 'Telephone' ),
+          'description' => __( 'Add here the site main contact telephone number.' ),
+        )));
+
+        // email adress
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_email', array(
+          'default' => '',
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_email', array(
+          'type' => 'text',
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
+          'settings'=> 'wp_startup_theme_panel_content_email',
+          'label' => __( 'Email' ),
+          'description' => __( 'Add here the site main contact email address.' ),
+        )));
+
+        // copyright line
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_copyright', array(
+          'default' => '',
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_copyright', array(
+          'type' => 'text',
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
+          'settings'=> 'wp_startup_theme_panel_content_copyright',
+          'label' => __( 'Copyright' ),
+          'description' => __( 'Add here the site bottom copyright textline.' ),
+        )));
+
+        // Elements mods
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_topbar' , array(
+		'default' => 'show',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_topbar', array(
+                'label'          => __( 'Topbar', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_topbar',
+                'type'           => 'select',
+                'description'    => __( 'Topbar display in WP startup page themes', 'wp-startup' ),
+                'choices'        => array(
+                    'hide'   => __( 'Hide', 'wp-startup' ),
+                    'show'   => __( 'Show', 'wp-startup' ),
+            	)
+    	)));
+
+
+        // Style mods
+
+        // title settings
+
+        // - #titlebox display (header title / tekst) none left center right
+
+        // fonts:
+        //   h1.sitetitle
+        //   h2.subtitle
+
+        //   #content  h1.entry-title, h2.entry-title (pagecontent titles)
+
+        //   h2.widget-title, h3.widget-titlebox (widget titles)
+
+        //
+
+
+    }
+
 
 }
