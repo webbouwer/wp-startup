@@ -1,4 +1,9 @@
 <?php
+/*
+https://davidwalsh.name/add-submenu-wordpress-admin-bar
+*/
+
+
 /**
  * WP startup Page themes
  */
@@ -32,8 +37,6 @@ function wp_startup_pagethemes_func(){
     add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
 }
 
-
-
 /**
  * Register Theme and (default) Support
  * more info: https://codex.wordpress.org/Plugin_API/Action_Reference
@@ -47,8 +50,14 @@ function wp_startup_theme_global_func(){
 }
 
 
+/**
+ * WP startup Menu Images
+ */
+function wp_startup_menu_images_func(){
 
+    require_once('assets/menu.php'); // menu image plugin functions
 
+}
 
 
 /**

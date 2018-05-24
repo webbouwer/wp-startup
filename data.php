@@ -135,6 +135,14 @@ class WPstartupData{
                 'section'=>'theme_section'
 
             ),
+            'wp_startup_menu_images_option' => array(
+
+                'id'=>'wp_startup_menu_images_option',
+                'title'=>'Menu images',
+                'page'=>'wp_startup_optionpage',
+                'section'=>'theme_section'
+
+            ),
             'wp_startup_widgets_option' => array(
 
                 'id'=>'wp_startup_widgets_option',
@@ -500,7 +508,7 @@ class WPstartupData{
     public function wp_startup_pagethemes_option_settings_field(){
 
         $options = get_option( 'wp_startup_pagethemes_option' );
-        echo '<p><input name="wp_startup_pagethemes_option" id="wp_startup_pagethemes_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup page themes and functions.</p>';
+        echo '<p><input name="wp_startup_pagethemes_option" id="wp_startup_pagethemes_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup Themes.</p>';
 
 
     }
@@ -514,7 +522,26 @@ class WPstartupData{
 
     }
 
+    /**
+     * Enable WP startup page themes
+     * @WPstartup functions.php wp_startup_pagethemes_func()
+     */
+    public function wp_startup_menu_images_option_settings_field(){
 
+        $options = get_option( 'wp_startup_menu_images_option' );
+        echo '<p><input name="wp_startup_menu_images_option" id="wp_startup_menu_images_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup Menu Images.</p>';
+
+
+    }
+    public function wp_startup_menu_images_option_init(){
+
+        if( get_option( 'wp_startup_menu_images_option' ) != '' && get_option( 'wp_startup_menu_images_option' ) == true ){
+
+           wp_startup_menu_images_func();
+
+        }
+
+    }
 
     /**
      * WP Startup widgets

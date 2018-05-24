@@ -28,8 +28,9 @@ define( 'WPSTARTUP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
  */
 require_once('data.php');
 require_once('functions.php');
-
-
+//if( get_option( 'wp_startup_widgets_option' ) != '' && get_option( 'wp_startup_widgets_option' ) == true ){
+//require_once('assets/menu.php'); // menu image plugin functions
+//});
 /**
  * Main Plugin Object
  */
