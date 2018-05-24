@@ -268,6 +268,20 @@ class PageTemplater {
 
         // Content mods
 
+        // excerpt length
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_excerptlength', array(
+          'default' => 12,
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_excerptlength', array(
+          'type' => 'number',
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
+          'settings'=> 'wp_startup_theme_panel_content_excerptlength',
+          'label' => __( 'Excerpt length' ),
+          'description' => __( 'Add here the max. amount of words in the post excerpts.' ),
+        )));
+
         // tel number
         $wp_customize->add_setting( 'wp_startup_theme_panel_content_telephone', array(
           'default' => '',
@@ -327,28 +341,6 @@ class PageTemplater {
             	)
     	)));
 
-        // post excerpt length
-
-
-
-        // Style mods
-
-        // title settings
-
-        // - #titlebox display (header title / tekst) none left center right
-
-        // fonts:
-        //   h1.sitetitle
-        //   h2.subtitle
-
-        //   #content  h1.entry-title, h2.entry-title (pagecontent titles)
-
-        //   h2.widget-title, h3.widget-titlebox (widget titles)
-
-        //
-
-
     }
-
 
 }

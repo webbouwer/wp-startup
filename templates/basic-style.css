@@ -1,0 +1,155 @@
+/** basic style */
+html,body,ul,h1,h2,h3,h4,h5,h6
+{
+padding:0;
+margin:0;
+}
+
+html,
+body
+{
+width:100%;
+}
+
+#pagecontainer
+{
+display:block;
+position:relative;
+width:100%;
+min-height:100%;
+}
+
+#topcontainer,
+#maincontainer,
+#subcontainer,
+#bottomcontainer
+{
+position: relative;
+}
+
+.clr
+{
+clear:both;
+height:0;
+font-size:0;
+}
+
+.outermargin
+{
+}
+
+
+#topbar
+{
+}
+
+#header
+{
+}
+
+
+#content
+{
+}
+#sidebar
+{
+}
+
+
+#subcontent
+{
+}
+
+
+#bottomcontent
+{
+}
+
+#footerbox
+{
+}
+#footerend
+{
+}
+
+
+p
+{
+}
+
+h1,h2,h3,h4,h5,h6
+{
+line-height:140%;
+}
+
+
+
+/* medium screen layout */
+@media screen and (min-width: 580px) {
+
+.outermargin,
+.wrap
+{
+margin:0px auto;
+width:96%;
+max-width:960px;
+}
+
+
+
+#content .panel-content > .wrap
+{
+margin:0;
+}
+
+#logobox
+{
+float:left;
+}
+#contactbox
+{
+float:right;
+}
+
+#contactbox .telephone_textline,
+#contactbox .email_textline
+{
+display: inline-block;
+margin-left:20px;
+}
+#contactbox .email_textline a
+{
+display: inline;
+}
+
+#content{
+width:66.66%;
+float:left;
+}
+
+#sidebar{
+width:33.33%;
+float:left;
+}
+
+.widget
+{
+position: relative;
+display: block;
+}
+
+
+div.colset2 div.widget
+{
+float:left;
+width:50%;
+}
+
+div.colset3 div.widget
+{
+float:left;
+width:33.33%;
+}
+
+
+}
