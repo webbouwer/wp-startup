@@ -176,7 +176,89 @@ function wp_startup_get_frontpage_sections(){
     wp_head();
 
 ?>
+<script>
+ jQuery(function ($) {
 
+    $(document).ready(function(){
+
+        $.ajaxSetup({cache:false});
+
+        $("body").on('click', "a", function(e){
+
+            e.preventDefault();
+
+            var box = $("#maincontainer");
+            var containers = $("#maincontainer > .outermargin");
+            var post_link = $(this).attr('href');
+
+            if( post_link.indexOf(window.location.hostname) == -1 || post_link.indexOf("wp-admin") !== -1 || post_link.indexOf("login") !== -1 || post_link == window.location.href ){
+                window.location.assign(post_link);
+                return false;
+            }
+            containers.fadeOut(300, function(){
+
+                 $("#topcontent-widget-1,#topcontent-widget-2").fadeOut(300);
+                 box.html('<div id="article-loading" class="outermargin">loading...</div>');
+
+            });
+
+
+            // load content
+            box.load(post_link, function(){
+
+                 $("#maincontainer .outermargin,article").fadeIn(300);
+
+            });
+
+
+            //alert(post_link);
+            return false;
+
+            /*
+            var box = $("#maincontentbox");
+            var article = $("#maincontentbox > article");
+            var post_link = $(this).attr('href');
+
+            // check if is admin, login or outside domain link
+            if( post_link.indexOf(window.location.hostname) == -1 || post_link.indexOf("wp-admin") !== -1 || post_link.indexOf("login") !== -1 || post_link == window.location.href ){
+                window.location.assign(post_link);
+                return false;
+            }
+            article.fadeOut(300, function(){
+
+                 $("#topcontent-widget-1,#topcontent-widget-2").fadeOut(300);
+                 box.html('<div id="article-loading">loading...</div>');
+
+            });
+
+
+            // load content
+            box.load(post_link, function(){
+
+                //if( $(window).innerWidth() < 560){
+
+                    //var topspace = 0;
+                    //if( $("wpadminbar") ){ topspace = 50; }
+                    //$('html, body').animate({
+                    //scrollTop: box.offset().top - topspace
+                    //}, 900);
+
+                //}
+                $("#maincontentbox > article").fadeIn(300);
+
+            });
+
+
+        //alert(post_link);
+        return false;
+        */
+        });
+
+    });
+
+});
+
+</script>
 </head>
 <body <?php body_class(); ?>>
     <div id="pagecontainer" class="site">
@@ -318,7 +400,7 @@ function wp_startup_get_frontpage_sections(){
                 <!-- main content -->
                 <div id="content">
                     <section>
-
+                        <div id="maincontentbox">
                         <?php
                         wpstartup_widgetarea_html( 'before-widget' );
                         ?>
@@ -354,7 +436,7 @@ function wp_startup_get_frontpage_sections(){
                             echo '<div class="clr"></div>';
                         }
                         ?>
-
+                        </div>
                     </section>
                 </div>
 

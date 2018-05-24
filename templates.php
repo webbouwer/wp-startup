@@ -85,7 +85,9 @@ class PageTemplater {
         }
 
         // add customizer customized
-        add_action( 'customize_register', array( $this,  'customizer_register_project_templates' ), 11 );
+        add_action( 'customize_register', array( $this,  'wp_startup_customizer_register_project_templates' ), 11 );
+        // add theme theming
+        add_filter('template_include', array( $this ,'wp_startup_template_file_replacements' ) );
 
 	}
 
@@ -174,11 +176,28 @@ class PageTemplater {
 
 	}
 
+
+    /**
+     * Inject template files to replace common files
+     */
+    public function wp_startup_template_file_replacements( $template ){
+
+        /* source above and  https://wordpress.stackexchange.com/questions/72544/how-can-i-use-a-file-in-my-plugin-as-a-replacement-for-single-php-on-custom-post
+         */
+        if(  !is_front_page() && 'single-post.php' != $template ){ // catch all other than pages //..is_singular('post')
+
+            $template = plugin_dir_path( __FILE__ ) .'templates/assets/post-template.php';
+
+        }
+        return $template;
+
+    }
+
      /**
      * Adjust customizer
      * https://kb.wpbeaverbuilder.com/article/357-remove-a-customizer-panel
      */
-    public function customizer_register_project_templates() {
+    public function wp_startup_customizer_register_project_templates() {
 
         global $wp_customize;
         // default sections: title_tagline, colors, header_image, background_image, nav, and static_front_page
@@ -270,6 +289,9 @@ class PageTemplater {
                     'show'   => __( 'Show', 'wp-startup' ),
             	)
     	)));
+
+        // post excerpt length
+
 
 
         // Style mods
