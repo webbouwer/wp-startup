@@ -167,6 +167,14 @@ class WPstartupData{
                 'section'=>'component_section'
 
             ),
+            'wp_startup_adminbar_menu_option' => array(
+
+                'id'=>'wp_startup_adminbar_menu_option',
+                'title'=>'Adminbar Menu',
+                'page'=>'wp_startup_option_subpage1',
+                'section'=>'overhead_section'
+
+            ),
             'wp_startup_categoryhierarchy_option' => array(
 
                 'id'=>'wp_startup_categoryhierarchy_option',
@@ -523,8 +531,8 @@ class WPstartupData{
     }
 
     /**
-     * Enable WP startup page themes
-     * @WPstartup functions.php wp_startup_pagethemes_func()
+     * Enable WP startup Menu Images
+     * @WPstartup functions.php wp_startup_menu_images_func()
      */
     public function wp_startup_menu_images_option_settings_field(){
 
@@ -611,6 +619,26 @@ class WPstartupData{
 
     }
 
+    /**
+     * Enable WP startup Adminbar Menu
+     * @WPstartup functions.php wp_startup_adminbar_menu_func()
+     */
+    public function wp_startup_adminbar_menu_option_settings_field(){
+
+        $options = get_option( 'wp_startup_adminbar_menu_option' );
+        echo '<p><input name="wp_startup_adminbar_menu_option" id="wp_startup_adminbar_menu_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup Adminbar Menu.</p>';
+
+
+    }
+    public function wp_startup_adminbar_menu_option_init(){
+
+        if( get_option( 'wp_startup_adminbar_menu_option' ) != '' && get_option( 'wp_startup_adminbar_menu_option' ) == true ){
+
+           wp_startup_adminbar_menu_func();
+
+        }
+
+    }
 
     /**
      * Category Hierarchy

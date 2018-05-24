@@ -59,6 +59,25 @@ function wp_startup_menu_images_func(){
 
 }
 
+/**
+ * WP startup Menu Images
+ */
+function wp_startup_adminbar_menu_func(){
+
+    // add adminbar menu
+    add_action('admin_bar_menu', 'create_dwb_menu', 2000);
+
+}
+
+function create_dwb_menu() {
+
+	global $wp_admin_bar;
+	$menu_id = 'wp-startup-barmenu';
+	$wp_admin_bar->add_menu(array('id' => $menu_id, 'title' => __('WP Startup'), 'href' => home_url().'/wp-admin/admin.php?page=wp_startup_optionpage'));
+	//$wp_admin_bar->add_menu(array('parent' => $menu_id, 'title' => __('Startup'), 'id' => 'wp-startup-home', 'href' => home_url().'/wp-admin/admin.php?page=wp_startup_optionpage', 'meta' => array('target' => '_self')));
+
+}
+
 
 /**
  * WP startup Website widgets
