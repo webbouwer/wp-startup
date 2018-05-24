@@ -146,8 +146,16 @@ function wp_startup_widgets_init_func() {
         'before_title'  => '<div class="widget-titlebox"><h3>',
         'after_title'   => '</h3></div><div class="widget-contentbox">',
     ) );
-    // mainsidebar
-
+    // dynamic sidebar
+    register_sidebar( array(
+        'name' => __( 'Dynamic sidebar', 'wp-startup' ),
+        'id' => 'dynamic-sidebar',
+        'description'   => 'Dynamic widgets sidebar loaded with posts',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
 
     register_sidebar( array(
         'name' => __( 'Subcontent widget 1', 'wp-startup' ),

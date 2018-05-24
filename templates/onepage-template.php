@@ -177,36 +177,58 @@ function wp_startup_get_frontpage_sections(){
 
 ?>
 <script>
+
  jQuery(function ($) {
 
+
+
+    $(document).load(function(){
+        $('#pagecontainer').hide();
+    });
+
     $(document).ready(function(){
+
+        $('#pagecontainer').fadeIn(300, function(){
+
+            setTimeout(function(){
+                $('#page-loading').fadeOut(600);
+            }, 300);
+
+        });
 
         $.ajaxSetup({cache:false});
 
         $("body").on('click', "a", function(e){
 
             e.preventDefault();
-
             var box = $("#maincontainer");
             var containers = $("#maincontainer > .outermargin");
             var post_link = $(this).attr('href');
 
+            //box.height( $('#sidebar').innerHeight() );
+
             if( post_link.indexOf(window.location.hostname) == -1 || post_link.indexOf("wp-admin") !== -1 || post_link.indexOf("login") !== -1 || post_link == window.location.href ){
+                $('#pagecontainer').fadeOut(300);
+                //history.pushState( {} , 'prev', window.location.href );
                 window.location.assign(post_link);
                 return false;
             }
+
+            $('body').append('<div id="article-loading">Content loading...</div>');
+
             containers.fadeOut(300, function(){
-
-                 $("#topcontent-widget-1,#topcontent-widget-2").fadeOut(300);
-                 box.html('<div id="article-loading" class="outermargin">loading...</div>');
-
             });
 
 
             // load content
             box.load(post_link, function(){
 
-                 $("#maincontainer .outermargin,article").fadeIn(300);
+                $("#maincontainer .outermargin, article").fadeIn(900);
+                $("#article-loading").fadeOut(600, function(){
+
+                   $("#article-loading").remove();
+
+                });
 
             });
 
@@ -214,44 +236,6 @@ function wp_startup_get_frontpage_sections(){
             //alert(post_link);
             return false;
 
-            /*
-            var box = $("#maincontentbox");
-            var article = $("#maincontentbox > article");
-            var post_link = $(this).attr('href');
-
-            // check if is admin, login or outside domain link
-            if( post_link.indexOf(window.location.hostname) == -1 || post_link.indexOf("wp-admin") !== -1 || post_link.indexOf("login") !== -1 || post_link == window.location.href ){
-                window.location.assign(post_link);
-                return false;
-            }
-            article.fadeOut(300, function(){
-
-                 $("#topcontent-widget-1,#topcontent-widget-2").fadeOut(300);
-                 box.html('<div id="article-loading">loading...</div>');
-
-            });
-
-
-            // load content
-            box.load(post_link, function(){
-
-                //if( $(window).innerWidth() < 560){
-
-                    //var topspace = 0;
-                    //if( $("wpadminbar") ){ topspace = 50; }
-                    //$('html, body').animate({
-                    //scrollTop: box.offset().top - topspace
-                    //}, 900);
-
-                //}
-                $("#maincontentbox > article").fadeIn(300);
-
-            });
-
-
-        //alert(post_link);
-        return false;
-        */
         });
 
     });
@@ -261,6 +245,8 @@ function wp_startup_get_frontpage_sections(){
 </script>
 </head>
 <body <?php body_class(); ?>>
+
+
     <div id="pagecontainer" class="site">
 
         <div id="topcontainer">
@@ -370,6 +356,7 @@ function wp_startup_get_frontpage_sections(){
 
         </div>
 
+
         <div id="maincontainer">
 
             <div class="outermargin">
@@ -451,6 +438,7 @@ function wp_startup_get_frontpage_sections(){
 
         </div><!-- end maincontainer -->
 
+
         <div id="subcontainer">
             <!-- sub content -->
             <div id="subcontent" class="outermargin">
@@ -505,6 +493,9 @@ function wp_startup_get_frontpage_sections(){
             </div>
         </div>
     </div>
+
+
+    <div id="page-loading">Page loading...</div>
 
     <?php wp_footer(); ?>
 

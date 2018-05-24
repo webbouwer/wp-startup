@@ -117,7 +117,7 @@ function wpstartup_widgetarea_html( $id, $type = false ){
     <div id="sidebar">
         <?php // sidebar menu wp-startup theme
             wpstartup_menu_html( 'side' ); // make this default page menu: wpstartup_menu_html( 'side', true );
-            wpstartup_widgetarea_html( 'sidebar-1', 'sidebar' );
+            wpstartup_widgetarea_html( 'dynamic-sidebar', 'sidebar' );
         ?>
         </div>
     <div class="clr"></div>

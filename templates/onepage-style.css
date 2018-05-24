@@ -141,6 +141,21 @@ list-style-type: none;
 display: block;
 }
 
+#page-loading
+{
+position:fixed;
+top:20%;
+width:100%;
+text-align:center;
+}
+
+#article-loading
+{
+position:fixed;
+top:30%;
+width:100%;
+text-align:center;
+}
 
 /* medium screen layout */
 @media screen and (min-width: 580px) {
