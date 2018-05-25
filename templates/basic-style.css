@@ -96,7 +96,10 @@ max-width:960px;
 }
 
 #topmenu ul > li,
-#bottommenu ul > li
+#topcontent  ul.menu > li,
+#mainmenu  ul > li,
+#bottommenu ul > li,
+#footerend #socialmenu ul > li
 {
 display: inline-block;
 }

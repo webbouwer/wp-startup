@@ -414,7 +414,7 @@ class Menu_Image_Plugin {
 		 * original: $item_output .= "<div class='clr'></div></a>{$args->after}";
 		 *
 		 */
-		$item_output .= "<span class='clr'></span></span></a>{$args->after}";
+		$item_output .= "<span class='clr'></span></span></a>[check]{$args->after}";
 
 		return $item_output;
 	}

@@ -176,7 +176,6 @@ function wp_startup_get_frontpage_sections(){
     <div id="pagecontainer" class="site">
 
         <div id="topcontainer">
-
             <!-- header & topbar -->
             <?php // show hide topbar
             if( get_theme_mod( 'wp_startup_theme_panel_elements_topbar','') != 'hide' ){
@@ -201,12 +200,14 @@ function wp_startup_get_frontpage_sections(){
                         }
                     ?>
                     </div>
+                    <? if( has_nav_menu('top') || has_nav_menu('primary') ){ ?>
                     <div id="topmenu">
                         <?php // topbar menu is mainmenu & top & primary || default menu
-                            $topmenu = array( 'main', 'top', 'primary' );
+                            $topmenu = array( 'top', 'primary' );
                             wpstartup_menu_html( $topmenu );
                         ?>
                     </div>
+                    <?php } ?>
                         <?php
                             wpstartup_widgetarea_html( 'topbar-widget-2' );
                         ?>
@@ -216,11 +217,11 @@ function wp_startup_get_frontpage_sections(){
             <?php } // end topbar ?>
             <?php
             // div header
-                if ( get_header_image() ){
-                    echo  '<div id="header" class="header_image" style="background-image:url('.get_theme_mod('header_image').');background-position:center;">';
-                }else{
-                    echo '<div id="header">';
-                }
+            if ( get_header_image() ){
+            echo  '<div id="header" class="header_image" style="background-image:url('.get_theme_mod('header_image').');background-position:center;">';
+            }else{
+            echo '<div id="header">';
+            }
             ?>
                 <div class="outermargin">
                     <header>
@@ -249,7 +250,6 @@ function wp_startup_get_frontpage_sections(){
                         <div class="clr"></div>
                     </header>
                 </div>
-
             </div><!-- end div header (background) -->
             <?php
                 if( is_sidebar_active( 'header-widget-2' ) ){
@@ -270,33 +270,28 @@ function wp_startup_get_frontpage_sections(){
         </div><!-- end topcontainer -->
 
         <div id="maincontainer">
-
-
             <div id="topcontent" class="outermargin">
-
                 <?php
                 wpstartup_widgetarea_html( 'topcontent-widget-1' );
                 ?>
-
+                <? if( has_nav_menu('main') ){ ?>
+                <div id="mainmenu">
+                    <?php // main menu
+                    wpstartup_menu_html( 'main' );
+                    ?>
+                </div>
+                <?php } ?>
             </div>
-
-
             <?php if( is_front_page() && get_theme_mod('page_layout') == 'one-column'){
                 // Get panels on top
                 wp_startup_get_frontpage_sections();
                 echo '<div class="clr"></div>';
             }
-
             ?>
-
             <div id="maincontent" class="outermargin">
-
-
                 <?php
                 wpstartup_widgetarea_html( 'topcontent-widget-2' );
                 ?>
-
-
                 <!-- main content -->
                 <div id="content">
                     <section>
@@ -338,7 +333,10 @@ function wp_startup_get_frontpage_sections(){
                     ?>
                 </div>
                 <div class="clr"></div>
-            </div>
+
+            </div><!-- end maincontent -->
+
+
             <div id="subcontainer">
                 <!-- sub content -->
                 <div id="subcontent" class="outermargin">
@@ -350,28 +348,31 @@ function wp_startup_get_frontpage_sections(){
                     </section>
                 </div>
             </div>
-            <div id="bottomcontainer">
-                <!-- footer content -->
-                <div id="bottomcontent" class="outermargin">
-                    <footer>
-                        <div id="footerbox">
+
+        </div><!-- end maincontainer -->
+
+        <div id="bottomcontainer">
+            <!-- footer content -->
+            <div id="bottomcontent" class="outermargin">
+                <footer>
+                    <div id="footerbox">
                             <?php
                                 wpstartup_widgetarea_html( 'bottom-widget-1' );
 
                                 wpstartup_widgetarea_html( 'bottom-widget-2' );
                             ?>
-                            <div class="clr"></div>
+                        <div class="clr"></div>
                             <?php
                                 wpstartup_menu_html( 'bottom' );
                             ?>
-                            <div class="clr"></div>
-                        </div>
-                        <div id="footerend">
-                            <?php if( has_)
+                        <div class="clr"></div>
+                    </div>
+                    <div id="footerend">
+                        <?php if( has_)
                                 wpstartup_widgetarea_html( 'footer-widget-1' );
                                 wpstartup_widgetarea_html( 'footer-widget-2' );
-                            ?>
-                            <div class="clr"></div>
+                        ?>
+                        <div class="clr"></div>
                             <?php // sidebar menu wp-startup theme
                                 wpstartup_menu_html( 'social' );
                             ?>
@@ -379,15 +380,18 @@ function wp_startup_get_frontpage_sections(){
                                 $copyright_textline = get_theme_mod('wp_startup_theme_panel_content_copyright', 'Copyright 2018');
                                 echo '<h6>'.$copyright_textline.'</h6>';
                             ?>
-                            <div class="clr"></div>
-                        </div>
-                    </footer>
-                </div>
+                        <div class="clr"></div>
+                    </div>
+                </footer>
+
             </div>
-        </div>
+
+        </div><!-- end bottomcontainer -->
+
     </div>
 
-    <?php wp_footer(); ?>
+
+<?php wp_footer(); ?>
 
 </body>
 </html>
