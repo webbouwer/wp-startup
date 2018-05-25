@@ -9,35 +9,30 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 ###### Implementing:
 
 ##### Theme 
-- Page themes including  
-    - [x] stylesheet 
-    - [x] menu's
-    - [x] widget area's
-    - [x] background image customizer option
-    - [x] blank theme
-    - [ ] onepage theme (in development)
-      - [x] add and remove customizer theme options
-      - [ ] add post, page and category files
-- Elements
-    - [ ] webicons (todo: global application class)
-    - [ ] webfonts (todo: global application class)
-    
+Theme and page themes including:
+    - menu's positions
+    - widget area's
+    - header image
+    - background image customizer option
+    - blank theme
+    - full theme (default takeover)
+  
 ##### Widget
-- [x] Widgets
+- Widgets
     - [x] Postlist widget
-      - [x] frontend styling/javascript file (for future development)
     - [x] WP Startup @ Github dashboard widget
-    - [ ] Login widget (in progress)
+    - [ ] Login widget (to do later, maybe with other plugins)
 - [x] Shortcodes in text widget
 
 ##### Component
-- [x] Link Manager component
+- Link Manager component
 
 ##### Extend
-- [ ] Menu images (todo: plugin application class)
+- Menu images
 
 ##### Overhead
-- [x] Categories metabox forced hierarchy display 
+- Adminbar menu (to be extended/automated) 
+- Categories metabox forced hierarchy display 
 
 ##### Develop
 - [x] PHP coding in text widget
@@ -46,8 +41,8 @@ The WP Startup plugin hooks into your basic Wordpress installation providing opt
 - [ ] add custom php? (todo: plugin application class)
 
 ##### Tweak
-- [x] disable Gravatars 
-- [x] disable Emojicons
+- disable Gravatars 
+- disable Emojicons
 
 ##### Plugin
 - [ ] language translations

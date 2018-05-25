@@ -135,14 +135,6 @@ class WPstartupData{
                 'section'=>'theme_section'
 
             ),
-            'wp_startup_menu_images_option' => array(
-
-                'id'=>'wp_startup_menu_images_option',
-                'title'=>'Menu images',
-                'page'=>'wp_startup_optionpage',
-                'section'=>'theme_section'
-
-            ),
             'wp_startup_widgets_option' => array(
 
                 'id'=>'wp_startup_widgets_option',
@@ -165,6 +157,14 @@ class WPstartupData{
                 'title'=>'Link Manager component',
                 'page'=>'wp_startup_optionpage',
                 'section'=>'component_section'
+
+            ),
+            'wp_startup_menu_images_option' => array(
+
+                'id'=>'wp_startup_menu_images_option',
+                'title'=>'Menu images',
+                'page'=>'wp_startup_optionpage',
+                'section'=>'extend_section'
 
             ),
             'wp_startup_adminbar_menu_option' => array(
@@ -222,7 +222,7 @@ class WPstartupData{
                 'page'=>'wp_startup_option_subpage2',
                 'section'=>'tweak_section'
 
-            )
+            ),
 
 
             //..
@@ -468,7 +468,6 @@ class WPstartupData{
 
         echo '<p>Extend options for basic WP functions</p>';
 
-        echo '<p>In development  (Menu images/icons)</p>';
 
     }
 
@@ -537,7 +536,7 @@ class WPstartupData{
     public function wp_startup_menu_images_option_settings_field(){
 
         $options = get_option( 'wp_startup_menu_images_option' );
-        echo '<p><input name="wp_startup_menu_images_option" id="wp_startup_menu_images_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup Menu Images.</p>';
+        echo '<p><input name="wp_startup_menu_images_option" id="wp_startup_menu_images_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup Menu Images & descriptions.</p>';
 
 
     }

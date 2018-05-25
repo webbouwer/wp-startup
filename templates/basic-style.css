@@ -95,6 +95,11 @@ width:96%;
 max-width:960px;
 }
 
+#topmenu ul > li,
+#bottommenu ul > li
+{
+display: inline-block;
+}
 
 
 #content .panel-content > .wrap
