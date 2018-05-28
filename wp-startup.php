@@ -71,9 +71,6 @@ class WPstartup{
         // add backend scripts
         add_action( 'admin_enqueue_scripts', array( $this, 'wp_startup_admin_style' ) );
 
-        // adjust customizer (if theme option enabled)
-        //add_action( 'customize_register', array( $this,  'wp_startup_theme_customizer_register' ), 11 );
-
     }
 
 
@@ -195,7 +192,7 @@ class WPstartup{
     public function plugin_load_options(){
 
         // load wp startup customizer options
-        add_action( 'customize_register', 'wp_startup_theme_customizer_func' );
+        //add_action( 'customize_register', 'wp_startup_theme_customizer_func' );
 
         $options = $this->data->get_wpstartup_options();
 

@@ -5,6 +5,7 @@
  // add panels
 function wp_startup_add_customizer_options_templates(){
 
+        global $wp_customize;
 
         $wp_customize->add_panel('wp_startup_theme_panel', array(
             'title'    => __('WP startup theme', 'wp-startup'),
@@ -104,5 +105,6 @@ function wp_startup_add_customizer_options_templates(){
                     'show'   => __( 'Show', 'wp-startup' ),
             	)
     	)));
+
 }
 ?>

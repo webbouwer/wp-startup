@@ -368,9 +368,10 @@ function wp_startup_get_frontpage_sections(){
                         <div class="clr"></div>
                     </div>
                     <div id="footerend">
-                        <?php if( has_)
+                        <?php if( is_sidebar_active( 'footer-widget-1') ||  is_sidebar_active( 'footer-widget-2')){
                                 wpstartup_widgetarea_html( 'footer-widget-1' );
                                 wpstartup_widgetarea_html( 'footer-widget-2' );
+                            }
                         ?>
                         <div class="clr"></div>
                             <?php // sidebar menu wp-startup theme

@@ -31,8 +31,12 @@ function wp_startup_pagethemes_func(){
     // Extend theme widget locations for wp-startup themes
     add_action( 'widgets_init', 'wp_startup_widgets_init_func' );
 
-    //
+    // extra closure html tags
     add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
+
+    // remove empty title tags
+    add_filter( 'widget_title', 'remove_widget_title' );
+
 }
 
 /**
@@ -63,11 +67,11 @@ function wp_startup_menu_images_func(){
 function wp_startup_adminbar_menu_func(){
 
     // add adminbar menu
-    add_action('admin_bar_menu', 'create_dwb_menu', 2000);
+    add_action('admin_bar_menu', 'create_wpstartup_menu', 2000);
 
 }
 
-function create_dwb_menu() {
+function create_wpstartup_menu() {
 
 	global $wp_admin_bar;
 	$menu_id = 'wp-startup-barmenu';
@@ -478,18 +482,28 @@ function is_sidebar_active( $sidebar_id ){
         return count( $the_sidebars[$sidebar_id] );
 }
 
-// widget empty title content wrapper fix
+// widget empty title content wrapper fix // wp_startup_pagethemes_func
 function check_sidebar_params( $params ) {
     global $wp_registered_widgets;
+
     $settings_getter = $wp_registered_widgets[ $params[0]['widget_id'] ]['callback'][0];
     $settings = $settings_getter->get_settings();
     $settings = $settings[ $params[1]['number'] ];
 
-    if ( $params[0][ 'after_widget' ] == '<div class="clr"></div></div></div>' && isset( $settings[ 'title' ] ) &&  empty( $settings[ 'title' ]  )  ){
+    if ( $params[0][ 'after_widget' ] == '<div class="clr"></div></div></div>' && isset( $settings[ 'title' ] ) &&  empty( $settings[ 'title' ]  ) ){
 
-        $params[0][ 'before_widget' ] .= '<div class="widget-contentbox">';
+        $params[0][ 'before_widget' ] = '<div id="'.$params[0]['widget_id'].'" class="widget">';
     }
 
     return $params;
+}
+
+// wp_startup_pagethemes_func
+function remove_widget_title( $widget_title ) {
+    if ( substr ( $widget_title, 0, 1 ) == '!' || $widget_title == '' || $widget_title == ' '){
+        return (' ');
+    }else{
+        return ( $widget_title );
+    }
 }
 ?>

@@ -87,6 +87,8 @@ class PageTemplater {
         // add customizer customized
         add_action( 'customize_register', array( $this,  'wp_startup_customizer_register_project_templates' ), 11 );
 
+        //wp_startup_customizer_register_project_templates
+
         // add theme theming
         //add_filter('template_include', array( $this ,'wp_startup_template_file_replacements' ) );
 
@@ -236,7 +238,7 @@ class PageTemplater {
      */
     public function wp_startup_customizer_register_project_templates() {
 
-        global $wp_customize;
+
         // default sections: title_tagline, colors, header_image, background_image, nav, and static_front_page
         //$wp_customize->remove_control('display_header_text');
         //$wp_customize->remove_section('colors');
@@ -245,6 +247,7 @@ class PageTemplater {
         require_once( 'customizer.php' );
 
         wp_startup_add_customizer_options_templates();
+
 
     }
 
