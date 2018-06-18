@@ -55,13 +55,26 @@ class PageTemplater {
 		);
         */
         $templatefolder = WP_PLUGIN_DIR.'/wp-startup/templates/';
+
+        /** get the tempalte files and names (from main folder)
         $files=glob( $templatefolder."*.php" );
         foreach ($files as $file) {
             $path = pathinfo($file);
             $this->templates[$path['basename']] = $path['filename'];
         }
+        */
+
+        $dirs = array_filter( glob( $templatefolder."*" ), 'is_dir');
+        foreach ($dirs as $themefolder) {
+            $path = pathinfo( $themefolder );
+
+            $this->templates[ $path['basename']."/index.php" ] = $path['filename'];
+
+        }
+
         // add customizer customized
         add_action( 'customize_register', array( $this,  'wp_startup_customizer_register_project_templates' ), 11 );
+
         //wp_startup_customizer_register_project_templates
         // add theme theming
         //add_filter('template_include', array( $this ,'wp_startup_template_file_replacements' ) );
@@ -125,40 +138,12 @@ class PageTemplater {
         // from customizer option (or plugin)
         // load the basic theme if selected
         if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) == true ){
-            $template = plugin_dir_path( __FILE__ ) .'templates/onepage-template.php';
+            $template = plugin_dir_path( __FILE__ ) .'templates/basic/index.php';
         }
-        return $template;
-        /*
-		// Return the search template if we're searching (instead of the template for the first result)
-		if ( is_search() ) {
-			return $template;
-		}
-		// Get global post
-		global $post;
-		// Return template if post is empty
-		if ( ! $post ) {
-			return $template;
-		}
-		// Return default template if we don't have a custom one defined
-		if ( ! isset( $this->templates[get_post_meta(
-			$post->ID, '_wp_page_template', true
-		)] ) ) {
-			return $template;
-		}
-		// Allows filtering of file path
-        $filepath = apply_filters( 'page_templater_plugin_dir_path',  plugin_dir_path( __FILE__ ) .'templates/' );
-		$file =  $filepath . get_post_meta(
-			$post->ID, '_wp_page_template', true
-		);
-		// Just to be safe, we check if the file exist first
-		if ( file_exists( $file ) ) {
-			return $file;
-		} else {
-			echo $file;
-		}
+
 		// Return template
 		return $template;
-        */
+
 	}
     /**
      * Inject template files to replace common files
