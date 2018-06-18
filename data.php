@@ -41,16 +41,16 @@ class WPstartupData{
             ),
             'wp_startup_option_subpage1' => array(
 
-                'title' => 'WP startup test options 1',
-                'menu_title' => 'Test Options 1',
+                'title' => 'WP startup custom options',
+                'menu_title' => 'Develop',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_option_subpage1',
                 'parent_slug' => 'wp_startup_optionpage',
             ),
             'wp_startup_option_subpage2' => array(
 
-                'title' => 'WP startup test options 2',
-                'menu_title' => 'Test Options 2',
+                'title' => 'WP startup tweak',
+                'menu_title' => 'Tweak',
                 'capability' => 'edit_posts',
                 'menu_slug' => 'wp_startup_option_subpage2',
                 'parent_slug' => 'wp_startup_optionpage',
@@ -92,12 +92,7 @@ class WPstartupData{
             ),
             'sub1_section' => array(
                 'id'=>'sub1_section',
-                'title'=>'Sub 1 Settings',
-                'page'=>'wp_startup_option_subpage1'
-            ),
-            'overhead_section' => array(
-                'id'=>'overhead_section',
-                'title'=>'Overhead',
+                'title'=>'Developer options',
                 'page'=>'wp_startup_option_subpage1'
             ),
             'development_section' => array(
@@ -107,7 +102,12 @@ class WPstartupData{
             ),
             'sub2_section' => array(
                 'id'=>'sub2_section',
-                'title'=>'Sub 2 Settings',
+                'title'=>'Tweaks for wordpress',
+                'page'=>'wp_startup_option_subpage2'
+            ),
+            'overhead_section' => array(
+                'id'=>'overhead_section',
+                'title'=>'Overhead',
                 'page'=>'wp_startup_option_subpage2'
             ),
             'tweak_section' => array(
@@ -158,12 +158,18 @@ class WPstartupData{
                 'section'=>'component_section'
 
             ),
-            'wp_startup_categoryhierarchy_option' => array(
+            'wp_startup_menu_images_option' => array(
+                'id'=>'wp_startup_menu_images_option',
+                'title'=>'Menu images',
+                'page'=>'wp_startup_optionpage',
+                'section'=>'extend_section'
+            ),
+            'wp_startup_phpintextwidget_option' => array(
 
-                'id'=>'wp_startup_categoryhierarchy_option',
-                'title'=>'Category Hierarchy',
+                'id'=>'wp_startup_phpintextwidget_option',
+                'title'=>'PHP in textwidget',
                 'page'=>'wp_startup_option_subpage1',
-                'section'=>'overhead_section'
+                'section'=>'sub1_section'
 
             ),
             'wp_startup_addcustomcss_option' => array(
@@ -182,12 +188,12 @@ class WPstartupData{
                 'section'=>'development_section'
 
             ),
-            'wp_startup_phpintextwidget_option' => array(
+            'wp_startup_categoryhierarchy_option' => array(
 
-                'id'=>'wp_startup_phpintextwidget_option',
-                'title'=>'PHP in textwidget',
-                'page'=>'wp_startup_option_subpage1',
-                'section'=>'development_section'
+                'id'=>'wp_startup_categoryhierarchy_option',
+                'title'=>'Category Hierarchy',
+                'page'=>'wp_startup_option_subpage2',
+                'section'=>'overhead_section'
 
             ),
             'wp_startup_dumbemoji_option' => array(
@@ -301,7 +307,7 @@ class WPstartupData{
     // sub optionpage 1
     function wp_startup_option_subpage1_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options subpage 1</h1><form method="post" action="options.php">';
+        echo '<div class="wrap"><h1>WP startup develop</h1><form method="post" action="options.php">';
         // display all sections for plugin-options page
         settings_fields("wp_startup_option_subpage1_grp");
         do_settings_sections("wp_startup_option_subpage1");
@@ -313,7 +319,7 @@ class WPstartupData{
     // sub optionpage 2
     function wp_startup_option_subpage2_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options subpage 2</h1><form method="post" action="options.php">';
+        echo '<div class="wrap"><h1>WP startup tweaks</h1><form method="post" action="options.php">';
         // display all sections for plugin-options page
         settings_fields("wp_startup_option_subpage2_grp");
         do_settings_sections("wp_startup_option_subpage2");
@@ -360,7 +366,7 @@ class WPstartupData{
 
     public function sub1_section_settings_description(){
 
-        echo '<p>Testpage developer section</p>';
+        echo '<p>Developer sections</p>';
 
     }
 
@@ -378,7 +384,7 @@ class WPstartupData{
 
     public function sub2_section_settings_description(){
 
-        echo '<p>Testpage 2 developer section</p>';
+        echo '<p>WP Tweak sections</p>';
 
     }
 
@@ -483,6 +489,19 @@ class WPstartupData{
 
     }
 
+    /**
+     * Enable WP startup Menu Images
+     * @WPstartup functions.php wp_startup_menu_images_func()
+     */
+    public function wp_startup_menu_images_option_settings_field(){
+        $options = get_option( 'wp_startup_menu_images_option' );
+        echo '<p><input name="wp_startup_menu_images_option" id="wp_startup_menu_images_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup Menu Images & descriptions.</p>';
+    }
+    public function wp_startup_menu_images_option_init(){
+        if( get_option( 'wp_startup_menu_images_option' ) != '' && get_option( 'wp_startup_menu_images_option' ) == true ){
+           wp_startup_menu_images_func();
+        }
+    }
 
 
     /**

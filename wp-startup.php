@@ -22,7 +22,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Includes
  */
 
-require_once('settings.php');
 require_once('data.php');
 require_once('functions.php');
 

@@ -43,6 +43,14 @@ function wp_startup_theme_global_func() {
 }
 
 /**
+ * WP startup Menu Images
+ */
+function wp_startup_menu_images_func(){
+    require_once('assets/menu.php'); // menu image plugin functions
+}
+
+
+/**
  * De-register default theme styles (used in specifc page templates)
  */
 function wp_startup_theme_deregister_func() {
