@@ -134,6 +134,14 @@ class WPstartupData{
                 'section'=>'theme_section'
 
             ),
+            'wp_startup_maintheme_option' => array(
+
+                'id'=>'wp_startup_maintheme_option',
+                'title'=>'WP Startup Theme',
+                'page'=>'wp_startup_optionpage',
+                'section'=>'theme_section'
+
+            ),
             'wp_startup_widgets_option' => array(
 
                 'id'=>'wp_startup_widgets_option',
@@ -410,7 +418,6 @@ class WPstartupData{
         $options = get_option( 'wp_startup_pagethemes_option' );
         echo '<p><input name="wp_startup_pagethemes_option" id="wp_startup_pagethemes_option" type="checkbox" value="1" class="code" ' . checked( 1, $options, false ) . ' /> Enable WP Startup page themes and functions.</p>';
 
-
     }
     public function wp_startup_pagethemes_option_init(){
 
@@ -422,6 +429,20 @@ class WPstartupData{
 
     }
 
+
+    //wp_startup_maintheme_option
+/**
+     * Enable WP startup Main theme (themes ovewrite)
+     * @WPstartup templates.php view_project_template()
+     */
+    public function wp_startup_maintheme_option_settings_field(){
+        $options = get_option( 'wp_startup_maintheme_option' );
+        echo '<p><input name="wp_startup_maintheme_option" id="wp_startup_maintheme_option" type="checkbox" value="1" class="code" '.checked( 1, $options, false ).' /> Enable the Main WP Startup Theme overwriting the selected or default theme.</p>';
+    }
+    public function wp_startup_maintheme_option_init(){
+        /*if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) == true ){
+        }*/
+    }
 
 
     /**
