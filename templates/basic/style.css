@@ -1,0 +1,96 @@
+root {
+  --toplogo_position: left;
+
+  --sidebar_position: right;
+  --sidebar_width: 32;
+}
+
+/** basic style */
+html,body,ul,h1,h2,h3,h4,h5,h6
+{
+padding:0;
+margin:0;
+}
+
+html,
+body
+{
+width:100%;
+}
+
+#pagecontainer
+{
+display:block;
+position:relative;
+width:100%;
+min-height:100%;
+}
+
+
+
+.clr
+{
+clear:both;
+height:0;
+font-size:0;
+}
+
+p
+{
+}
+
+h1,h2,h3,h4,h5,h6
+{
+line-height:140%;
+}
+
+.page img,
+.post img
+{
+height:auto;
+max-width:100%;
+}
+
+/* medium screen layout */
+@media screen and (min-width: 580px) {
+
+
+
+.outermargin,
+.wrap
+{
+margin:0px auto;
+width:96%;
+max-width:960px;
+}
+
+#topmenu ul > li,
+#topcontent  ul.menu > li,
+#mainmenu  ul > li,
+#bottommenu ul > li,
+#footerend #socialmenu ul > li
+{
+display: inline-block;
+}
+
+#toplogobox
+{
+float: var(--toplogo_position, left );
+}
+#maincontent
+{
+float: left;
+width: 68%;
+}
+#sidecontent
+{
+float: right;
+width: 32%;
+}
+
+#maincontent .panel-content > .wrap
+{
+margin:0;
+}
+
+}
