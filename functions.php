@@ -51,6 +51,20 @@ function wp_startup_menu_images_func(){
 
 
 /**
+ * WP startup Adminbar Menu
+ */
+function wp_startup_adminbar_menu_func(){
+    // add adminbar menu
+    add_action('admin_bar_menu', 'create_wpstartup_menu', 2000);
+}
+function create_wpstartup_menu() {
+	global $wp_admin_bar;
+	$menu_id = 'wp-startup-barmenu';
+	$wp_admin_bar->add_menu(array('id' => $menu_id, 'title' => __('WP Startup'), 'href' => home_url().'/wp-admin/admin.php?page=wp_startup_optionpage'));
+	//$wp_admin_bar->add_menu(array('parent' => $menu_id, 'title' => __('Startup'), 'id' => 'wp-startup-home', 'href' => home_url().'/wp-admin/admin.php?page=wp_startup_optionpage', 'meta' => array('target' => '_self')));
+}
+
+/**
  * De-register default theme styles (used in specifc page templates)
  */
 function wp_startup_theme_deregister_func() {
