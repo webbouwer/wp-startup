@@ -303,12 +303,15 @@ class WPstartupData{
     // main optionpage
     function wp_startup_optionpage_html() {
         // !page 1? => oop from sections array for more pages
-        echo '<div class="wrap"><h1>WP startup options</h1><form method="post" action="options.php">';
+        echo '<div class="wrap"><h1>WP startup options</h1>';
+        //echo '<form method="post" action="options.php">';
+        echo '<form method="post" action="options.php" onSubmit="this.action=\'options.php\'+location.hash">';
+        $this->wp_startup_optionpage_html_section_tabs( 'wp_startup_optionpage', 'wp_startup_optionpage_grp' );
         // display all sections for plugin-options page
-        settings_fields("wp_startup_optionpage_grp");
-        do_settings_sections("wp_startup_optionpage");
+        //settings_fields("wp_startup_optionpage_grp");
+        //do_settings_sections("wp_startup_optionpage");
         submit_button();
-
+        $this->wp_startup_optionpage_html_footer();
         echo '</form></div>';
 
     }
@@ -320,7 +323,7 @@ class WPstartupData{
         settings_fields("wp_startup_option_subpage1_grp");
         do_settings_sections("wp_startup_option_subpage1");
         submit_button();
-
+        $this->wp_startup_optionpage_html_footer();
         echo '</form></div>';
 
     }
@@ -332,12 +335,64 @@ class WPstartupData{
         settings_fields("wp_startup_option_subpage2_grp");
         do_settings_sections("wp_startup_option_subpage2");
         submit_button();
-
+        $this->wp_startup_optionpage_html_footer();
         echo '</form></div>';
 
     }
 
+    /**
+     * Tabs (1.0)
+     * Option page section tabs (or basic)
+     * $page
+     * $fields (=) $page.'_grp';
+     *
+     */
+    function wp_startup_optionpage_html_section_tabs( $page, $fieldgroup ){
+        // dependence : WPstartup class plugin_settings() enqueue wp_startup_admin_style() options tabs code
+        // source https://murviel-info-beziers.com/onglets-tabs-plugin-wordpress/
+        global $wp_settings_sections, $wp_settings_fields;
+        if (!isset($wp_settings_sections[$page])) {
+            return;
+        }
+        // count sections (set minimum for tab view)
+        if( count( $wp_settings_sections[$page] ) > 1 ){
+            echo '<span class="nav-view"></span>';
+            echo '<h2 class="nav-tab-wrapper">';
+            // section titles
+            foreach((array)$wp_settings_sections[$page] as $section) :
+                if(!isset($section['title']))
+                    continue;
+                echo '<a class="nav-tab" href="#'.$section['id'].'">'.$section['title'].'</a>';
+            endforeach;
+            echo '</h2>';
+             // section content
+            settings_fields( $fieldgroup );
+            foreach((array)$wp_settings_sections[$page] as $section) :
+                if(!isset($section['title']))
+                    continue;
+                echo  '<div id="'.$section['id'].'" class="tabs">';
+                echo  '<h3>'.$section['title'] .'</h3>';
+                $html = $section['id'].'_settings_description';
+                $this->$html();
+                do_settings_fields( $page, $section['id']);
+                echo  '</div>';
+            endforeach;
+        }else{
+            // display (all) section for plugin-options page
+            settings_fields( $fieldgroup );
+            do_settings_sections( $page );
+        }
+    }
 
+
+
+
+    /**
+     * Option page footer html
+     */
+     function wp_startup_optionpage_html_footer(){
+        echo '<p><a href="https://webdesigndenhaag.net" target="_blank"><img src="https://img.shields.io/badge/Made by-Webdesign Den Haag-blue.svg" alt="Webbouwer Webdesign Den Haag" /></a> <a href="https://github.com/webbouwer/wp-startup" target="_blank"><img src="https://img.shields.io/badge/WP--startup-@github-lightgrey.svg" alt="Github repo" /></a> <a href="https://github.com/webbouwer" target="_blank"><img src="https://img.shields.io/badge/Webbouwer-@github-lightgrey.svg" alt="Webbouwer github" /></a></p>';// http://shields.io/#your-badge
+     }
 
 
     /**

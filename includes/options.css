@@ -1,0 +1,39 @@
+/**
+ * WP startup optionspage stylesheet
+ */
+
+.nav-view
+{
+    display:block !important;
+    float:right;
+    color:#232323;
+    background-color: #e3e3e3;
+    padding:3px 6px;
+    border:1px solid #c4c4c4;
+}
+.nav-view.active
+{
+}
+
+
+.nav-view:after
+{
+    content:'list';
+}
+.nav-view.active:after
+{
+    content:'tabs';
+}
+
+.tabs{
+    padding:5px 18px 10px;
+    border-bottom:1px solid #c4c4c4;
+}
+.nav-tab-wrapper a.nav-tab{
+    background-color: #e3e3e3;
+    color:#444444;
+}
+.nav-tab-wrapper a.nav-tab.nav-tab-active{
+    background-color:transparent;
+    color:#232323;
+}

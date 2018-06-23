@@ -3,12 +3,13 @@
 Plugin Name: WP Startup
 Plugin URI:  https://github.com/webbouwer/wp-startup
 Description: Do more with a basic WP install
-Version:     0.3
+Version:     0.3.1
 Author:      Webbouwer
 Author URI:  http://webdesigndenhaag.net
 Text Domain: wp-startup
 License:     © Oddsized All rights reserved
 License URI: http://webdesigndenhaag.net
+Github Plugin URI: webbouwer/wp-startup
 */
 
 /**
@@ -17,6 +18,11 @@ License URI: http://webdesigndenhaag.net
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+/**
+ * Define WP Satrtup plugin url
+ */
+define( 'WPSTARTUP_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 /**
  * Includes
@@ -63,6 +69,9 @@ class WPstartup{
 
         // add admin hooks
         add_action( 'admin_menu', array( $this, 'wp_startup_admin_menu' ) );
+
+        // add backend scripts
+        add_action( 'admin_enqueue_scripts', array( $this, 'wp_startup_admin_style' ) );
 
     }
 
@@ -156,7 +165,18 @@ class WPstartup{
         }
     }
 
+    /**
+     * Enqueue admin optionpage javascript
+     */
+    function wp_startup_admin_style() {
+       $page_id = str_replace( "toplevel_page_", "", get_current_screen()->id ); // toplevel_page_wp_startup_optionpage
+       $pages = $this->data->pages;
 
+       if( isset( $pages[$page_id] )  ) {
+          wp_enqueue_style( 'wp-startup-options-css', WPSTARTUP_PLUGIN_URL . 'includes/options.css', array(), null );
+          wp_enqueue_script( 'wp-startup-options-js', WPSTARTUP_PLUGIN_URL . 'includes/options.js', array( 'jquery' ), null, true );
+       }
+    }
 
     /**
      * Innitiate plugin options
