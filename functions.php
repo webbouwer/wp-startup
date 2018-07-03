@@ -28,7 +28,69 @@ function wp_startup_pagethemes_func(){
     // Add widget param check for empty html correction
     add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
 
+    // theme functions.php
+    add_action('wp_ajax_filter_posts', 'wp_startup_ajax_filter_get_posts');
+    // theme functions.php
+    add_action('wp_ajax_nopriv_filter_posts', 'wp_startup_ajax_filter_get_posts');
+
 }
+
+
+
+
+/**
+ * Theme functions
+ * AJAX filter get posts
+ * action in wp_startup_pagethemes_func()
+ * Blog theme
+ */
+function wp_startup_ajax_filter_get_posts(){
+
+    // Verify nonce
+    if( !isset( $_POST['afp_nonce'] ) || !wp_verify_nonce( $_POST['afp_nonce'], 'afp_nonce' ) )
+    die('Permission denied');
+
+    // verify request data
+
+    // id? -> get single post
+    // cats? -> if array -> cats to cvs
+    // tags? -> if array -> tags to cvs
+
+    // prepare response
+    $response = $_REQUEST;
+
+    /*
+    $taxonomy = $_POST['taxonomy'];
+
+    // WP Query
+    $args = array(
+        //'tag' => $taxonomy,
+        'post_type' => 'post',
+        'posts_per_page' => 10,
+    );
+    // If taxonomy is not set, remove key from array and get all posts
+    if( !$taxonomy ) {
+        unset( $args['tag'] );
+    }
+    $query = new WP_Query( $args );
+    $resp = array();
+    if ( $query->have_posts() ) : while ( $query->have_posts() ) : $query->the_post();
+        $resp[get_the_ID()] = array( 'link' => get_the_permalink(), 'title' => get_the_title(), 'excerpt' => get_the_excerpt() , 'content' => get_the_content() ) ;
+    endwhile;
+    else:
+       $resp[0] = 'No posts found';
+    endif;
+    */
+
+    wp_reset_query();
+    ob_clean();
+    echo json_encode($response);
+    wp_die();
+}
+
+
+
+
 
 /**
  * Register Theme and (default) Support

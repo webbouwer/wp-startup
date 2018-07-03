@@ -23,7 +23,8 @@ function wp_startup_dashboard_github_widget_content() {
 	if(count($events) > 0){
 	echo '<ul>';
 	foreach(array_slice($events, 0, 5) as $event){
-		if($event->payload->commits[0]->message != ''){
+
+		if( isset( $event->payload->commits[0] ) && $event->payload->commits[0]->message != ''){
 		echo '<li><b>'.$event->payload->commits[0]->message.'</b><br />';
 		echo '<small>'.$event->type.' '.$event->created_at.' by <a href="https://github.com/'.$event->actor->login.'" target="_blank">'.$event->payload->commits[0]->author->name.'</a></small></li>';
 		}
