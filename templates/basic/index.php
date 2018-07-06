@@ -64,13 +64,13 @@ function wpstartup_menu_html( $menu ){
 // theme html output widget area's by type or default
 function wpstartup_widgetarea_html( $id, $type = false ){
     if( isset($id) && $id != '' ){
-        if( function_exists('dynamic_sidebar') && function_exists('is_sidebar_active') && is_sidebar_active( $id ) ){
+        if( function_exists('dynamic_sidebar') && function_exists('wp_startup_is_sidebar_active') && wp_startup_is_sidebar_active( $id ) ){
             $class = 'widgetbox';
             if( isset($type) && $type != '' ){
                 $class = 'widgetbox widget-'.$type;
                 echo '<div id="'.$id.'" class="'.$class.'">';
             }else{
-                echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.is_sidebar_active( $id ).'">';
+                echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.wp_startup_is_sidebar_active( $id ).'">';
             }
             dynamic_sidebar( $id );
             echo '<div class="clr"></div></div>';
@@ -152,7 +152,7 @@ function wp_startup_get_frontpage_sections(){
                 <?php
 
                 // upperbar
-                if( is_sidebar_active( 'topbar-widget-1' ) ){
+                if( wp_startup_is_sidebar_active( 'topbar-widget-1' ) ){
                     echo '<div id="upperbar"><div class="outermargin">';
                     wpstartup_widgetarea_html( 'topbar-widget-1' );
                     echo '<div class="clr"></div></div></div>';
@@ -172,7 +172,7 @@ function wp_startup_get_frontpage_sections(){
                 }
 
                 // topbar side widgets
-                if( is_sidebar_active( 'topbar-widget-2' ) ){
+                if( wp_startup_is_sidebar_active( 'topbar-widget-2' ) ){
                     wpstartup_widgetarea_html( 'topbar-widget-2' );
                 }
                 echo '<div class="clr"></div></div></div>';
@@ -184,10 +184,10 @@ function wp_startup_get_frontpage_sections(){
                     echo '<div id="header">';
                 }
                 echo '<div class="outermargin">';
-                if( is_sidebar_active( 'header-widget-1' ) ){
+                if( wp_startup_is_sidebar_active( 'header-widget-1' ) ){
                 wpstartup_widgetarea_html( 'header-widget-1' );
                 }
-                if( is_sidebar_active( 'header-widget-2' ) ){
+                if( wp_startup_is_sidebar_active( 'header-widget-2' ) ){
                 wpstartup_widgetarea_html( 'header-widget-2' );
                 }
                 echo '<div class="clr"></div></div></div>';
@@ -214,10 +214,10 @@ function wp_startup_get_frontpage_sections(){
                     echo '<div class="clr"></div>';
                 }
 
-                echo '<div id="maincontainer"><div class="outermargin"><div id="maincontent">';
+                echo '<div id="maincontainer"><div class="outermargin"><div id="maincontentbox">';
 
 
-                   if( is_sidebar_active( 'before-widget' ) ){ ?>
+                   if( wp_startup_is_sidebar_active( 'before-widget' ) ){ ?>
                     <div id="before-content">
                         <?php wpstartup_widgetarea_html( 'before-widget' ); ?>
                     </div>
@@ -266,7 +266,7 @@ function wp_startup_get_frontpage_sections(){
                         ?>
                         </section>
 
-                        <?php if( is_sidebar_active( 'after-widget' ) ){ ?>
+                        <?php if( wp_startup_is_sidebar_active( 'after-widget' ) ){ ?>
                         <div id="after-content">
                             <?php wpstartup_widgetarea_html( 'after-widget' ); ?>
                         </div>
@@ -280,7 +280,7 @@ function wp_startup_get_frontpage_sections(){
 
                 echo '<div class="clr"></div></div>';
 
-                echo '<div id="sidecontent">';
+                echo '<div id="sidecontentbox">';
 
                     echo '<div id="sidemenu">';
                     if( has_nav_menu('side') ){
