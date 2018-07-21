@@ -1,5 +1,5 @@
 <?php
-
+// todo.. https://www.wpbeginner.com/wp-tutorials/25-extremely-useful-tricks-for-the-wordpress-functions-file/
 /**
  * WP startup Page themes
  */
@@ -100,6 +100,10 @@ function wp_startup_theme_global_func() {
 
     // add_theme_support()
 	// add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
+
+    add_theme_support( 'title-tag' );
+	//add_theme_support( 'automatic-feed-links' );
+	add_theme_support( 'custom-header' );
     add_theme_support( 'custom-background' );
 
 }
@@ -139,6 +143,13 @@ function wp_startup_theme_deregister_func() {
   wp_deregister_style('twentysixteen-fonts');
   wp_deregister_style('twentyfifteen-style');
   wp_deregister_style('twentyfifteen-fonts');
+
+  wp_dequeue_style('twentyseventeen-style');
+  wp_dequeue_style('twentyseventeen-fonts');
+  wp_dequeue_style('twentysixteen-style');
+  wp_dequeue_style('twentysixteen-fonts');
+  wp_dequeue_style('twentyfifteen-style');
+  wp_dequeue_style('twentyfifteen-fonts');
 
 }
 

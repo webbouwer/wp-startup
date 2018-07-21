@@ -1,0 +1,115 @@
+
+/** basic style */
+html,body,ul,h1,h2,h3,h4,h5,h6
+{
+padding:0;
+margin:0;
+}
+
+html,
+body
+{
+width:100%;
+}
+
+#pagecontainer
+{
+display:block;
+position:relative;
+width:100%;
+min-height:100%;
+}
+
+
+
+.clr
+{
+clear:both;
+height:0;
+font-size:0;
+}
+
+p
+{
+}
+
+h1,h2,h3,h4,h5,h6
+{
+line-height:140%;
+}
+
+.page img,
+.post img
+{
+height:auto;
+max-width:100%;
+}
+
+.one-column #maincontentbox,
+.one-column #sidecontentbox,
+.two-column #maincontentbox,
+.two-column #sidecontentbox
+{
+width: 100%;
+text-align:center;
+}
+
+
+/* medium screen layout */
+@media screen and (min-width: 780px) {
+
+
+
+.outermargin,
+.wrap
+{
+margin:0px auto;
+width:96%;
+max-width:1280px;
+}
+
+#maincontentbox .panel-content > .wrap
+{
+margin:0;
+}
+
+#topmenu ul > li,
+#topcontent  ul.menu > li,
+#mainmenu  ul > li,
+#bottommenu ul > li,
+#footerend #socialmenu ul > li
+{
+display: inline-block;
+}
+
+#toplogobox,
+#topmenubox
+{
+display: inline-block;
+}
+
+
+
+.one-column #maincontentbox,
+.one-column #sidecontentbox
+{
+width: 100%;
+text-align:center;
+}
+
+.two-column #maincontentbox
+{
+float: left;
+width: 68%;
+}
+.two-column #sidecontentbox
+{
+float: right;
+width: 32%;
+}
+
+
+
+
+
+}
