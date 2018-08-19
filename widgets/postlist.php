@@ -162,7 +162,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		if ( has_post_thumbnail() && $dsp_image != 'none' ) {
 			$align = 'align-'.$dsp_image;
 			// check oriëntation
-			$orient = check_image_orientation( get_the_ID() );
+			$orient = wp_startup_check_image_orientation( get_the_ID() );
 			echo get_the_post_thumbnail( get_the_ID(), 'medium', array( 'class' => $align.' '.$orient )); //the_post_thumbnail('big-thumb');
 
     	}
@@ -172,7 +172,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		if( $excerptlength != 0 ){
 
 		echo '<p>';
-		the_excerpt_length( $excerptlength, false );
+		wp_startup_the_excerpt_length( $excerptlength, false );
 		echo '</p>';
 
 		}

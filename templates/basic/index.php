@@ -2,7 +2,29 @@
 // remove the default common theme styles (comment out to keep)
 add_action('wp_print_styles', 'wp_startup_theme_deregister_func', 100);
 
-// theme html output menu's by name (str or array)
+// header textcolor
+$header_text_color = get_header_textcolor();
+
+
+// theme html output toplogo (custom_logo) or site title home link
+function wpstartup_toplogo_html(){
+    if( get_theme_mod('custom_logo', '') != '' ){
+        $custom_logo_id = get_theme_mod('custom_logo');
+        $custom_logo_attr = array(
+            'class'    => 'custom-logo',
+            'itemprop' => 'logo',
+        );
+        echo sprintf( '<a href="%1$s" class="custom-logo-link image" rel="home" itemprop="url">%2$s</a>',
+        esc_url( home_url( '/' ) ),
+        wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr )
+        );
+    }else{
+        echo sprintf( '<a href="%1$s" class="custom-logo-link text" rel="home" itemprop="url">%2$s</a>',
+        esc_url( home_url( '/' ) ),
+        esc_attr( get_bloginfo( 'name', 'display' ) ) //get_bloginfo( 'description' )
+        );
+    }
+}
 // theme html output menu's by name (str or array)
 function wpstartup_menu_html( $menu ){
     if( $menu != '' || is_array( $menu ) ){
@@ -71,7 +93,7 @@ function wpstartup_widgetarea_html( $id, $type = false ){
         // including post featured image or default header image
         $header_image = get_header_image();
         if( has_post_thumbnail( $post->ID )) { //the post does not have featured image, use a default image
-			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'medium' );
+			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
 			echo '<meta property="og:image" content="' . esc_attr( $thumbnail_src[0] ) . '"/>';
             $header_image = esc_attr( $thumbnail_src[0] );
 		}
@@ -83,42 +105,47 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 
     //echo '<script type="text/javascript" src="'.get_site_url().'/wp-includes/js/jquery/jquery.js?ver=1.4.1"></script>';
     //echo '<script type="text/javascript" src="'.get_site_url().'/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1"></script>';
-    if ( ! isset( $content_width ) ) $content_width = 360; // mobile first
+    if ( ! isset( $content_width ) ) $content_width = 320; // mobile first
     echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.plugins_url().'/wp-startup/templates/basic/style.css" type="text/css" media="all" />';
 ?>
 <script>
 jQuery( function($){
-    var menu = $('#topmenubox .nav-menu');
+    var menu = $('#topmenubox .nav-menu').after('<div id="slidemenutoggle"><a class="toggle" href="#menu">menu</a></div>');
     var items = $('#topmenubox .nav-menu a');
-    menu.after('<div id="slidemenutoggle">menu</div>');
+    var toggle = $('#slidemenutoggle .toggle');
+    items.hide();
+    menu.css({ top: '-100%' });
+    toggle.toggle(
+        function(event) {
 
-    menu.animate({ opacity : 0 }, 'fast', function() {
-                items.hide();
-                $('#slidemenutoggle').html('menu');
-                menu.css({ 'bottom' : '-100%'  });
-    });
-
-    $('#slidemenutoggle').toggle(
-        function() {
-
-            menu.css({ 'bottom' : '0px'  });
+            if (event.preventDefault) {
+				event.preventDefault();
+			} else {
+				event.returnValue = false;
+			}
 
             var c = 0;
+            menu.css({ top: '0%' });
+            $('body').css({ 'overflow': 'hidden' });
             items.each( function( idx,obj ){
                 c++;
                 setTimeout(function(){
                     $(obj).fadeIn(600);
                 }, c * 100);
             });
-
             menu.animate({ opacity: 1 }, 300, function() {
-                $('#slidemenutoggle').html('close');
+                toggle.html('close');
             });
         },
-        function() {
+        function(event) {
 
-            menu.css({ 'bottom' : '0px'  });
+            if (event.preventDefault) {
+				event.preventDefault();
+			} else {
+				event.returnValue = false;
+			}
             var c = 0;
+            $('body').css({ 'overflow': 'auto' });
             items.each( function( idx,obj ){
                 c++;
                 setTimeout(function(){
@@ -127,8 +154,8 @@ jQuery( function($){
             });
             setTimeout(function(){
                 menu.animate({ opacity: 0 }, 300, function() {
-                    $('#slidemenutoggle').html('menu');
-                    menu.css({ 'bottom' : '-100%'  });
+                    toggle.html('menu');
+                    menu.css({ top: '-100%' });
                 });
             }, 600 );
         }
@@ -145,26 +172,15 @@ jQuery( function($){
 
     <div id="pagecontainer">
 
-        <div id="topcontainer">
+        <div id="topcontainer"><div class="outermargin">
         <?php
         echo '<div id="toplogobox">';
-        if( get_theme_mod('custom_logo', '') != '' ){
-            $custom_logo_id = get_theme_mod('custom_logo');
-            $custom_logo_attr = array(
-                'class'    => 'custom-logo',
-                'itemprop' => 'logo',
-            );
-            echo sprintf( '<a href="%1$s" class="custom-logo-link image" rel="home" itemprop="url">%2$s</a>',
-            esc_url( home_url( '/' ) ),
-            wp_get_attachment_image( $custom_logo_id, 'full', false, $custom_logo_attr )
-            );
-        }else{
-            echo sprintf( '<a href="%1$s" class="custom-logo-link text" rel="home" itemprop="url">%2$s</a>',
-            esc_url( home_url( '/' ) ),
-            esc_attr( get_bloginfo( 'name', 'display' ) ) //get_bloginfo( 'description' )
-            );
-        }
+        wpstartup_toplogo_html();
         echo '</div>';
+
+            wpstartup_widgetarea_html( 'topbar-widget-1' );
+            wpstartup_widgetarea_html( 'topbar-widget-2' );
+
         if( has_nav_menu('top') || has_nav_menu('primary') ){
                     // topbar menu is top & primary || default menu
                     $topmenu = array( 'top', 'primary' );
@@ -175,15 +191,22 @@ jQuery( function($){
         echo '<div class="clr"></div></div>';
         }
         ?>
-        </div>
+        <div class="clr"></div></div></div>
 
-        <?php if ( isset($header_image) && $header_image != ''){
-        echo  '<div id="headercontainer" class="header_image" style="background-image:url('.$header_image.');background-position:center;background-size:cover;min-height:90px;">';
+        <?php
 
-        echo '<div class="clr"></div></div>';
+        if ( isset($header_image) && $header_image != ''){
+            echo  '<div id="headercontainer" class="header_image" style="background-image:url('.$header_image.');">';
+
+            wpstartup_widgetarea_html( 'header-widget-1' );
+            wpstartup_widgetarea_html( 'header-widget-2' );
+
+            echo '<div class="clr"></div></div>';
         }
 
-        echo '<div id="maincontainer" class="'.get_theme_mod('page_layout', 'one-column').'"><div class="outermargin"><div id="maincontentbox">';
+        echo '<div id="maincontainer" class="'.get_theme_mod('page_layout', 'one-column').'"><div class="outermargin">';
+
+        echo '<div id="maincontentbox">';
 
 
                    if( wp_startup_is_sidebar_active( 'before-widget' ) ){ ?>
@@ -203,8 +226,9 @@ jQuery( function($){
 
                                             <?php
                                             //the_post_thumbnail('big-thumb');
-                                            //echo get_the_post_thumbnail( get_the_ID(), 'big-thumb', array( 'class' => 'post-image' ));
-
+                                            if( !is_single() && !is_page() ){
+                                                echo get_the_post_thumbnail( get_the_ID(), 'medium', array( 'class' => 'post-image' ));
+                                            }
                                             ?>
 
                                             <header class="entry-header">
@@ -240,29 +264,32 @@ jQuery( function($){
                             <?php wpstartup_widgetarea_html( 'after-widget' ); ?>
                         </div>
                         <?php }
-
-
                 echo '<div class="clr"></div></div>';
+
 
                 echo '<div id="sidecontentbox">';
-
                     if( has_nav_menu('side') ){
-                    echo '<div id="sidemenu">';
-                        // side menu
                         wpstartup_menu_html( 'side' );
-                    echo '<div class="clr"></div></div>';
                     }
-
-                    dynamic_sidebar('sidebar');
+                    //dynamic_sidebar('sidebar');
+                    wpstartup_widgetarea_html( 'sidebar' );
 
                 echo '<div class="clr"></div></div>';
 
-
-                echo '<div class="clr"></div></div></div>';
+        echo '<div class="clr"></div></div></div>';
         ?>
 
-        <div id="bottomcontainer">
-        </div>
+        <div id="bottomcontainer"><div class="outermargin">
+            <?php
+            wpstartup_widgetarea_html( 'bottom-widget-1' );
+            wpstartup_widgetarea_html( 'bottom-widget-2' );
+            if( has_nav_menu('bottom') ){
+                wpstartup_menu_html( 'bottom' );
+            }
+            wpstartup_widgetarea_html( 'footer-widget-1' );
+            wpstartup_widgetarea_html( 'footer-widget-2' );
+            ?>
+        <div class="clr"></div></div></div>
 
     </div>
 

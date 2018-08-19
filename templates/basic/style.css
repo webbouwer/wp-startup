@@ -11,26 +11,53 @@ padding:0;
 html,
 body
 {
+height:100%;
 width:100%;
 }
-
+.clr
+{
+clear:both;
+height:0;
+font-size:0;
+}
 img
 {
 max-width:100%;
 }
 
+.outermargin
+{
+position:relative;
+max-width:960px;
+width:96%;
+margin:0px auto;
+}
+
+#topcontainer
+{
+position: relative;
+}
+#headercontainer
+{
+position: relative;
+min-height:320px;
+background-position:center;
+background-size:cover;
+}
 
 /* slide Menu */
 #toplogobox
 {
-float:left;
 position : relative;
+float:left;
 z-index:999;
 }
 #topmenubox
 {
+position : relative;
 float:right;
 }
+
 #topmenubox .nav-menu
 {
 position: fixed;
@@ -44,8 +71,56 @@ z-index:98;
 opacity:0;
 background-color:rgba(0, 0, 0, 0.8);
 }
+
+#topmenubox .nav-menu ul
+{
+position : relative;
+}
+
 #slidemenutoggle
 {
 position : relative;
 z-index:99;
+}
+
+#topmenubox .nav-menu li:first-child
+{
+margin-top: 120px;
+}
+
+
+
+/* default (mobile) */
+#toplogobox a,
+#slidemenutoggle a,
+.menu li,
+h1,h2,h3
+{
+display:block;
+padding:5px 0px;
+}
+
+
+
+/* medium screen layout */
+@media screen and (min-width: 580px) {
+
+#headercontainer
+{
+position: relative;
+min-height:480px;
+background-position:center;
+background-size:cover;
+}
+
+#maincontainer.two-column #maincontentbox
+{
+float:left;
+width:74%;
+}
+#maincontainer.two-column #sidecontentbox
+{
+float:right;
+width:26%;
+}
 }
