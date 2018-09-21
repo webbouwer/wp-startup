@@ -58,7 +58,7 @@ function wpstartup_theme_stylesheet(){
 </head>
 <body <?php body_class(); ?>>
      <div id="pagecontainer" class="site">
-<?php echo 'This the basic template'; ?>
+<?php echo '<h1>Blank page template</h1><p>This is page is blank, add your code here (html/css/javascript/php)</p>'; ?>
     </div>
 <?php wp_footer(); ?>
 </body>

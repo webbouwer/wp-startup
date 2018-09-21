@@ -498,7 +498,25 @@ class WPstartupData{
      */
     public function wp_startup_maintheme_option_settings_field(){
         $options = get_option( 'wp_startup_maintheme_option' );
-        echo '<p><input name="wp_startup_maintheme_option" id="wp_startup_maintheme_option" type="checkbox" value="1" class="code" '.checked( 1, $options, false ).' /> Enable the Main WP Startup Theme overwriting the selected or default theme.</p>';
+        //echo '<p><input name="wp_startup_maintheme_option" id="wp_startup_maintheme_option" type="checkbox" value="1" class="code" '.checked( 1, $options, false ).' /> Enable the Main WP Startup Theme overwriting the selected or default theme.</p>';
+
+        echo '<p><select id="wp_startup_maintheme_option" name="wp_startup_maintheme_option" class="code">';
+        echo '<option value="0">No overwrite</option>';
+        $templatefolder = WP_PLUGIN_DIR.'/wp-startup/templates/';
+        $dirs = array_filter( glob( $templatefolder."*" ), 'is_dir');
+        $templates = [];
+        foreach ($dirs as $themefolder) {
+            $path = pathinfo( $themefolder );
+            $templates[ $path['basename']."/index.php" ] = $path['filename'];
+            $slc = '';
+            if( $options == $path['filename'] ){
+                $slc = ' selected';
+            }
+            echo '<option value="'.$path['filename'].'"'.$slc.'>'.$path['filename'].'</option>';
+        }
+        //print_r($templates);
+        echo '</select>Enable the Main WP Startup Theme overwriting the selected or default theme.</p>';
+
     }
     public function wp_startup_maintheme_option_init(){
         /*if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) == true ){

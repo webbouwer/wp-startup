@@ -120,7 +120,8 @@ class PageTemplater {
         // Return page template if we have a custom one defined
 		if ( isset( $this->templates[get_post_meta(
 			$post->ID, '_wp_page_template', true
-		)] ) ) {
+		)] )
+           ) {
             // Get the page template
             $filepath = apply_filters( 'page_templater_plugin_dir_path',  plugin_dir_path( __FILE__ ) .'templates/' );
             $file =  $filepath . get_post_meta(
@@ -128,17 +129,18 @@ class PageTemplater {
             );
             // Just to be safe, we check if the file exist first
             if ( file_exists( $file ) ) {
-                return $file;
-            } else {
-                echo $file;
-            }
-		}
+                //return $file;
+                $template = $file;
+            } //else {
+                //echo $file;
+            //}
+		}else
         // get theme settings
         // theme overwrite on?
         // from customizer option (or plugin)
         // load the basic theme if selected
-        if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) == true ){
-            $template = plugin_dir_path( __FILE__ ) .'templates/basic/index.php';
+        if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) != '0' && get_option( 'wp_startup_maintheme_option' ) != '1'){
+            $template = plugin_dir_path( __FILE__ ) .'templates/'.get_option( 'wp_startup_maintheme_option' ).'/index.php';
         }
 
 		// Return template
