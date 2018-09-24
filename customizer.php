@@ -47,16 +47,16 @@ function wp_startup_add_customizer_options_templates(){
 
 
         // Elements mods
-        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_topbar' , array(
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_upperbar' , array(
 		'default' => 'show',
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
-        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_topbar', array(
-                'label'          => __( 'Topbar', 'wp-startup' ),
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_upperbar', array(
+                'label'          => __( 'Upperbar', 'wp-startup' ),
                 'section'        => 'wp_startup_theme_panel_elements',
-                'settings'       => 'wp_startup_theme_panel_elements_topbar',
+                'settings'       => 'wp_startup_theme_panel_elements_upperbar',
                 'type'           => 'select',
-                'description'    => __( 'Topbar display in WP startup page themes', 'wp-startup' ),
+                'description'    => __( 'Upperbar contact/identity display in WP startup themes', 'wp-startup' ),
                 'choices'        => array(
                     'hide'   => __( 'Hide', 'wp-startup' ),
                     'show'   => __( 'Show', 'wp-startup' ),

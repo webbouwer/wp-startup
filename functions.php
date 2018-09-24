@@ -164,6 +164,15 @@ function wp_startup_widgets_init_func() {
     ) );
     // mainsidebar
 
+    register_sidebar( array(
+        'name' => __( 'Sidebar', 'wp-startup' ),
+        'id' => 'sidebar-widget',
+        'description'   => 'Sidebar content widgets wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">',
+    ) );
 
     register_sidebar( array(
         'name' => __( 'Subcontent widget 1', 'wp-startup' ),
@@ -274,8 +283,8 @@ function wp_startup_keep_category_hierarchy_func(){
  */
 function wp_startup_phpintextwidget_func(){
 
-    add_filter('widget_text','php_execute',100);
-    function php_execute($html){
+    add_filter('widget_text','wp_startup_php_execute',100);
+    function wp_startup_php_execute($html){
         if(strpos($html,"<"."?php")!==false){ ob_start(); eval("?".">".$html);
             $html=ob_get_contents();
             ob_end_clean();
@@ -316,9 +325,9 @@ function wp_startup_disable_wp_emojicons_func() {
   remove_filter( 'wp_mail', 'wp_staticize_emoji_for_email' );
   remove_filter( 'the_content_feed', 'wp_staticize_emoji' );
   remove_filter( 'comment_text_rss', 'wp_staticize_emoji' );
-  add_filter( 'tiny_mce_plugins', 'disable_emojicons_tinymce' ); // filter to remove TinyMCE emojis
+  add_filter( 'tiny_mce_plugins', 'wp_startup_disable_emojicons_tinymce' ); // filter to remove TinyMCE emojis
 }
-function disable_emojicons_tinymce( $plugins ) {
+function wp_startup_disable_emojicons_tinymce( $plugins ) {
   if ( is_array( $plugins ) ) {
     return array_diff( $plugins, array( 'wpemoji' ) );
   } else {

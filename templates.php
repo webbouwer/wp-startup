@@ -11,6 +11,12 @@ class PageTemplater {
 	 * The array of templates that this plugin tracks.
 	 */
 	protected $templates;
+
+	/**
+	 * The array of templates customizer files belonging to the tracked templates.
+	 */
+	public $customizers;
+
 	/**
 	 * Returns an instance of this class.
 	 */
@@ -66,7 +72,7 @@ class PageTemplater {
         add_action( 'customize_register', array( $this,  'wp_startup_customizer_register_project_templates' ), 11 );
 
         //wp_startup_customizer_register_project_templates
-        // add theme theming
+        // enable this function disable blank pages (without post loops)
         //add_filter('template_include', array( $this ,'wp_startup_template_file_replacements' ) );
 	}
 	/**
@@ -139,24 +145,28 @@ class PageTemplater {
 	}
     /**
      * Inject template files to replace common files
+
     public function wp_startup_template_file_replacements( $template ){
         // source above and  https://wordpress.stackexchange.com/questions/72544/how-can-i-use-a-file-in-my-plugin-as-a-replacement-for-single-php-on-custom-post
+
         if(  !is_front_page() && 'single-post.php' != $template ){ // catch all other than pages //..is_singular('post')
-            $template = plugin_dir_path( __FILE__ ) .'templates/basic-template.php';
+            $template = plugin_dir_path( __FILE__ ) .'templates/basic/index.php';
         }
         return $template;
     }
-    */
+     */
+
+
      /**
      * Adjust customizer
      * https://kb.wpbeaverbuilder.com/article/357-remove-a-customizer-panel
      */
     public function wp_startup_customizer_register_project_templates() {
-        // default sections: title_tagline, colors, header_image, background_image, nav, and static_front_page
 
         // load customizer options
         require_once( 'customizer.php' );
         wp_startup_add_customizer_options_templates();
+
 
     }
 }

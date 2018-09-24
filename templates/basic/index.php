@@ -143,13 +143,24 @@ function wp_startup_get_frontpage_sections(){
                 <?php
 
                 // upperbar
-                if( wp_startup_is_sidebar_active( 'topbar-widget-1' ) ){
+                if( get_theme_mod('wp_startup_theme_panel_elements_upperbar', 'hide') == 'show'){
                     echo '<div id="upperbar"><div class="outermargin">';
-                    wpstartup_widgetarea_html( 'topbar-widget-1' );
+                    if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''){
+                    echo '<a href="mailto:'.get_theme_mod('wp_startup_theme_panel_content_email').'">'.get_theme_mod('wp_startup_theme_panel_content_email').'</a>';
+                    }
+                    if( get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
+                    echo '<a href="tel:'.get_theme_mod('wp_startup_theme_panel_content_telephone').'">'.get_theme_mod('wp_startup_theme_panel_content_telephone').'</a>';
+                    }
+
                     echo '<div class="clr"></div></div></div>';
                 }
 
                 echo '<div id="topbar"><div class="outermargin">';
+
+                if( wp_startup_is_sidebar_active( 'topbar-widget-1' ) ){
+                    wpstartup_widgetarea_html( 'topbar-widget-1' );
+                }
+
                 // topbar logo
                 echo '<div id="toplogobox">';
                 wpstartup_toplogo_html();
@@ -284,6 +295,13 @@ function wp_startup_get_frontpage_sections(){
                     }else{
                         wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) );
                     }
+
+                    if( wp_startup_is_sidebar_active( 'sidebar-widget' ) ){ ?>
+                    <div id="sidebarcontent">
+                        <?php wpstartup_widgetarea_html( 'sidebar-widget' ); ?>
+                    </div>
+                    <?php }
+
                     echo '<div class="clr"></div></div>';
 
                 echo '<div class="clr"></div></div>';
@@ -308,6 +326,8 @@ function wp_startup_get_frontpage_sections(){
                     // main menu
                     wpstartup_menu_html( 'bottom' );
                 }
+
+                echo get_theme_mod('wp_startup_theme_panel_content_copyright', 'copyright 2018');
 
                 wpstartup_widgetarea_html( 'footer-widget-1' );
                 wpstartup_widgetarea_html( 'footer-widget-2' );
