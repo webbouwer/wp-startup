@@ -26,7 +26,7 @@ function wp_startup_pagethemes_func(){
     add_action( 'widgets_init', 'wp_startup_widgets_init_func' );
 
     // Add widget param check for empty html correction
-    add_filter( 'dynamic_sidebar_params', 'check_sidebar_params' );
+    add_filter( 'dynamic_sidebar_params', 'wp_startup_check_sidebar_params' );
 
 }
 
@@ -333,13 +333,13 @@ function disable_emojicons_tinymce( $plugins ) {
  */
 function wp_startup_disable_gravatar_func(){
 
-    add_filter('bp_core_fetch_avatar', 'bp_remove_gravatar', 1, 9 );
-    add_filter('get_avatar', 'remove_gravatar', 1, 5);
-    add_filter('bp_get_signup_avatar', 'bp_remove_signup_gravatar', 1, 1 );
+    add_filter('bp_core_fetch_avatar', 'wp_startup_bp_remove_gravatar', 1, 9 );
+    add_filter('get_avatar', 'wp_startup_remove_gravatar', 1, 5);
+    add_filter('bp_get_signup_avatar', 'wp_startup_bp_remove_signup_gravatar', 1, 1 );
 
 }
 
-function bp_remove_gravatar ($image, $params, $item_id, $avatar_dir, $css_id, $html_width, $html_height, $avatar_folder_url, $avatar_folder_dir) {
+function wp_startup_bp_remove_gravatar ($image, $params, $item_id, $avatar_dir, $css_id, $html_width, $html_height, $avatar_folder_url, $avatar_folder_dir) {
 	$default = home_url().'/wp-includes/images/smilies/icon_cool.gif'; // get_stylesheet_directory_uri() .'/images/avatar.png';
 	if( $image && strpos( $image, "gravatar.com" ) ){
 		return '<img src="' . $default . '" alt="avatar" class="avatar" ' . $html_width . $html_height . ' />';
@@ -347,11 +347,11 @@ function bp_remove_gravatar ($image, $params, $item_id, $avatar_dir, $css_id, $h
 		return $image;
 	}
 }
-function remove_gravatar ($avatar, $id_or_email, $size, $default, $alt) {
+function wp_startup_remove_gravatar ($avatar, $id_or_email, $size, $default, $alt) {
 	$default = home_url().'/wp-includes/images/smilies/icon_cool.gif'; // get_stylesheet_directory_uri() .'/images/avatar.png';
 	return "<img alt='{$alt}' src='{$default}' class='avatar avatar-{$size} photo avatar-default' height='{$size}' width='{$size}' />";
 }
-function bp_remove_signup_gravatar ($image) {
+function wp_startup_bp_remove_signup_gravatar ($image) {
 	$default = home_url().'/wp-includes/images/smilies/icon_cool.gif'; //get_stylesheet_directory_uri() .'/images/avatar.png';
 	if( $image && strpos( $image, "gravatar.com" ) ){
 		return '<img src="' . $default . '" alt="avatar" class="avatar" width="60" height="60" />';
@@ -370,40 +370,40 @@ function bp_remove_signup_gravatar ($image) {
 
 
 // time ago
-function wp_time_ago( $t ) {
+function wp_startup_time_ago( $t ) {
     // https://codex.wordpress.org/Function_Reference/human_time_diff
     //get_the_time( 'U' )
-    printf( _x( '%s '.__('geleden','wp-startup'), '%s = human-readable time difference', 'imagazine' ), human_time_diff( $t, current_time( 'timestamp' ) ) );
+    printf( _x( '%s '.__('ago','wp-startup'), '%s = human-readable time difference', 'imagazine' ), human_time_diff( $t, current_time( 'timestamp' ) ) );
 }
 
 // words in excerpts
-function the_excerpt_length( $words = null, $links = true ) {
-		global $_the_excerpt_length_filter;
+function wp_startup_the_excerpt_length( $words = null, $links = true ) {
+		global $_wp_startup_the_excerpt_length_filter;
 		if( isset($words) ) {
-			$_the_excerpt_length_filter = $words;
+			$_wp_startup_the_excerpt_length_filter = $words;
 		}
-		add_filter( 'excerpt_length', '_the_excerpt_length_filter' );
+		add_filter( 'excerpt_length', '_wp_startup_the_excerpt_length_filter' );
 		if( $links == false){
 			echo preg_replace('/(?i)<a([^>]+)>(.+?)<\/a>/','', get_the_excerpt() );
 		}else{
 			the_excerpt();
 		}
-		remove_filter( 'excerpt_length', '_the_excerpt_length_filter' );
+		remove_filter( 'excerpt_length', '_wp_startup_the_excerpt_length_filter' );
 		// reset the global
-		$_the_excerpt_length_filter = null;
+		$_wp_startup_the_excerpt_length_filter = null;
 	}
 
-function _the_excerpt_length_filter( $default ) {
-    global $_the_excerpt_length_filter;
-    if( isset($_the_excerpt_length_filter) ) {
-        return $_the_excerpt_length_filter;
+function _wp_startup_the_excerpt_length_filter( $default ) {
+    global $_wp_startup_the_excerpt_length_filter;
+    if( isset($_wp_startup_the_excerpt_length_filter) ) {
+        return $_wp_startup_the_excerpt_length_filter;
     }
     return $default;
 }
 
 
 // image orient
-function check_image_orientation($pid){
+function wp_startup_check_image_orientation($pid){
 	$orient = 'square';
     $image = wp_get_attachment_image_src( get_post_thumbnail_id($pid), '');
     $image_w = $image[1];
@@ -419,7 +419,7 @@ function check_image_orientation($pid){
 }
 
 // get categories
-function get_categories_select(){
+function wp_startup_get_categories_select(){
     $get_cats = get_categories();
     $results;
     $count = count($get_cats);
@@ -434,7 +434,7 @@ function get_categories_select(){
 
 
 // check active widgets
-function is_sidebar_active( $sidebar_id ){
+function wp_startup_is_sidebar_active( $sidebar_id ){
     $the_sidebars = wp_get_sidebars_widgets();
     if( !isset( $the_sidebars[$sidebar_id] ) )
         return false;
@@ -443,7 +443,7 @@ function is_sidebar_active( $sidebar_id ){
 }
 
 // widget empty title content wrapper fix
-function check_sidebar_params( $params ) {
+function wp_startup_check_sidebar_params( $params ) {
     global $wp_registered_widgets;
     $settings_getter = $wp_registered_widgets[ $params[0]['widget_id'] ]['callback'][0];
     $settings = $settings_getter->get_settings();

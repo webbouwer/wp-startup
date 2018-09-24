@@ -231,7 +231,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		$post_category = '';
 		}
 
-		$catarr = get_categories_select();
+		$catarr = wp_startup_get_categories_select();
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'post_category' ); ?>">Posts category or related:</label>
 		<select name="<?php echo $this->get_field_name( 'post_category' ); ?>" id="<?php echo $this->get_field_id( 'post_category' ); ?>">

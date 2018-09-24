@@ -64,13 +64,13 @@ function wpstartup_menu_html( $menu ){
 // theme html output widget area's by type or default
 function wpstartup_widgetarea_html( $id, $type = false ){
     if( isset($id) && $id != '' ){
-        if( function_exists('dynamic_sidebar') && function_exists('is_sidebar_active') && is_sidebar_active( $id ) ){
+        if( function_exists('dynamic_sidebar') && function_exists('wp_startup_is_sidebar_active') && wp_startup_is_sidebar_active( $id ) ){
             $class = 'widgetbox';
             if( isset($type) && $type != '' ){
                 $class = 'widgetbox widget-'.$type;
                 echo '<div id="'.$id.'" class="'.$class.'">';
             }else{
-                echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.is_sidebar_active( $id ).'">';
+                echo '<div id="'.$id.'" class="'.$class.' columnbox colset'.wp_startup_is_sidebar_active( $id ).'">';
             }
             dynamic_sidebar( $id );
             echo '<div class="clr"></div></div>';
@@ -81,27 +81,19 @@ function wpstartup_widgetarea_html( $id, $type = false ){
         }
     }
 }
-// twentyseven frontpage sections
+// to use twentyseven frontpage sections
 function wp_startup_get_frontpage_sections(){
-
     $my_theme = wp_get_theme();
-
     if ( $my_theme->get( 'Name' ) ==  'Twenty Seventeen' ){
-
          if ( 0 !== twentyseventeen_panel_count()  ){ // ||  If we have pages to show.
-
-                                $num_sections = apply_filters( 'twentyseventeen_front_page_sections', 4 );
-                                global $twentyseventeencounter;
-
-                                for ( $i = 1; $i < ( 1 + $num_sections ); $i++ ) {
-                                    $twentyseventeencounter = $i;
-                                    twentyseventeen_front_page_section( null, $i );
-                                }
-
-        } else if( is_customize_preview() ){
-
+            $num_sections = apply_filters( 'twentyseventeen_front_page_sections', 4 );
+            global $twentyseventeencounter;
+            for ( $i = 1; $i < ( 1 + $num_sections ); $i++ ) {
+                $twentyseventeencounter = $i;
+                twentyseventeen_front_page_section( null, $i );
+            }
+        }else if( is_customize_preview() ){
             echo '<div align="center"> -- Customizer > Theme options:  add info sections -- </div>';
-
         }
     }
 }
@@ -113,7 +105,6 @@ function wp_startup_get_frontpage_sections(){
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="profile" href="http://gmpg.org/xfn/11">
-
 <?php
 
     if ( ! isset( $content_width ) ) $content_width = 360; // mobile first
@@ -152,7 +143,7 @@ function wp_startup_get_frontpage_sections(){
                 <?php
 
                 // upperbar
-                if( is_sidebar_active( 'topbar-widget-1' ) ){
+                if( wp_startup_is_sidebar_active( 'topbar-widget-1' ) ){
                     echo '<div id="upperbar"><div class="outermargin">';
                     wpstartup_widgetarea_html( 'topbar-widget-1' );
                     echo '<div class="clr"></div></div></div>';
@@ -172,7 +163,7 @@ function wp_startup_get_frontpage_sections(){
                 }
 
                 // topbar side widgets
-                if( is_sidebar_active( 'topbar-widget-2' ) ){
+                if( wp_startup_is_sidebar_active( 'topbar-widget-2' ) ){
                     wpstartup_widgetarea_html( 'topbar-widget-2' );
                 }
                 echo '<div class="clr"></div></div></div>';
@@ -184,10 +175,10 @@ function wp_startup_get_frontpage_sections(){
                     echo '<div id="header">';
                 }
                 echo '<div class="outermargin">';
-                if( is_sidebar_active( 'header-widget-1' ) ){
+                if( wp_startup_is_sidebar_active( 'header-widget-1' ) ){
                 wpstartup_widgetarea_html( 'header-widget-1' );
                 }
-                if( is_sidebar_active( 'header-widget-2' ) ){
+                if( wp_startup_is_sidebar_active( 'header-widget-2' ) ){
                 wpstartup_widgetarea_html( 'header-widget-2' );
                 }
                 echo '<div class="clr"></div></div></div>';
@@ -217,7 +208,7 @@ function wp_startup_get_frontpage_sections(){
                 echo '<div id="maincontainer"><div class="outermargin"><div id="maincontent">';
 
 
-                   if( is_sidebar_active( 'before-widget' ) ){ ?>
+                   if( wp_startup_is_sidebar_active( 'before-widget' ) ){ ?>
                     <div id="before-content">
                         <?php wpstartup_widgetarea_html( 'before-widget' ); ?>
                     </div>
@@ -243,7 +234,10 @@ function wp_startup_get_frontpage_sections(){
                                                     echo '<h2 class="entry-title">'.get_the_title().'</h2>';
                                                 }else{
                                                     echo '<h2 class="entry-title"><a href="'.get_the_permalink().'">'.get_the_title().'</a></h2>';
-                                                }?>
+                                                }
+                                                echo '<span class="date">'.wp_startup_time_ago(get_the_time( 'U' )).'</span>';
+
+                                                ?>
                                             </header>
 
                                             <div class="entry-content">
@@ -252,7 +246,8 @@ function wp_startup_get_frontpage_sections(){
                                                 echo get_the_content();
                                             }else{
                                                 echo '<p>';
-                                                the_excerpt_length( 15, true );  // the_excerpt();
+                                                $textlength = get_theme_mod('wp_startup_theme_panel_content_excerptlength', 15);
+                                                wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
                                                 echo '</p>';
                                             }
                                             ?>
@@ -266,7 +261,7 @@ function wp_startup_get_frontpage_sections(){
                         ?>
                         </section>
 
-                        <?php if( is_sidebar_active( 'after-widget' ) ){ ?>
+                        <?php if( wp_startup_is_sidebar_active( 'after-widget' ) ){ ?>
                         <div id="after-content">
                             <?php wpstartup_widgetarea_html( 'after-widget' ); ?>
                         </div>
@@ -287,7 +282,7 @@ function wp_startup_get_frontpage_sections(){
                         // main menu
                         wpstartup_menu_html( 'side' );
                     }else{
-                            wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) );
+                        wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) );
                     }
                     echo '<div class="clr"></div></div>';
 

@@ -55,21 +55,11 @@ class PageTemplater {
 		);
         */
         $templatefolder = WP_PLUGIN_DIR.'/wp-startup/templates/';
-
-        /** get the tempalte files and names (from main folder)
-        $files=glob( $templatefolder."*.php" );
-        foreach ($files as $file) {
-            $path = pathinfo($file);
-            $this->templates[$path['basename']] = $path['filename'];
-        }
-        */
-
         $dirs = array_filter( glob( $templatefolder."*" ), 'is_dir');
+
         foreach ($dirs as $themefolder) {
             $path = pathinfo( $themefolder );
-
             $this->templates[ $path['basename']."/index.php" ] = $path['filename'];
-
         }
 
         // add customizer customized
@@ -134,12 +124,12 @@ class PageTemplater {
             } //else {
                 //echo $file;
             //}
-		}else
-        // get theme settings
-        // theme overwrite on?
-        // from customizer option (or plugin)
-        // load the basic theme if selected
-        if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) != '0' && get_option( 'wp_startup_maintheme_option' ) != '1'){
+		}else if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) != '0' && get_option( 'wp_startup_maintheme_option' ) != '1'){
+
+            // get theme settings
+            // theme overwrite on?
+            // from customizer option (or plugin)
+            // load the basic theme if selected
             $template = plugin_dir_path( __FILE__ ) .'templates/'.get_option( 'wp_startup_maintheme_option' ).'/index.php';
         }
 
@@ -163,11 +153,11 @@ class PageTemplater {
      */
     public function wp_startup_customizer_register_project_templates() {
         // default sections: title_tagline, colors, header_image, background_image, nav, and static_front_page
-        //$wp_customize->remove_control('display_header_text');
-        //$wp_customize->remove_section('colors');
+
         // load customizer options
-        //require_once( 'customizer.php' );
-        //wp_startup_add_customizer_options_templates();
+        require_once( 'customizer.php' );
+        wp_startup_add_customizer_options_templates();
+
     }
 }
 
