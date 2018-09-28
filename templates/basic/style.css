@@ -1,9 +1,3 @@
-root {
-  --toplogo_position: left;
-
-  --sidebar_position: right;
-  --sidebar_width: 32;
-}
 
 /** basic style */
 html,body,ul,h1,h2,h3,h4,h5,h6
@@ -61,6 +55,7 @@ max-width:100%;
 .outermargin,
 .wrap
 {
+position:relative;
 margin:0px auto;
 width:96%;
 max-width:960px;
@@ -80,10 +75,36 @@ margin:0;
 display: inline-block;
 }
 
-#toplogobox,
+#upperbar
+{
+}
+#contactbox
+{
+position:absolute;
+right:0px;
+width:23%;
+z-index:99;
+}
+
+#sidebar ul li a,
+.emaillink,
+.tellink
+{
+display: block;
+padding:3px 6px;
+}
+#toplogobox
+{
+float:left;
+}
+#toplogobox img
+{
+max-width:120px !important;
+height: auto;
+}
 #topmenubox
 {
-display: inline-block;
+display: block;
 }
 
 
@@ -92,15 +113,19 @@ display: inline-block;
 #maincontent
 {
 float: left;
-width: 68%;
+width: 77%;
 }
 #sidecontent
 {
 float: right;
-width: 32%;
+width: 23%;
 }
 
-
+#maincontent .page,
+#maincontent .post
+{
+margin-right:3%;
+}
 
 
 

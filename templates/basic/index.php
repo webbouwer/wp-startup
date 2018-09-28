@@ -145,13 +145,17 @@ function wp_startup_get_frontpage_sections(){
                 // upperbar
                 if( get_theme_mod('wp_startup_theme_panel_elements_upperbar', 'hide') == 'show'){
                     echo '<div id="upperbar"><div class="outermargin">';
-                    if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''){
-                    echo '<a href="mailto:'.get_theme_mod('wp_startup_theme_panel_content_email').'">'.get_theme_mod('wp_startup_theme_panel_content_email').'</a>';
-                    }
-                    if( get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
-                    echo '<a href="tel:'.get_theme_mod('wp_startup_theme_panel_content_telephone').'">'.get_theme_mod('wp_startup_theme_panel_content_telephone').'</a>';
-                    }
 
+                    if( get_theme_mod('wp_startup_theme_panel_content_email', '') != '' || get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
+                        echo '<div id="contactbox">';
+                            if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''){
+                            echo '<a class="emaillink" href="mailto:'.get_theme_mod('wp_startup_theme_panel_content_email').'">'.get_theme_mod('wp_startup_theme_panel_content_email').'</a>';
+                            }
+                            if( get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
+                            echo '<a class="tellink" href="tel:'.get_theme_mod('wp_startup_theme_panel_content_telephone').'">'.get_theme_mod('wp_startup_theme_panel_content_telephone').'</a>';
+                            }
+                        echo '<div class="clr"></div></div>';
+                    }
                     echo '<div class="clr"></div></div></div>';
                 }
 
@@ -258,7 +262,9 @@ function wp_startup_get_frontpage_sections(){
                                             }else{
                                                 echo '<p>';
                                                 $textlength = get_theme_mod('wp_startup_theme_panel_content_excerptlength', 15);
-                                                wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
+                                                //wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
+                                                $content = apply_filters('the_content', get_the_content() );
+                                                echo wp_startup_truncate( $content, $textlength, '', false, true );
                                                 echo '</p>';
                                             }
                                             ?>
