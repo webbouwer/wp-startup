@@ -11,6 +11,8 @@ function wp_startup_pagethemes_func(){
     // Extend theme wp_nav_menu() locations for wp-startup themes
     register_nav_menus(
         array(
+            'upper'    => __( 'Upper Menu', 'wp-startup' ),
+            'top'    => __( 'Top- Menu', 'wp-startup' ),
             'main'    => __( 'Main Menu', 'wp-startup' ),
             'side'    => __( 'Sidebar Menu', 'wp-startup' ),
             'bottom'    => __( 'Bottom Menu', 'wp-startup' ),
