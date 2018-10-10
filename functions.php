@@ -93,6 +93,15 @@ function wp_startup_widgets_init_func() {
 
     /** Register widgets area's */
     register_sidebar( array(
+        'name' => __( 'upperbar widget', 'wp-startup' ),
+        'id' => 'upperbar-widget',
+        'description'   => 'Upperbar widgets wp-startup',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '<div class="clr"></div></div></div>',
+        'before_title'  => '<div class="widget-titlebox"><h3>',
+        'after_title'   => '</h3></div><div class="widget-contentbox">'
+    ) );
+    register_sidebar( array(
         'name' => __( 'topbar widget 1', 'wp-startup' ),
         'id' => 'topbar-widget-1',
         'description'   => 'Topbar widgets 1 wp-startup',

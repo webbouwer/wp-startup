@@ -32,6 +32,24 @@ function wp_startup_add_customizer_options_templates(){
         ));
 
         // Content mods
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_postimage' , array(
+		'default' => 'above',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_postimage', array(
+                'label'          => __( 'Featured image', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_content',
+                'settings'       => 'wp_startup_theme_panel_content_postimage',
+                'type'           => 'radio',
+                'description'    => __( 'Featured image display in WP startup themes (if not replace header)', 'wp-startup' ),
+                'choices'        => array(
+                    'above'   => __( 'Wide images before title, portrait image besides text', 'wp-startup' ),
+                    'left'   => __( 'Left besides title/text', 'wp-startup' ),
+                    'right'   => __( 'Right besides title/text', 'wp-startup' ),
+                    'inlineleft'   => __( 'Left inline text', 'wp-startup' ),
+                    'inlineright'   => __( 'Right inline text', 'wp-startup' ),
+            	)
+    	)));
         // excerpt length
         $wp_customize->add_setting( 'wp_startup_theme_panel_content_excerptlength', array(
           'default' => 12,
@@ -56,11 +74,61 @@ function wp_startup_add_customizer_options_templates(){
                 'section'        => 'wp_startup_theme_panel_elements',
                 'settings'       => 'wp_startup_theme_panel_elements_upperbar',
                 'type'           => 'select',
-                'description'    => __( 'Upperbar contact/identity display in WP startup themes', 'wp-startup' ),
+                'description'    => __( 'Upperbar menu/contact/identity display in WP startup themes', 'wp-startup' ),
                 'choices'        => array(
                     'hide'   => __( 'Hide', 'wp-startup' ),
                     'show'   => __( 'Show', 'wp-startup' ),
             	)
+    	)));
+
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_postheader' , array(
+		'default' => 'all',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_postheader', array(
+                'label'          => __( 'Featured Header', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_postheader',
+                'type'           => 'select',
+                'description'    => __( 'Header image display in WP startup themes (if available)', 'wp-startup' ),
+                'choices'        => array(
+                    'none'   => __( 'Standard all content', 'wp-startup' ),
+                    'front'  => __( 'Frontpage only', 'wp-startup' ),
+                    'post'   => __( 'Single post featured images replace header', 'wp-startup' ),
+                    'page'   => __( 'Page featured images replace header', 'wp-startup' ),
+                    'all'    => __( 'All featured images replace header', 'wp-startup' ),
+            	)
+    	)));
+
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebar' , array(
+		'default' => 'right',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_sidebar', array(
+                'label'          => __( 'Sidebar display', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_sidebar',
+                'type'           => 'select',
+                'description'    => __( 'Sidebar display in WP startup themes', 'wp-startup' ),
+                'choices'        => array(
+                    'hide'   => __( 'Hide', 'wp-startup' ),
+                    'left'   => __( 'Left', 'wp-startup' ),
+                    'right'   => __( 'Right', 'wp-startup' ),
+            	)
+    	)));
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebarwidth' , array(
+		'default' => 23,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_sidebarwidth', array(
+                'label'          => __( 'Sidebar width', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_sidebarwidth',
+                'type'           => 'number',
+                'description'    => __( 'Sidebar width in WP startup themes', 'wp-startup' ),
     	)));
 
 
