@@ -114,8 +114,7 @@ width:100%;
 {
 background-size: cover;
 background-repeat: no-repeat;
-min-height:420px !important;
-height:50% !important;
+min-height:120px;
 }
 #maincontent .panel-content > .wrap
 {
@@ -163,9 +162,11 @@ padding:3px 6px;
 {
 float:left;
 }
+#toplogobox a,
 #toplogobox img
 {
-max-width:120px !important;
+display: block;
+max-width:100%;;
 height: auto;
 }
 #topmenubox
@@ -180,6 +181,10 @@ display: block;
 {
 float: left;
 width: 77%;
+}
+#maincontent section
+{
+margin-right:2%;
 }
 #sidecontent
 {

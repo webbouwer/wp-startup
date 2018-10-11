@@ -7,6 +7,8 @@ function wp_startup_add_customizer_options_templates(){
 
 
         $wp_customize->remove_control('display_header_text');
+        $wp_customize->remove_control('header_video');
+        $wp_customize->remove_control('external_header_video');
         $wp_customize->remove_section('colors');
 
 
@@ -30,6 +32,39 @@ function wp_startup_add_customizer_options_templates(){
             'panel'  => 'wp_startup_theme_panel',
             'priority' => 124,
         ));
+
+        /* header extend */
+        $wp_customize->add_setting( 'wp_startup_theme_header_image_height' , array(
+		'default' => 200,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_header_image_height', array(
+                'label'          => __( 'Header height', 'wp-startup' ),
+                'section'        => 'header_image',
+                'settings'       => 'wp_startup_theme_header_image_height',
+                'type'           => 'number',
+                'description'    => __( 'Header height in WP startup themes', 'wp-startup' ),
+    	)));
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_postheader' , array(
+		'default' => 'all',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_postheader', array(
+                'label'          => __( 'Featured Header', 'wp-startup' ),
+                'section'        => 'header_image',
+                'settings'       => 'wp_startup_theme_panel_elements_postheader',
+                'type'           => 'radio',
+                'description'    => __( 'Header and featured images (if available) in WP startup themes. Header is displayed ', 'wp-startup' ),
+                'choices'        => array(
+                    'none'   => __( 'for all content', 'wp-startup' ),
+                    'front'  => __( 'on frontpage only', 'wp-startup' ),
+                    'post'   => __( 'or replaced by single post featured image (if landscape size)', 'wp-startup' ),
+                    'page'   => __( 'or replaced by page featured image (if landscape size)', 'wp-startup' ),
+                    'all'    => __( 'or replaced by any page or post featured image (if landscape size)', 'wp-startup' ),
+            	)
+    	)));
+
 
         // Content mods
         $wp_customize->add_setting( 'wp_startup_theme_panel_content_postimage' , array(
@@ -82,25 +117,6 @@ function wp_startup_add_customizer_options_templates(){
     	)));
 
 
-        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_postheader' , array(
-		'default' => 'all',
-		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
-    	));
-        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_postheader', array(
-                'label'          => __( 'Featured Header', 'wp-startup' ),
-                'section'        => 'wp_startup_theme_panel_elements',
-                'settings'       => 'wp_startup_theme_panel_elements_postheader',
-                'type'           => 'select',
-                'description'    => __( 'Header image display in WP startup themes (if available)', 'wp-startup' ),
-                'choices'        => array(
-                    'none'   => __( 'Standard all content', 'wp-startup' ),
-                    'front'  => __( 'Frontpage only', 'wp-startup' ),
-                    'post'   => __( 'Single post featured images replace header', 'wp-startup' ),
-                    'page'   => __( 'Page featured images replace header', 'wp-startup' ),
-                    'all'    => __( 'All featured images replace header', 'wp-startup' ),
-            	)
-    	)));
-
 
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebar' , array(
 		'default' => 'right',
@@ -131,8 +147,21 @@ function wp_startup_add_customizer_options_templates(){
                 'description'    => __( 'Sidebar width in WP startup themes', 'wp-startup' ),
     	)));
 
-
         // extend title_tagline
+
+        // logo max-width
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_logowidth', array(
+          'default' => 120,
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_logowidth', array(
+          'type' => 'number',
+          'section' => 'title_tagline', // Add a default or your own section
+          'settings'=> 'wp_startup_theme_panel_content_logowidth',
+          'label' => __( 'Logo max width' ),
+          'description' => __( 'Logo max width in px.' ),
+        )));
 
         // tel number
         $wp_customize->add_setting( 'wp_startup_theme_panel_content_telephone', array(
@@ -147,6 +176,7 @@ function wp_startup_add_customizer_options_templates(){
           'label' => __( 'Telephone' ),
           'description' => __( 'Add here the site main contact telephone number.' ),
         )));
+
         // email adress
         $wp_customize->add_setting( 'wp_startup_theme_panel_content_email', array(
           'default' => '',

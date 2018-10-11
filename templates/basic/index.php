@@ -30,11 +30,13 @@ if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right' ) != 'hide'
 
 // theme html output toplogo (custom_logo) or site title home link
 function wpstartup_toplogo_html(){
+
     if( get_theme_mod('custom_logo', '') != '' ){
         $custom_logo_id = get_theme_mod('custom_logo');
         $custom_logo_attr = array(
             'class'    => 'custom-logo',
             'itemprop' => 'logo',
+
         );
         echo sprintf( '<a href="%1$s" class="custom-logo-link image" rel="home" itemprop="url">%2$s</a>',
         esc_url( home_url( '/' ) ),
@@ -189,7 +191,8 @@ function wp_startup_get_frontpage_sections(){
                 }
 
                 // topbar logo
-                echo '<div id="toplogobox">';
+                $lmw =  get_theme_mod('wp_startup_theme_panel_content_logowidth', 200 );
+                echo '<div id="toplogobox" style="max-width:'.$lmw.'px;">';
                 wpstartup_toplogo_html();
                 echo '</div>';
 
@@ -225,6 +228,7 @@ function wp_startup_get_frontpage_sections(){
 
                 // div header
                 $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
+                $h = get_theme_mod('wp_startup_theme_header_image_height', 200 );
                 $header_bgimage = get_theme_mod('header_image');
                 if( ( is_page() || is_single() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' )  ){
                     if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) ||  $header_set == 'all' ){
@@ -242,7 +246,7 @@ function wp_startup_get_frontpage_sections(){
                 if ( ( get_header_image() || !empty( $bgimage ) )
                     && ( $header_set != 'front' || ( get_header_image() && $header_set == 'front' && is_front_page() ) ) ){
 
-                    echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;">';
+                    echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;min-height:'.$h.'px;">';
 
                 }else{
                     echo '<div id="header">';
