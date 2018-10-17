@@ -333,8 +333,10 @@ function wp_startup_get_frontpage_sections(){
                                                 }else{
                                                     echo '<h2 class="entry-title"><a href="'.get_the_permalink().'">'.get_the_title().'</a></h2>';
                                                 }
-                                                echo '<span class="date">'.wp_startup_time_ago(get_the_time( 'U' )).'</span>';
-
+                                                if( !is_page() ){
+                                                    echo '<span class="date">'.wp_startup_time_ago(get_the_time( 'U' )).'</span>';
+                                                    echo ' by <span class="author">'.get_the_author().'</span>';
+                                                }
                                                 ?>
                                             </header>
 

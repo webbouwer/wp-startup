@@ -59,30 +59,28 @@ class wpstartup_postlist_widget extends WP_Widget {
 		echo $args['before_title'] . $title . $args['after_title'];
 
 
+        // Category related posts
+        $catsrel = "";
 
+        //$posttags = get_the_tags();
+        $postcats = get_the_category();
 
-
-
-			// Category related posts
-			$catsrel = "";
-			//$posttags = get_the_tags();
-			$postcats = get_the_category();
-			if ($postcats) {
+        if ($postcats) {
 			foreach($postcats as $tag) {
 				$catsrel .= ',' . $tag->name;
 			}
-			}
-			$catsrel = substr($catsrel, 1); // remove first comma
+		}
+		$catsrel = substr($catsrel, 1); // remove first comma
 
-			// Tag related posts
-			$tagsrel = "";
-			$posttags = get_the_tags();
-			if ($posttags) {
+		// Tag related posts
+		$tagsrel = "";
+		$posttags = get_the_tags();
+		if ($posttags) {
 			foreach($posttags as $tag) {
 				$tagsrel .= ',' . $tag->name;
 			}
-			}
-			$tagsrel = substr($tagsrel, 1); // remove first comma
+		}
+		$tagsrel = substr($tagsrel, 1); // remove first comma
 
 
 		// list the post accoording to settings category/related
@@ -162,7 +160,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		if ( has_post_thumbnail() && $dsp_image != 'none' ) {
 			$align = 'align-'.$dsp_image;
 			// check oriëntation
-			$orient = check_image_orientation( get_the_ID() );
+			$orient = wp_startup_check_image_orientation( get_the_ID() );
 			echo get_the_post_thumbnail( get_the_ID(), 'medium', array( 'class' => $align.' '.$orient )); //the_post_thumbnail('big-thumb');
 
     	}
@@ -170,9 +168,9 @@ class wpstartup_postlist_widget extends WP_Widget {
 		// Post intro content
 			// preg_replace('/(?i)<a([^>]+)>(.+?)<\/a>/','', get_the_excerpt() );
 		if( $excerptlength != 0 ){
-
+        $content = apply_filters('the_content', get_the_content() );
 		echo '<p>';
-		the_excerpt_length( $excerptlength, false );
+        echo wp_startup_truncate( $content, $excerptlength, '', false, true ); //the_excerpt_length( $excerptlength, false );
 		echo '</p>';
 
 		}

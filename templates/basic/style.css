@@ -1,9 +1,5 @@
 
-/** basic style */
-body
-{
-font-family: "arial", sans-serif;
-}
+
 /** default settings */
 html,body,ul,h1,h2,h3,h4,h5,h6
 {
@@ -29,25 +25,19 @@ display:block;
 width:100%;
 min-height:100%;
 }
-
-
-
 .clr
 {
 clear:both;
 height:0;
 font-size:0;
 }
-
 p
 {
 }
-
 h1,h2,h3,h4,h5,h6
 {
 line-height:140%;
 }
-
 .page img,
 .post img
 {
@@ -58,6 +48,21 @@ max-width:100%;
 {
 width:100%;
 }
+
+
+
+
+/* theme style */
+body
+{
+font-family: "Helvetica", Arial, sans-serif;
+}
+
+li.current_page_item a
+{
+font-weight:bold;
+}
+
 
 /* medium screen layout */
 @media screen and (min-width: 580px) {
@@ -70,8 +75,6 @@ margin:0px auto;
 width:96%;
 max-width:960px;
 }
-
-
 .colset2 > .widget
 {
 float:left;
