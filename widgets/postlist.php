@@ -139,7 +139,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 
 
 		if($dsp_date == 1 ){
-		echo '<span class="post-date time-ago">'.wp_time_ago(get_the_time( 'U' )).' </span>';
+		echo '<span class="post-date time-ago">'.wp_startup_time_ago(get_the_time( 'U' )).' </span>';
 		}
 
 		if($dsp_date == 2 ){
@@ -151,7 +151,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		}
 
 		if($dsp_author != 0 ){
-		echo '<span class="post-author">'.get_the_author().' </span>';
+		echo '<span class="post-author"> by '.get_the_author().' </span>';
 		}
 		echo '</div>';
 

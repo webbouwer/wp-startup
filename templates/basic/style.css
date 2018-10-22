@@ -50,20 +50,6 @@ width:100%;
 }
 
 
-
-
-/* theme style */
-body
-{
-font-family: "Helvetica", Arial, sans-serif;
-}
-
-li.current_page_item a
-{
-font-weight:bold;
-}
-
-
 /* medium screen layout */
 @media screen and (min-width: 580px) {
 
@@ -240,4 +226,97 @@ width: 40%;
 
 
 
+}
+
+
+
+
+
+/** Postlist widget */
+.widget_wpstartup_postlist_widget
+{
+}
+.widget_wpstartup_postlist_widget ul
+{
+}
+.widget_wpstartup_postlist_widget ul li
+{
+clear:both;
+list-style: none;
+padding:0px;
+width:100%;
+}
+.widget_wpstartup_postlist_widget ul li a
+{
+display:block;
+width:100%;
+margin-top:6px;
+margin-bottom:20px;
+}
+
+.widget_wpstartup_postlist_widget .post-titlebox h4
+{
+font-size:1.3em;
+line-height: 1.2em;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-left
+{
+display:inline;
+float:left;
+margin:0px 10px 15px 0px;
+vertical-align: text-top;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-right
+{
+display:inline;
+float:right;
+margin:0px 0px 15px 10px;
+vertical-align: text-top;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-center
+{
+width:100%;
+height:auto;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-left,
+.widget_wpstartup_postlist_widget .item-excerpt img.align-right
+{
+width:40%;
+height:auto;
+}
+.widget_wpstartup_postlist_widget .item-excerpt p
+{
+padding:0px;
+}
+
+
+
+
+/* theme style */
+body
+{
+font-family: "Helvetica", Arial, sans-serif;
+}
+li.current_page_item a
+{
+font-weight:bold;
+}
+
+/*  section article */
+#maincontent section article
+{
+margin-top:20px;
+margin-right:20px;
+}
+/* widgets */
+.columnbox .widget
+{
+margin-top:20px;
+}
+
+/* Footer */
+#bottommenu,
+#copyrightbox
+{
+text-align:center;
 }

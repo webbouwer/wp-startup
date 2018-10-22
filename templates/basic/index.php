@@ -20,8 +20,10 @@ $header_image = get_header_image();
 // header textcolor
 $header_text_color = get_header_textcolor();
 
+// page content and sidebar width (jquery onresize)
+$sidewidth = 100;
 $mainwidth = 100; // extend with page / post settings
-if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right' ) != 'hide'){
+if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right' ) != 'hide' ){
     $sidewidth = get_theme_mod('wp_startup_theme_panel_elements_sidebarwidth', 23 );
     $mainwidth = 100 - $sidewidth;
 }
@@ -160,6 +162,36 @@ function wp_startup_get_frontpage_sections(){
     wp_head();
 
 ?>
+<script>
+(function($){
+    $(window).load(function(){
+
+        // content & sidebar size
+        function setContentWidth(){
+            if($(window).width() < 580 ){
+                $('#maincontent,#sidecontent').css({ 'width': '100%' });
+            }else{
+                $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
+                $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
+            }
+        }
+        setContentWidth();
+
+        // resize
+        var resizeId;
+        $(window).resize(function() {
+          clearTimeout(resizeId);
+          resizeId = setTimeout(doneGlobalResizing, 20);
+        });
+
+        function doneGlobalResizing(){
+          setContentWidth();
+        }
+
+    });
+
+})(jQuery);
+</script>
 </head>
 <body <?php body_class(); ?>>
      <div id="pagecontainer" class="site">
@@ -353,18 +385,15 @@ function wp_startup_get_frontpage_sections(){
                                             }else{
 
                                                 echo '<p>';
-
-
                                                 $textlength = get_theme_mod('wp_startup_theme_panel_content_excerptlength', 15);
                                                 //wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
                                                 $content = apply_filters('the_content', get_the_content() );
-
-                                                echo wp_startup_truncate( $content, $textlength, '', false, true );
+                                                echo wp_startup_truncate( $content, $textlength, ' ..', false, false ); // $text, $length = 100, $ending = '...', $exact = true, $considerHtml = false
                                                 echo '</p>';
                                             }
                                             ?>
                                             </div>
-
+                                            <div class="clr"></div>
 
                                         </article>
                                         <?php
