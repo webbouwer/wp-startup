@@ -388,7 +388,7 @@ function wp_startup_get_frontpage_sections(){
                                                 $textlength = get_theme_mod('wp_startup_theme_panel_content_excerptlength', 15);
                                                 //wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
                                                 $content = apply_filters('the_content', get_the_content() );
-                                                echo wp_startup_truncate( $content, $textlength, ' ..', false, false ); // $text, $length = 100, $ending = '...', $exact = true, $considerHtml = false
+                                                echo wp_startup_truncate( $content, $textlength, '', true, true ); // $text, $length = 100, $ending = '...', $exact = true, $considerHtml = false
                                                 echo '</p>';
                                             }
                                             ?>

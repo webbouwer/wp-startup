@@ -168,12 +168,14 @@ display: block;
 
 #maincontent
 {
+position: relative;
+display: block;
 float: left;
 width: 77%;
 }
 #maincontent section
 {
-margin-right:2%;
+width:100%;
 }
 #sidecontent
 {
@@ -183,9 +185,11 @@ width: 23%;
 article
 {
 display: block;
-width:100%;
+max-width:100%;
 clear:both;
 }
+
+
 #maincontent .page,
 #maincontent .post
 {
@@ -303,20 +307,22 @@ font-weight:bold;
 }
 
 /*  section article */
-#maincontent section article
+#maincontent .post,
+#maincontent .page,
+section article
 {
-margin-top:20px;
-margin-right:20px;
+margin:30px 40px 10px 0px;
 }
 /* widgets */
 .columnbox .widget
 {
-margin-top:20px;
+margin:20px 0px 10px 0px;
 }
 
 /* Footer */
 #bottommenu,
 #copyrightbox
 {
+margin:5px 0px 10px 0px;
 text-align:center;
 }
