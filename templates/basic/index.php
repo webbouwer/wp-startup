@@ -6,8 +6,17 @@ add_action('wp_print_styles', 'wp_startup_theme_deregister_func', 100);
 add_action( 'wp_head', 'wpstartup_theme_stylesheet', 9999 );
 
 function wpstartup_theme_stylesheet(){
+
+    // theme default positioning & styling
+    $globalstyle = plugins_url().'/wp-startup/templates/basic/global.css';
+    echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.$globalstyle.'" type="text/css" media="all" />';
+    // theme default element positioning javascript
+    echo '<script type="text/javascript" src="'.plugins_url().'/wp-startup/templates/basic/elements.js"></script>';
+
+    // theme custom styling
     $stylesheet = plugins_url().'/wp-startup/templates/basic/style.css';
     echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.$stylesheet.'" type="text/css" media="all" />';
+
 }
 
 
@@ -161,37 +170,11 @@ function wp_startup_get_frontpage_sections(){
     // include wp head
     wp_head();
 
+    $stylesheet = plugins_url().'/wp-startup/templates/basic/style.css';
+    echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.$stylesheet.'" type="text/css" media="all" />';
 ?>
-<script>
-(function($){
-    $(window).load(function(){
 
-        // content & sidebar size
-        function setContentWidth(){
-            if($(window).width() < 580 ){
-                $('#maincontent,#sidecontent').css({ 'width': '100%' });
-            }else{
-                $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
-                $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
-            }
-        }
-        setContentWidth();
 
-        // resize
-        var resizeId;
-        $(window).resize(function() {
-          clearTimeout(resizeId);
-          resizeId = setTimeout(doneGlobalResizing, 20);
-        });
-
-        function doneGlobalResizing(){
-          setContentWidth();
-        }
-
-    });
-
-})(jQuery);
-</script>
 </head>
 <body <?php body_class(); ?>>
      <div id="pagecontainer" class="site">
