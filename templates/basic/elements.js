@@ -7,6 +7,9 @@
             if($(window).width() < 580 ){
                 $('#maincontent,#sidecontent').css({ 'width': '100%' });
             }else{
+
+                $('#topbar').css({ 'top': $('#upperbar').innerHeight() });
+                $('#header').css({ 'margin-top': $('#topbar').innerHeight() });
                 $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
                 $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
             }

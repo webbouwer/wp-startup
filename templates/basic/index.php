@@ -104,12 +104,19 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 }
 //    widgets & menu sidebar content
 function wpstartup_sidebar_html(){
+
                     if( has_nav_menu('side') ){
                         echo '<div id="sidemenu">';
                         wpstartup_menu_html( 'side' );
                         echo '<div class="clr"></div></div>';
                     }
-                    if( wp_startup_is_sidebar_active( 'sidebar-widget' ) ){
+
+
+                    if( !is_page() && !is_single() && wp_startup_is_sidebar_active('sidebar-1') ){
+                        echo '<div id="sidebarcontent">';
+                        wpstartup_widgetarea_html( 'sidebar-1' );
+                        echo '<div class="clr"></div></div>';
+                    }else if( wp_startup_is_sidebar_active( 'sidebar-widget' ) ){
                         echo '<div id="sidebarcontent">';
                         wpstartup_widgetarea_html( 'sidebar-widget' );
                         echo '<div class="clr"></div></div>';
@@ -302,7 +309,7 @@ function wp_startup_get_frontpage_sections(){
 
 
                 if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'left'){
-                    echo '<div id="sidecontent" style="width:'.$sidewidth.'%;">';
+                    echo '<div id="sidecontent" class="left" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
                 }
@@ -349,8 +356,10 @@ function wp_startup_get_frontpage_sections(){
                                                     echo '<h2 class="entry-title"><a href="'.get_the_permalink().'">'.get_the_title().'</a></h2>';
                                                 }
                                                 if( !is_page() ){
+                                                    echo '<div class="entry-title-meta">';
                                                     echo '<span class="date">'.wp_startup_time_ago(get_the_time( 'U' )).'</span>';
                                                     echo ' by <span class="author">'.get_the_author().'</span>';
+                                                    echo '</div>';
                                                 }
                                                 ?>
                                             </header>
@@ -400,7 +409,7 @@ function wp_startup_get_frontpage_sections(){
                 echo '<div class="clr"></div></div>';
 
                 if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'right'){
-                    echo '<div id="sidecontent" style="width:'.$sidewidth.'%;">';
+                    echo '<div id="sidecontent" class="right" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
                 }

@@ -49,7 +49,7 @@ width:100%;
 
 
 /* medium screen layout */
-@media screen and (min-width: 580px) {
+@media screen and (min-width: 780px) {
 
 .outermargin,
 .wrap
@@ -80,7 +80,6 @@ width:25%;
 float:none;
 width:100%;
 }
-
 #upperbarmenu ul > li,
 #upperbar .widget_nav_menu ul > li,
 #topmenu ul > li,
@@ -108,42 +107,73 @@ min-height:120px;
 margin:0;
 }
 
-#upperbar
+#upperbar .outermargin
 {
 }
 #upperbarmenu
 {
-width:60%;
-float:left;
+}
+
+#uppermenubox,
+#uppermenu,
+#uppermenu nav,
+#uppermenu nav ul
+{
+display:block;
+width:100%;
 }
 #upperbar-widget
 {
-width:23%;
-float:right;
 }
+
+#upperbar,
+#topbar
+{
+position:fixed;
+display: block;
+width:100%;
+left:0px;
+top:0px;
+z-index: 99;
+}
+
 #topmenu
 {
 width:60%;
 float:left;
 }
+#topmenu ul
+{
+}
+#topmenu ul,
+#topmenu ul li
+{
+}
+#topmenu ul.menu li a
+{
+display:block;
+padding:38px 2px;
+text-transform: uppercase;
+}
+
+
 #contactbox
 {
-width:auto;
-text-align:right;
+width:30%;
 float:right;
+padding:12px 0px;
 }
 
 #contactbox .emaillink,
 #contactbox .tellink
 {
 display:block;
-padding:3px 6px;
+padding:3px 0px;
 }
 
 #sidebar ul li a
 {
 display: block;
-padding:3px 6px;
 }
 #toplogobox
 {
@@ -285,6 +315,13 @@ height:auto;
 {
 width:40%;
 height:auto;
+}
+.widget_wpstartup_postlist_widget .post-titlebox h4
+{
+}
+.post-titlebox .post-date,
+.post-titlebox .post-author
+{
 }
 .widget_wpstartup_postlist_widget .item-excerpt p
 {
