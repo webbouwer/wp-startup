@@ -49,7 +49,7 @@ width:100%;
 
 
 /* medium screen layout */
-@media screen and (min-width: 780px) {
+@media screen and (min-width: 680px) {
 
 .outermargin,
 .wrap
@@ -126,8 +126,8 @@ width:100%;
 {
 }
 
-#upperbar,
-#topbar
+#upperbar.fixed,
+#topbar.fixed
 {
 position:fixed;
 display: block;
@@ -139,8 +139,6 @@ z-index: 99;
 
 #topmenu
 {
-width:60%;
-float:left;
 }
 #topmenu ul
 {
@@ -159,9 +157,6 @@ text-transform: uppercase;
 
 #contactbox
 {
-width:30%;
-float:right;
-padding:12px 0px;
 }
 
 #contactbox .emaillink,

@@ -177,8 +177,6 @@ function wp_startup_get_frontpage_sections(){
     // include wp head
     wp_head();
 
-    $stylesheet = plugins_url().'/wp-startup/templates/basic/style.css';
-    echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.$stylesheet.'" type="text/css" media="all" />';
 ?>
 
 
