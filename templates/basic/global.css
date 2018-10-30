@@ -46,6 +46,16 @@ max-width:100%;
 {
 width:100%;
 }
+.colset3 > .widget
+{
+float:left;
+width:50%;
+}
+.colset3 > .widget:nth-child(3)
+{
+float:none;
+width:100%;
+}
 
 
 /* medium screen layout */
@@ -73,6 +83,12 @@ width:33.33%;
 {
 float:left;
 width:25%;
+}
+
+#maincontent .colset4 > .widget
+{
+float:left;
+width:50%;
 }
 
 #sidecontent .widget

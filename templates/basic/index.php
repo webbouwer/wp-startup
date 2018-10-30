@@ -179,7 +179,40 @@ function wp_startup_get_frontpage_sections(){
 
 ?>
 
+<script>
+(function($){
+    $(window).load(function(){
 
+        // content & sidebar size
+        function setContentWidth(){
+
+            if($(window).width() < 680 ){
+                $('#maincontent,#sidecontent').css({ 'width': '100%' });
+            }else{
+                $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
+                $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
+            }
+        }
+
+        setContentWidth();
+
+
+        // resize
+        var resizeId;
+        $(window).resize(function() {
+          clearTimeout(resizeId);
+          resizeId = setTimeout(doneGlobalResizing, 20);
+        });
+
+        function doneGlobalResizing(){
+            setContentWidth();
+        }
+
+    });
+
+})(jQuery);
+
+</script>
 </head>
 <body <?php body_class(); ?>>
      <div id="pagecontainer" class="site">

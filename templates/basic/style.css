@@ -108,6 +108,12 @@ font-size:0.8em;
 padding-bottom:5px;
 }
 
+#maincontent article p
+{
+display:block;
+padding:6px 0px;
+}
+
 /* sidemenu */
 #sidemenu ul
 {
@@ -144,11 +150,20 @@ background-color:black;
 
 
 /* widgets */
+#maincontent .columnbox .widget-titlebox
+{
+margin:15px 25px 10px 0px;
+}
+#maincontent .columnbox .widget-contentbox
+{
+margin:0px 25px 15px 0px;
+}
+
 #sidecontent .widget-titlebox
 {
-margin:20px 0px;
-border-bottom:1px solid black;
+margin:20px 0px 15px;
 }
+#maincontent .widget-titlebox h3,
 #sidecontent .widget-titlebox h3
 {
 font-size:1.1em;
@@ -168,8 +183,8 @@ margin:20px 0px 10px 0px;
 /* postlist widget */
 .widget_wpstartup_postlist_widget .post-titlebox h4
 {
-line-height:1.4em;
-font-size:1.4em;
+line-height:1.3em;
+font-size:1.2em;
 }
 .post-titlebox .post-date,
 .post-titlebox .post-author
@@ -257,7 +272,7 @@ padding:12px 0px;
 #maincontent .page,
 section article
 {
-margin:30px 40px 10px 0px;
+margin:30px 25px 10px 0px;
 line-height:1.4em;
 }
 #sidecontent > div,
