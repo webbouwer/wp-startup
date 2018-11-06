@@ -6,8 +6,17 @@ add_action('wp_print_styles', 'wp_startup_theme_deregister_func', 100);
 add_action( 'wp_head', 'wpstartup_theme_stylesheet', 9999 );
 
 function wpstartup_theme_stylesheet(){
+
+    // theme default positioning & styling
+    $globalstyle = plugins_url().'/wp-startup/templates/basic/global.css';
+    echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.$globalstyle.'" type="text/css" media="all" />';
+    // theme default element positioning javascript
+    echo '<script type="text/javascript" src="'.plugins_url().'/wp-startup/templates/basic/elements.js"></script>';
+
+    // theme custom styling
     $stylesheet = plugins_url().'/wp-startup/templates/basic/style.css';
     echo '<link rel="stylesheet" id="wp-startup-theme-style"  href="'.$stylesheet.'" type="text/css" media="all" />';
+
 }
 
 
@@ -20,13 +29,25 @@ $header_image = get_header_image();
 // header textcolor
 $header_text_color = get_header_textcolor();
 
+// page content and sidebar width (jquery onresize)
+$sidewidth = 100;
+$mainwidth = 100; // extend with page / post settings
+if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right' ) != 'hide' ){
+    $sidewidth = get_theme_mod('wp_startup_theme_panel_elements_sidebarwidth', 23 );
+    $mainwidth = 100 - $sidewidth;
+}
+
+
+
 // theme html output toplogo (custom_logo) or site title home link
 function wpstartup_toplogo_html(){
+
     if( get_theme_mod('custom_logo', '') != '' ){
         $custom_logo_id = get_theme_mod('custom_logo');
         $custom_logo_attr = array(
             'class'    => 'custom-logo',
             'itemprop' => 'logo',
+
         );
         echo sprintf( '<a href="%1$s" class="custom-logo-link image" rel="home" itemprop="url">%2$s</a>',
         esc_url( home_url( '/' ) ),
@@ -81,6 +102,28 @@ function wpstartup_widgetarea_html( $id, $type = false ){
         }
     }
 }
+//    widgets & menu sidebar content
+function wpstartup_sidebar_html(){
+
+                    if( has_nav_menu('side') ){
+                        echo '<div id="sidemenu">';
+                        wpstartup_menu_html( 'side' );
+                        echo '<div class="clr"></div></div>';
+                    }
+
+
+                    if( !is_page() && !is_single() && wp_startup_is_sidebar_active('sidebar-1') ){
+                        echo '<div id="sidebarcontent">';
+                        wpstartup_widgetarea_html( 'sidebar-1' );
+                        echo '<div class="clr"></div></div>';
+                    }else if( wp_startup_is_sidebar_active( 'sidebar-widget' ) ){
+                        echo '<div id="sidebarcontent">';
+                        wpstartup_widgetarea_html( 'sidebar-widget' );
+                        echo '<div class="clr"></div></div>';
+                    }
+}
+
+
 // to use twentyseven frontpage sections
 function wp_startup_get_frontpage_sections(){
     $my_theme = wp_get_theme();
@@ -135,6 +178,59 @@ function wp_startup_get_frontpage_sections(){
     wp_head();
 
 ?>
+
+<script>
+(function($){
+
+
+    $(window).load(function(){
+
+        // content & sidebar size
+        function setContentWidth(){
+
+            if($(window).width() <= 680 ){
+                $('#maincontent,#sidecontent').css({ 'width': '100%' });
+            }else{
+                $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
+                $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
+            }
+        }
+
+
+
+        // header height
+        <?php $hph = get_theme_mod('wp_startup_theme_header_image_height', 40 );
+        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 );
+
+        ?>
+        function setHeaderHeight(){
+            var percentPxHeight = <?php echo $hmh; ?>;
+            if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
+               var percentPxHeight = $(window).height() / 100 * <?php echo $hph; ?>;
+            }
+            $('#header').css({ 'min-height': percentPxHeight });
+        }
+
+        function doneWindowResizing(){
+            setHeaderHeight();
+            setContentWidth();
+        }
+        doneWindowResizing();
+
+
+        // resize
+        var resizeId;
+        $(window).resize(function() {
+          clearTimeout(resizeId);
+          resizeId = setTimeout(doneWindowResizing, 20);
+        });
+
+
+    });
+
+})(jQuery);
+
+</script>
 </head>
 <body <?php body_class(); ?>>
      <div id="pagecontainer" class="site">
@@ -153,16 +249,8 @@ function wp_startup_get_frontpage_sections(){
                         echo '<div class="clr"></div></div>';
                     }
 
-                    // contactbox
-                    if( get_theme_mod('wp_startup_theme_panel_content_email', '') != '' || get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
-                        echo '<div id="contactbox">';
-                            if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''){
-                            echo '<a class="emaillink" href="mailto:'.get_theme_mod('wp_startup_theme_panel_content_email').'">'.get_theme_mod('wp_startup_theme_panel_content_email').'</a>';
-                            }
-                            if( get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
-                            echo '<a class="tellink" href="tel:'.get_theme_mod('wp_startup_theme_panel_content_telephone').'">'.get_theme_mod('wp_startup_theme_panel_content_telephone').'</a>';
-                            }
-                        echo '<div class="clr"></div></div>';
+                    if( wp_startup_is_sidebar_active( 'upperbar-widget' ) ){
+                        wpstartup_widgetarea_html( 'upperbar-widget' );
                     }
                     echo '<div class="clr"></div></div></div>';
                 }
@@ -174,7 +262,8 @@ function wp_startup_get_frontpage_sections(){
                 }
 
                 // topbar logo
-                echo '<div id="toplogobox">';
+                $lmw =  get_theme_mod('wp_startup_theme_panel_content_logowidth', 200 );
+                echo '<div id="toplogobox" style="max-width:'.$lmw.'px;">';
                 wpstartup_toplogo_html();
                 echo '</div>';
 
@@ -183,20 +272,57 @@ function wp_startup_get_frontpage_sections(){
                     // topbar menu is top & primary || default menu
                     $topmenu = array( 'top', 'primary' );
                     wpstartup_menu_html( $topmenu );
+                }else{
+                    // main menu
+                    wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'topmenu' ) );
                 }
 
                 // topbar side widgets
                 if( wp_startup_is_sidebar_active( 'topbar-widget-2' ) ){
                     wpstartup_widgetarea_html( 'topbar-widget-2' );
                 }
+
+
+                // contactbox
+                if( get_theme_mod('wp_startup_theme_panel_content_email', '') != '' || get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
+                    echo '<div id="contactbox">';
+                        if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''){
+                            echo '<a class="emaillink" href="mailto:'.get_theme_mod('wp_startup_theme_panel_content_email').'">'.get_theme_mod('wp_startup_theme_panel_content_email').'</a>';
+                        }
+                        if( get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
+                            echo '<a class="tellink" href="tel:'.get_theme_mod('wp_startup_theme_panel_content_telephone').'">'.get_theme_mod('wp_startup_theme_panel_content_telephone').'</a>';
+                        }
+                    echo '<div class="clr"></div></div>';
+                }
+
                 echo '<div class="clr"></div></div></div>';
 
                 // div header
-                if ( get_header_image() ){
-                    echo  '<div id="header" class="header_image" style="background-image:url('.get_theme_mod('header_image').');background-position:center;min-height:90px;">';
+                $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
+                $mh = get_theme_mod('wp_startup_theme_header_image_height', 200 );
+                $header_bgimage = get_theme_mod('header_image');
+                if( ( is_page() || is_single() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' )  ){
+                    if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) ||  $header_set == 'all' ){
+                        $headerorient = wp_startup_check_image_orientation($post->ID);
+                        $bgimage = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+                        if( $headerorient == 'portrait' ){
+                            $header_set = 'none';
+                            $bgimage = 0;
+                        }
+                        if(!empty( $bgimage ) ){
+                            $header_bgimage = $bgimage[0];
+                        }
+                    }
+                }
+                if ( ( get_header_image() || !empty( $bgimage ) )
+                    && ( $header_set != 'front' || ( get_header_image() && $header_set == 'front' && is_front_page() ) ) ){
+
+                    echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;background-size:cover;background-repeat:no-repeat;min-height:'.$mh.'px;">';
+
                 }else{
                     echo '<div id="header">';
                 }
+
                 echo '<div class="outermargin">';
                 if( wp_startup_is_sidebar_active( 'header-widget-1' ) ){
                 wpstartup_widgetarea_html( 'header-widget-1' );
@@ -228,8 +354,16 @@ function wp_startup_get_frontpage_sections(){
                     echo '<div class="clr"></div>';
                 }
 
-                echo '<div id="maincontainer"><div class="outermargin"><div id="maincontent">';
+                echo '<div id="maincontainer"><div class="outermargin">';
 
+
+                if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'left'){
+                    echo '<div id="sidecontent" class="left" style="width:'.$sidewidth.'%;">';
+                    wpstartup_sidebar_html();
+                    echo '<div class="clr"></div></div>';
+                }
+
+                 echo '<div id="maincontent" style="width:'.$mainwidth.'%;">';
 
                    if( wp_startup_is_sidebar_active( 'before-widget' ) ){ ?>
                     <div id="before-content">
@@ -246,10 +380,22 @@ function wp_startup_get_frontpage_sections(){
                                         ?>
                                         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-                                            <?php
-                                            //the_post_thumbnail('big-thumb');
-                                            echo get_the_post_thumbnail( get_the_ID(), 'big-thumb', array( 'class' => 'post-image' ));
-
+                                            <?php // wp_startup_theme_panel_content_postimage
+                                            $contentimage = '';
+                                            $orient = wp_startup_check_image_orientation(get_the_ID());
+                                            $cntimgset = get_theme_mod('wp_startup_theme_panel_content_postimage', 'above');
+                                            if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) || ( $header_set == 'all' && ( is_page() || is_single() ) ) ){
+                                                // in header
+                                            }else{
+                                                //the_post_thumbnail('big-thumb');
+                                                if( $orient == 'portrait' && $cntimgset == 'above'){
+                                                    $cntimgset = 'left';
+                                                }
+                                                $contentimage = get_the_post_thumbnail( get_the_ID(), 'big-thumb', array( 'class' => 'post-image align-'.$cntimgset.' '.$orient ));
+                                            }
+                                            if( ($cntimgset == 'above' || $cntimgset == 'left' || $cntimgset == 'right') && $contentimage != ''){
+                                                echo $contentimage;
+                                            }
                                             ?>
 
                                             <header class="entry-header">
@@ -258,26 +404,37 @@ function wp_startup_get_frontpage_sections(){
                                                 }else{
                                                     echo '<h2 class="entry-title"><a href="'.get_the_permalink().'">'.get_the_title().'</a></h2>';
                                                 }
-                                                echo '<span class="date">'.wp_startup_time_ago(get_the_time( 'U' )).'</span>';
-
+                                                if( !is_page() ){
+                                                    echo '<div class="entry-title-meta">';
+                                                    echo '<span class="date">'.wp_startup_time_ago(get_the_time( 'U' )).'</span>';
+                                                    echo ' by <span class="author">'.get_the_author().'</span>';
+                                                    echo '</div>';
+                                                }
                                                 ?>
                                             </header>
 
                                             <div class="entry-content">
                                             <?php
+                                            if( ($cntimgset == 'inlineleft' || $cntimgset == 'inlineright') && $contentimage != ''){
+                                                echo $contentimage;
+                                            }
+
                                             if( is_single() || is_page() ){
+
                                                 echo get_the_content();
+
                                             }else{
+
                                                 echo '<p>';
                                                 $textlength = get_theme_mod('wp_startup_theme_panel_content_excerptlength', 15);
                                                 //wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
                                                 $content = apply_filters('the_content', get_the_content() );
-                                                echo wp_startup_truncate( $content, $textlength, '', false, true );
+                                                echo wp_startup_truncate( $content, $textlength, '', true, true ); // $text, $length = 100, $ending = '...', $exact = true, $considerHtml = false
                                                 echo '</p>';
                                             }
                                             ?>
                                             </div>
-
+                                            <div class="clr"></div>
 
                                         </article>
                                         <?php
@@ -300,25 +457,12 @@ function wp_startup_get_frontpage_sections(){
 
                 echo '<div class="clr"></div></div>';
 
-                echo '<div id="sidecontent">';
-
-                    echo '<div id="sidemenu">';
-                    if( has_nav_menu('side') ){
-                        // main menu
-                        wpstartup_menu_html( 'side' );
-                    }else{
-                        wp_nav_menu( array( 'theme_location' => 'primary', 'menu_class' => 'nav-menu' ) );
-                    }
-
-                    if( wp_startup_is_sidebar_active( 'sidebar-widget' ) ){ ?>
-                    <div id="sidebarcontent">
-                        <?php wpstartup_widgetarea_html( 'sidebar-widget' ); ?>
-                    </div>
-                    <?php }
-
+                if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'right'){
+                    echo '<div id="sidecontent" class="right" style="width:'.$sidewidth.'%;">';
+                    wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
+                }
 
-                echo '<div class="clr"></div></div>';
 
 
                 echo '<div class="clr"></div></div></div>';
@@ -341,9 +485,11 @@ function wp_startup_get_frontpage_sections(){
                     wpstartup_menu_html( 'bottom' );
                 }
 
-                echo '<div id="copyrightbox">'.get_theme_mod('wp_startup_theme_panel_content_copyright', 'copyright 2018').'</div>';
 
                 wpstartup_widgetarea_html( 'footer-widget-1' );
+
+                echo '<div id="copyrightbox">'.get_theme_mod('wp_startup_theme_panel_content_copyright', 'copyright 2018').'</div>';
+
                 wpstartup_widgetarea_html( 'footer-widget-2' );
                 echo '<div class="clr"></div></div></div></div>';
                 ?>

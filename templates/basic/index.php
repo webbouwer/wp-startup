@@ -181,12 +181,14 @@ function wp_startup_get_frontpage_sections(){
 
 <script>
 (function($){
+
+
     $(window).load(function(){
 
         // content & sidebar size
         function setContentWidth(){
 
-            if($(window).width() < 680 ){
+            if($(window).width() <= 680 ){
                 $('#maincontent,#sidecontent').css({ 'width': '100%' });
             }else{
                 $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
@@ -194,19 +196,35 @@ function wp_startup_get_frontpage_sections(){
             }
         }
 
-        setContentWidth();
+
+
+        // header height
+        <?php $hph = get_theme_mod('wp_startup_theme_header_image_height', 40 );
+        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 );
+
+        ?>
+        function setHeaderHeight(){
+            var percentPxHeight = <?php echo $hmh; ?>;
+            if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
+               var percentPxHeight = $(window).height() / 100 * <?php echo $hph; ?>;
+            }
+            $('#header').css({ 'min-height': percentPxHeight });
+        }
+
+        function doneWindowResizing(){
+            setHeaderHeight();
+            setContentWidth();
+        }
+        doneWindowResizing();
 
 
         // resize
         var resizeId;
         $(window).resize(function() {
           clearTimeout(resizeId);
-          resizeId = setTimeout(doneGlobalResizing, 20);
+          resizeId = setTimeout(doneWindowResizing, 20);
         });
 
-        function doneGlobalResizing(){
-            setContentWidth();
-        }
 
     });
 
@@ -281,7 +299,7 @@ function wp_startup_get_frontpage_sections(){
 
                 // div header
                 $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
-                $h = get_theme_mod('wp_startup_theme_header_image_height', 200 );
+                $mh = get_theme_mod('wp_startup_theme_header_image_height', 200 );
                 $header_bgimage = get_theme_mod('header_image');
                 if( ( is_page() || is_single() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' )  ){
                     if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) ||  $header_set == 'all' ){
@@ -299,7 +317,7 @@ function wp_startup_get_frontpage_sections(){
                 if ( ( get_header_image() || !empty( $bgimage ) )
                     && ( $header_set != 'front' || ( get_header_image() && $header_set == 'front' && is_front_page() ) ) ){
 
-                    echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;min-height:'.$h.'px;">';
+                    echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;background-size:cover;background-repeat:no-repeat;min-height:'.$mh.'px;">';
 
                 }else{
                     echo '<div id="header">';

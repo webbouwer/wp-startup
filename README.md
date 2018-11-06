@@ -7,15 +7,32 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
 
 
 ###### Features:
-
+ 
 
 ##### Theme 
 -  Theme extension including  
-    - [x] new menu's positions
+    - [x] new menu positions
     - [x] widget area's
     - [x] background image customizer option
     - [x] blank theme
     - [ ] basic theme (in development)
+      - customizer
+        - [x] Identity (extending)
+          - Logo max width
+          - Phonenumber, email and copyright text input
+        - [x] WP Theme options
+          - [x] Content
+            - Post featured image display (if not replacing header)
+            - Posts excerpt length (global)
+          - [x] Elements
+            - Display upperbar
+            - Display sidebar
+            - Sidebar width in percentage
+        - [x] Header image (extending options)
+          - minimal height in pixels
+          - full height in percentage
+          - use post and/or page featured images 
+        - Twentyseventeen Frontpage sections available
 
     
 ##### Widget

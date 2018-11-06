@@ -34,6 +34,17 @@ function wp_startup_add_customizer_options_templates(){
         ));
 
         /* header extend */
+        $wp_customize->add_setting( 'wp_startup_theme_header_image_minheight' , array(
+		'default' => 200,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_header_image_minheight', array(
+                'label'          => __( 'Header minimal height', 'wp-startup' ),
+                'section'        => 'header_image',
+                'settings'       => 'wp_startup_theme_header_image_minheight',
+                'type'           => 'number',
+                'description'    => __( 'Header minimal height in pixels(px) for WP startup themes', 'wp-startup' ),
+    	)));
         $wp_customize->add_setting( 'wp_startup_theme_header_image_height' , array(
 		'default' => 200,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
@@ -43,7 +54,7 @@ function wp_startup_add_customizer_options_templates(){
                 'section'        => 'header_image',
                 'settings'       => 'wp_startup_theme_header_image_height',
                 'type'           => 'number',
-                'description'    => __( 'Header height in WP startup themes', 'wp-startup' ),
+                'description'    => __( 'Header height in percentage(%) for WP startup themes', 'wp-startup' ),
     	)));
 
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_postheader' , array(
