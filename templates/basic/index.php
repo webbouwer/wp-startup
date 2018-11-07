@@ -20,6 +20,8 @@ function wpstartup_theme_stylesheet(){
 }
 
 
+
+
 // the current page/post data
 global $post;
 
@@ -69,6 +71,9 @@ function wpstartup_menu_html( $menu ){
 
                 if( has_nav_menu( $nm ) ){
                     echo '<div id="'.$nm.'menubox"><div id="'.$nm.'menu" class=""><nav><div class="innerpadding">';
+                    //if( $nm == 'top' ){
+                    echo '<div class="menutoggle"><span>menu</span></div>';
+                    //}
                     wp_nav_menu( array( 'theme_location' => $nm ) );
                     echo '<div class="clr"></div></div></nav></div></div>';
                 }
@@ -76,6 +81,9 @@ function wpstartup_menu_html( $menu ){
         }else if( has_nav_menu( $menu ) ){
             // single menu
             echo '<div id="'.$menu.'menubox"><div id="'.$menu.'menu" class=""><nav><div class="innerpadding">';
+            //if( $menu == 'top' ){
+                echo '<div class="menutoggle"><span>menu</span></div>';
+            //}
             wp_nav_menu( array( 'theme_location' => $menu , 'menu_class' => 'nav-menu' ) );
             echo '<div class="clr"></div></div></nav></div></div>';
         }
@@ -106,7 +114,7 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 function wpstartup_sidebar_html(){
 
                     if( has_nav_menu('side') ){
-                        echo '<div id="sidemenu">';
+                        echo '<div id="sidebarmenu">';
                         wpstartup_menu_html( 'side' );
                         echo '<div class="clr"></div></div>';
                     }
@@ -196,13 +204,9 @@ function wp_startup_get_frontpage_sections(){
             }
         }
 
-
-
         // header height
         <?php $hph = get_theme_mod('wp_startup_theme_header_image_height', 40 );
-        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 );
-
-        ?>
+        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 ); ?>
         function setHeaderHeight(){
             var percentPxHeight = <?php echo $hmh; ?>;
             if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
@@ -211,7 +215,27 @@ function wp_startup_get_frontpage_sections(){
             $('#header').css({ 'min-height': percentPxHeight });
         }
 
+        // menu's
+        function setResponsiveMenu(){
+            if($(window).width() <= 680 ){
+                var menus = $('ul.nav-menu,ul.menu').hide();
+                $('.menutoggle').click( function( event ){
+                    if(event.preventDefault){
+                        event.preventDefault();
+                    }else{
+                        event.returnValue = false;
+                    }
+                    menus.slideUp();
+                    $(this).parent().find('ul.menu,ul.nav-menu').slideToggle();
+                });
+            }else{
+                var menus = $('ul.nav-menu,ul.menu').show();
+            }
+        }
+
+        // on window resize
         function doneWindowResizing(){
+            setResponsiveMenu();
             setHeaderHeight();
             setContentWidth();
         }
