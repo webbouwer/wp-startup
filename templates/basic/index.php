@@ -217,19 +217,46 @@ function wp_startup_get_frontpage_sections(){
 
         // menu's
         function setResponsiveMenu(){
+
+            var submenus = $('ul.sub-menu').hide();
+
             if($(window).width() <= 680 ){
-                var menus = $('ul.nav-menu,ul.menu').hide();
+
                 $('.menutoggle').click( function( event ){
                     if(event.preventDefault){
                         event.preventDefault();
                     }else{
                         event.returnValue = false;
                     }
-                    menus.slideUp();
-                    $(this).parent().find('ul.menu,ul.nav-menu').slideToggle();
+                    event.stopPropagation();
+                    if( $(this).parent().hasClass('dropped') ){
+                        $('.menutoggle').parent().removeClass('dropped');
+                    }else{
+                        $('.menutoggle').parent().removeClass('dropped');
+                        $(this).parent().addClass('dropped');
+                    }
                 });
-            }else{
-                var menus = $('ul.nav-menu,ul.menu').show();
+
+                $('ul.menu li.menu-item-has-children > a, ul.nav-menu li.menu-item-has-children > a').toggle(function(event){
+                    if(event.preventDefault){
+                        event.preventDefault();
+                    }else{
+                        event.returnValue = false;
+                    }
+                    event.stopPropagation();
+                    $(this).parent().find('ul:first').prepend( $(this).clone() );
+                    $(this).parent().find('ul:first a:first').wrap('<li class="menu-item parentClone" />');
+                    $(this).parent().find('ul:first').slideDown("slow");
+                    },function(event){
+                    if(event.preventDefault){
+                        event.preventDefault();
+                        }else{
+                            event.returnValue = false;
+                        }
+                        event.stopPropagation();
+                    $(this).parent().find('ul li.parentClone').remove();
+                    $(this).parent().find('ul:first').slideUp("slow");
+                });
             }
         }
 
