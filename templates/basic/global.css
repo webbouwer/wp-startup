@@ -102,6 +102,36 @@ right:3px;
 z-index: 101;
 }
 
+
+ul.menu li a,
+ul.nav-menu li a
+{
+text-decoration:none;
+color:dimgrey;
+}
+ul.menu li a:hover,
+ul.nav-menu li a:hover
+{
+text-decoration:underline;
+}
+
+ul.menu li.current_page_ancestor > a,
+ul.nav-menu li.current_page_ancestor > a
+{
+text-decoration:underline;
+color:dimgrey;
+}
+ul li.current_page_item > a,
+ul li.current-menu-item > a
+{
+text-decoration:underline;
+color:black;
+}
+
+
+
+
+
 /* small screen layout */
 @media screen and (max-width: 679px){
 
@@ -116,16 +146,12 @@ padding:5px 10px 0px 0px;
 
 /*  https://www.w3schools.com/charsets/ref_utf_geometric.asp */
 
-li.menu-item-has-children > a:after
+li.menu-item-has-children > a:after,
+li.menu-item-has-children:hover > a:after
 {
-content: " ►"; /*►*/
+content: " ►";
 }
-li.menu-item-has-children:hover > a:after,
 li.menu-item-has-children.dropped > a:after
-{
-content: " ▼";
-}
-li.menu-item-has-children.dropped:hover > a:after
 {
 content: " ▼";
 }
@@ -366,34 +392,33 @@ padding-right:20px;
  /* https://www.w3schools.com/charsets/ref_utf_geometric.asp */
 li.menu-item-has-children > a:after
 {
-content: " ▷";
+content: " ▼";
 }
 ul.menu > li.menu-item-has-children > a:after,
 ul.nav-menu > li.menu-item-has-children > a:after
 {
-content: " ▷";
+content: " ▼"; /* ▽ ► ▼ △*/
 }
 ul.menu > li.menu-item-has-children:hover > a:after,
 ul.nav-menu > li.menu-item-has-children:hover > a:after
 {
 content: " ▼";
 }
-#bottommenu ul.menu > li.menu-item-has-children:hover > a:after,
-#bottommenu ul.nav-menu > li.menu-item-has-children:hover > a:after
-{
-content: " ▲";
-}
-li.menu-item-has-children:hover > a:after
+li.menu-item-has-children > a:after
 {
 content: " ►";
 }
 
-#sidemenu li.menu-item-has-children:hover > a:after
+#sidemenu li.menu-item-has-children > a:after
 {
 content: " ▼";
 }
 li.menu-item-has-children.dropped > a:after,
-li.menu-item-has-children.dropped:hover > a:after
+li.menu-item-has-children.dropped:hover > a:after,
+#bottommenu ul.menu > li.menu-item-has-children > a:after,
+#bottommenu ul.nav-menu > li.menu-item-has-children > a:after,
+#bottommenu ul.menu > li.menu-item-has-children:hover > a:after,
+#bottommenu ul.nav-menu > li.menu-item-has-children:hover > a:after
 {
 content: " ▲";
 }
@@ -436,6 +461,7 @@ ul.nav-menu li:hover > ul.sub-menu
 max-height:400px;
 overflow:visible;
 opacity:1;
+z-index:599;
 }
 
 
@@ -446,6 +472,7 @@ opacity:1;
 position:absolute;
 top:0px;
 left:100%;
+z-index:101;
 }
 
 #bottommenu ul > li > ul.sub-menu
