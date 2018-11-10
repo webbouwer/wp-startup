@@ -14,47 +14,52 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
     - [x] new menu positions
     - [x] widget area's
     - [x] background image customizer option
-    - [x] blank theme
-    - [ ] basic theme (in development)
-      - customizer
-        - [x] Identity (extending)
-          - Logo max width
-          - Phonenumber, email and copyright text input
-        - [x] WP Theme options
-          - [x] Content
-            - Post featured image display (if not replacing header)
-            - Posts excerpt length (global)
-          - [x] Elements
-            - Display upperbar
-            - Display sidebar
-            - Sidebar width in percentage
-        - [x] Header image (extending options)
-          - minimal height in pixels
-          - full height in percentage
-          - use post and/or page featured images 
+    - [x] blank theme (empty html page)
+    - [ ] basic theme (blank setup)
+      - Menu's (including image & description)
+        - [x] uppermenu multilevel drop overlay
+        - [x] topmenu (besides logo) multilevel drop overlay
+        - [x] mainmenu multilevel drop overlay
+        - [x] sidemenu multilevel drop down relative
+        - [x] bottommenu multilevel up overlay
+      - Customizer
+        - Identity (extending)
+          - [x] Logo max width
+          - [x] Phonenumber, email and copyright text input
+        - WP Theme options
+          - Content
+            - [x] Post featured image display (if not replacing header)
+            - [x] Posts excerpt length (global)
+          - Elements
+            - [x] Display upperbar
+            - [x] Display sidebar
+            - [x] Sidebar width in percentage
+        - Header image (extending options)
+          - [x] minimal height in pixels
+          - [x] full height in percentage
+          - [x] use post and/or page featured images 
         - Twentyseventeen Frontpage sections available
-
-    
+      - Post Display settings (metabox)
+        - [ ] Page menu's & widgets display
+        - [ ] Post menu's & widgets display
+        
 ##### Widget
 - Widgets
     - [x] WP Startup @ Github dashboard widget
     - [x] Postlist widget
+    - [ ] Breadcrumb widget
 - [x] Shortcodes in text widget
-
 
 ##### Component
 - [x] Link Manager component
 
-
 ##### Extend
 - [x] Menu images & description text
-
 
 ##### Develop
 - [x] PHP coding in text widget
 - [x] add custom css!
 - [x] add custom javascript!
-
 
 ##### Overhead
 - [x] Categories metabox forced hierarchy display
