@@ -87,57 +87,77 @@ width:100%;
 }
 
 
+/* menu style global */
+ul.menu li,
+ul.nav-menu li
+{
+position:relative;
+}
+ul.menu li a:after,
+ul.nav-menu li a:after
+{
+position:absolute;
+top:3px;
+right:3px;
+z-index: 101;
+}
 
 /* small screen layout */
 @media screen and (max-width: 679px){
 
-/* large screen menu's */
-.menutoggle
+/* menu touch/click (js controles parent class 'dropped' & parent option clone in sublevel menu)*/
+ul.menu li a,
+ul.nav-menu li a
 {
-display: block;
+display:block;
+padding:5px 10px 0px 0px;
 }
 
-#upperbarmenu #uppermenubox #uppermenu nav div.innerpadding div ul.nav-menu,
-#topmenubox #topmenu nav div.innerpadding div ul.menu,
-#mainmenu #mainmenubox #mainmenu nav div.innerpadding div ul.nav-menu,
-#sidebarmenu #sidemenubox #sidemenu nav div.innerpadding div ul.nav-menu,
-#footercontent #bottommenubox #bottommenu nav div.innerpadding div ul.nav-menu
+
+/*  https://www.w3schools.com/charsets/ref_utf_geometric.asp */
+
+li.menu-item-has-children > a:after
 {
+content: " ►"; /*►*/
+}
+li.menu-item-has-children:hover > a:after,
+li.menu-item-has-children.dropped > a:after
+{
+content: " ▼";
+}
+li.menu-item-has-children.dropped:hover > a:after
+{
+content: " ▼";
 }
 
-/* Replaced by javascript functions */
 div.innerpadding ul.menu,
-div.innerpadding ul.nav-menu
-
-  /*
-ul.menu li ul.sub-menu,
-ul.nav-menu li ul.sub-menu*/
-{
-position:relative;
-max-height:0px;
-min-width:180px;
-overflow:hidden;
-opacity:0;
-z-index:99;
+div.innerpadding ul.nav-menu,
+ul.sub-menu {
+  position: relative;
+  max-height: 0px;
+  min-width: 180px;
+  overflow: hidden;
+  opacity: 0;
+  z-index: 99;
 }
 
 div.innerpadding.dropped ul.menu,
-div.innerpadding.dropped ul.nav-menu
-{
-max-height:400px;
-overflow:visible;
-opacity:1;
+div.innerpadding.dropped ul.nav-menu,
+li.dropped>ul.sub-menu {
+  max-height: 400px;
+  overflow: visible;
+  opacity: 1;
 }
 
-ul.nav-menu > li ul,
-ul.menu > li ul,
-ul.sub-menu
-{
-transition: all 0.8s ease-in-out;
+ul.menu,
+ul.nav-menu,
+ul.nav-menu>li ul,
+ul.menu>li ul,
+ul.sub-menu {
+  transition: all 0.8s ease-in-out;
 }
 
-
-}
+}/* end < 679 width */
 
 
 
@@ -315,7 +335,7 @@ width: 40%;
 
 
 /* large screen menu's */
-
+/* menu rollover (js unbind controles & removes parent option clone from sublevel menu)*/
 .menutoggle
 {
 display: none;
@@ -326,14 +346,58 @@ ul.nav-menu li
 {
 position: relative;
 list-style: none;
+background-color: #cccccc;
 }
 ul.menu li a,
 ul.nav-menu li a
 {
 display: block;
 padding:2px 2px;
-background-color: #cccccc;
 }
+
+#topmenu ul.menu > li.menu-item-has-children,
+#uppermenu ul.nav-menu > li.menu-item-has-children,
+#mainmenu ul.nav-menu > li.menu-item-has-children,
+#bottommenu ul.nav-menu > li.menu-item-has-children
+{
+padding-right:20px;
+}
+
+ /* https://www.w3schools.com/charsets/ref_utf_geometric.asp */
+li.menu-item-has-children > a:after
+{
+content: " ▷";
+}
+ul.menu > li.menu-item-has-children > a:after,
+ul.nav-menu > li.menu-item-has-children > a:after
+{
+content: " ▷";
+}
+ul.menu > li.menu-item-has-children:hover > a:after,
+ul.nav-menu > li.menu-item-has-children:hover > a:after
+{
+content: " ▼";
+}
+#bottommenu ul.menu > li.menu-item-has-children:hover > a:after,
+#bottommenu ul.nav-menu > li.menu-item-has-children:hover > a:after
+{
+content: " ▲";
+}
+li.menu-item-has-children:hover > a:after
+{
+content: " ►";
+}
+
+#sidemenu li.menu-item-has-children:hover > a:after
+{
+content: " ▼";
+}
+li.menu-item-has-children.dropped > a:after,
+li.menu-item-has-children.dropped:hover > a:after
+{
+content: " ▲";
+}
+
 
 #upperbarmenu #uppermenubox #uppermenu nav div.innerpadding div ul.nav-menu,
 #topmenubox #topmenu nav div.innerpadding div ul.menu,
@@ -411,7 +475,8 @@ transition: all 0.6s ease-in-out;
 }
 
 
-/* #bottommenu ul > li
+/* reverse child content
+#bottommenu ul > li
 {
 display: flex;
 flex-direction: column-reverse;
