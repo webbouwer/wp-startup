@@ -1,0 +1,380 @@
+/** default settings */
+html,body,ul,h1,h2,h3,h4,h5,h6
+{
+padding:0;
+margin:0;
+}
+
+html
+{
+height:100%;
+width:100%;
+}
+body
+{
+min-height:100%;
+width:100%;
+}
+
+.clr
+{
+clear:both;
+height:0;
+font-size:0;
+}
+
+.outermargin,
+.wrap
+{
+position:relative;
+margin:0px auto;
+width:96%;
+min-width:280px;
+}
+
+
+#header
+{
+position:relative;
+width:100%;
+}
+
+#header.header_image
+{
+background-size: cover;
+background-repeat: no-repeat;
+min-height:120px;
+}
+
+#upperbar .outermargin
+{
+}
+#upperbarmenu
+{
+}
+
+#pagecontainer
+{
+position:relative;
+display:block;
+width:100%;
+min-height:100%;
+}
+
+#maincontent .panel-content > .wrap
+{
+margin:0;
+}
+
+
+p
+{
+}
+h1,h2,h3,h4,h5,h6
+{
+line-height:140%;
+}
+.page img,
+.post img
+{
+height:auto;
+max-width:100%;
+}
+.widget
+{
+width:100%;
+}
+
+
+
+/* medium screen layout
+@media screen and (min-width: 480px) and (max-width: 679px){
+
+.colset2 > .widget,
+.colset3 > .widget
+{
+float:left;
+width:50%;
+min-height:100px;
+}
+.colset3 > .widget:nth-child(3)
+{
+float:none;
+width:100%;
+}
+
+}
+*/
+
+
+/* large screen layout */
+@media screen and (min-width: 680px) {
+
+.outermargin,
+.wrap
+{
+position:relative;
+margin:0px auto;
+width:96%;
+max-width:960px;
+}
+.colset2 > .widget
+{
+float:left;
+width:50%;
+min-height:100px;
+}
+.colset3 > .widget
+{
+float:left;
+width:33.33%;
+min-height:100px;
+}
+.colset4 > .widget
+{
+float:left;
+width:25%;
+min-height:100px;
+}
+
+#maincontent .colset4 > .widget
+{
+float:left;
+width:50%;
+min-height:100px;
+}
+
+#sidecontent .widget
+{
+float:none;
+width:100%;
+}
+#upperbarmenu ul > li,
+#upperbar .widget_nav_menu ul > li,
+#topmenu ul > li,
+#topcontent  ul.menu > li,
+#mainmenu  ul > li,
+#bottommenu ul > li,
+#footerend #socialmenu ul > li
+{
+display: inline-block;
+}
+
+
+#uppermenubox,
+#uppermenu,
+#uppermenu nav,
+#uppermenu nav ul
+{
+display:block;
+width:100%;
+}
+#upperbar-widget
+{
+}
+
+#upperbar.fixed,
+#topbar.fixed
+{
+position:fixed;
+display: block;
+width:100%;
+left:0px;
+top:0px;
+z-index: 99;
+}
+
+#topmenu
+{
+}
+#topmenu ul
+{
+}
+#topmenu ul,
+#topmenu ul li
+{
+}
+#topmenu ul.menu li a
+{
+display:block;
+padding:38px 2px;
+text-transform: uppercase;
+}
+
+
+#topmenubox,
+#upperbarmenu
+{
+float:left;
+max-width:67%;
+}
+#contactbox,
+#upperbar-widget
+{
+float:right;
+max-width:33%;
+}
+
+#contactbox .emaillink,
+#contactbox .tellink
+{
+display:block;
+padding:3px 0px;
+}
+
+#sidebar ul li a
+{
+display: block;
+}
+#toplogobox
+{
+float:left;
+}
+#toplogobox a,
+#toplogobox img
+{
+display: block;
+max-width:100%;;
+height: auto;
+}
+#topmenubox
+{
+display: block;
+}
+
+
+
+
+#maincontent
+{
+position: relative;
+display: block;
+float: left;
+width: 77%;
+}
+#maincontent section
+{
+width:100%;
+}
+#sidecontent
+{
+float: left;
+width: 23%;
+}
+article
+{
+display: block;
+max-width:100%;
+clear:both;
+}
+
+
+#maincontent .page,
+#maincontent .post
+{
+margin-right:3%;
+}
+
+#maincontent img.align-right
+{
+width: 30%;
+float: right;
+margin:0px 0px 2% 2%;
+}
+#maincontent img.align-left
+{
+width: 30%;
+float: left;
+margin:0px 2% 2% 0px;
+}
+#maincontent img.align-inlineright
+{
+width: 40%;
+float: left;
+margin:0px 2% 2% 0px;
+}
+#maincontent img.align-inlineleft
+{
+width: 40%;
+float: left;
+margin:0px 2% 2% 0px;
+}
+
+
+#maincontent img.align-left.landscape,
+#maincontent img.align-right.landscape
+{
+width: 40%;
+}
+
+
+
+}
+
+
+
+
+
+/** Postlist widget */
+.widget_wpstartup_postlist_widget
+{
+}
+.widget_wpstartup_postlist_widget ul
+{
+}
+.widget_wpstartup_postlist_widget ul li
+{
+clear:both;
+list-style: none;
+padding:0px;
+width:100%;
+}
+.widget_wpstartup_postlist_widget ul li a
+{
+display:block;
+width:100%;
+margin-top:6px;
+margin-bottom:20px;
+}
+
+.widget_wpstartup_postlist_widget .post-titlebox h4
+{
+font-size:1.3em;
+line-height: 1.2em;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-left
+{
+display:inline;
+float:left;
+margin:0px 10px 15px 0px;
+vertical-align: text-top;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-right
+{
+display:inline;
+float:right;
+margin:0px 0px 15px 10px;
+vertical-align: text-top;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-center
+{
+width:100%;
+height:auto;
+}
+.widget_wpstartup_postlist_widget .item-excerpt img.align-left,
+.widget_wpstartup_postlist_widget .item-excerpt img.align-right
+{
+width:40%;
+height:auto;
+}
+.widget_wpstartup_postlist_widget .post-titlebox h4
+{
+}
+.post-titlebox .post-date,
+.post-titlebox .post-author
+{
+}
+.widget_wpstartup_postlist_widget .item-excerpt p
+{
+padding:0px;
+}

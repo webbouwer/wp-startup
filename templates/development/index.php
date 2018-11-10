@@ -69,9 +69,6 @@ function wpstartup_menu_html( $menu ){
 
                 if( has_nav_menu( $nm ) ){
                     echo '<div id="'.$nm.'menubox"><div id="'.$nm.'menu" class=""><nav><div class="innerpadding">';
-                    //if( $nm == 'top' ){
-                    echo '<div class="menutoggle"><span>menu</span></div>';
-                    //}
                     wp_nav_menu( array( 'theme_location' => $nm ) );
                     echo '<div class="clr"></div></div></nav></div></div>';
                 }
@@ -79,9 +76,6 @@ function wpstartup_menu_html( $menu ){
         }else if( has_nav_menu( $menu ) ){
             // single menu
             echo '<div id="'.$menu.'menubox"><div id="'.$menu.'menu" class=""><nav><div class="innerpadding">';
-            //if( $menu == 'top' ){
-                echo '<div class="menutoggle"><span>menu</span></div>';
-            //}
             wp_nav_menu( array( 'theme_location' => $menu , 'menu_class' => 'nav-menu' ) );
             echo '<div class="clr"></div></div></nav></div></div>';
         }
@@ -112,7 +106,7 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 function wpstartup_sidebar_html(){
 
                     if( has_nav_menu('side') ){
-                        echo '<div id="sidebarmenu">';
+                        echo '<div id="sidemenu">';
                         wpstartup_menu_html( 'side' );
                         echo '<div class="clr"></div></div>';
                     }
@@ -191,8 +185,9 @@ function wp_startup_get_frontpage_sections(){
 
     $(window).load(function(){
 
-        // content & sidebar on load/resizeEnd
+        // content & sidebar size
         function setContentWidth(){
+
             if($(window).width() <= 680 ){
                 $('#maincontent,#sidecontent').css({ 'width': '100%' });
             }else{
@@ -201,9 +196,13 @@ function wp_startup_get_frontpage_sections(){
             }
         }
 
-        // header height on load/resizeEnd
+
+
+        // header height
         <?php $hph = get_theme_mod('wp_startup_theme_header_image_height', 40 );
-        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 ); ?>
+        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 );
+
+        ?>
         function setHeaderHeight(){
             var percentPxHeight = <?php echo $hmh; ?>;
             if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
@@ -212,58 +211,12 @@ function wp_startup_get_frontpage_sections(){
             $('#header').css({ 'min-height': percentPxHeight });
         }
 
-        // menu's on load/resizeEnd
-        function setResponsiveMenu(){
-
-            if($(window).width() <= 680 ){ // small screen css & js
-                // add click/touch control
-                $('body').unbind().on( 'click touchend', '.menutoggle,li.menu-item-has-children > a', function(event){
-                  if (event.preventDefault) {
-                    event.preventDefault();
-                  } else {
-                    event.returnValue = false;
-                  }
-                  event.stopPropagation(); // parent no click
-                  if ($(this).parent().hasClass('dropped')) {
-                    if ($(this).hasClass('menutoggle')) {
-                        // close all menu's including this
-                        $('.menutoggle').parent().removeClass('dropped');
-                    } else {
-                        // close this submenu
-                        $(this).parent().removeClass('dropped');
-                        // and all other child menu's
-                        $(this).parent().find('ul li.menu-item-has-children').removeClass('dropped'); // closed state
-                    }
-                    $(this).parent().find('ul li.parentClone').remove(); // onclose remove parent clones
-                  } else {
-                    if ($(this).hasClass('menutoggle')) {
-                      // close all menu's
-                      $('.menutoggle, ul li.menu-item-has-children > a').parent().removeClass('dropped');
-                    }else{
-                        // clone parent link to sublevel
-                        $(this).parent().find('ul:first').prepend( $(this).clone() );
-                        // wrap parentClone class link
-                        $(this).parent().find('ul:first a:first').wrap('<li class="menu-item parentClone" />');
-                    }
-                    $(this).parent().addClass('dropped'); // dropped state
-                  }
-
-                });
-
-            }else{ // large screen pure css
-                $('body').find('ul li.parentClone').remove(); // remove parent clones
-                $('body').find('.innerpadding, ul li.menu-item-has-children').removeClass('dropped'); // return to closed states
-                $('.menutoggle,li.menu-item-has-children > a').unbind('click'); // unbind click/touch events
-            }
-        }
-
-        // on window resize
         function doneWindowResizing(){
-            setResponsiveMenu();
             setHeaderHeight();
             setContentWidth();
         }
         doneWindowResizing();
+
 
         // resize
         var resizeId;

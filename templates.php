@@ -11,6 +11,12 @@ class PageTemplater {
 	 * The array of templates that this plugin tracks.
 	 */
 	protected $templates;
+
+	/**
+	 * The array of templates customizer files belonging to the tracked templates.
+	 */
+	public $customizers;
+
 	/**
 	 * Returns an instance of this class.
 	 */
@@ -55,28 +61,18 @@ class PageTemplater {
 		);
         */
         $templatefolder = WP_PLUGIN_DIR.'/wp-startup/templates/';
-
-        /** get the tempalte files and names (from main folder)
-        $files=glob( $templatefolder."*.php" );
-        foreach ($files as $file) {
-            $path = pathinfo($file);
-            $this->templates[$path['basename']] = $path['filename'];
-        }
-        */
-
         $dirs = array_filter( glob( $templatefolder."*" ), 'is_dir');
+
         foreach ($dirs as $themefolder) {
             $path = pathinfo( $themefolder );
-
             $this->templates[ $path['basename']."/index.php" ] = $path['filename'];
-
         }
 
         // add customizer customized
         add_action( 'customize_register', array( $this,  'wp_startup_customizer_register_project_templates' ), 11 );
 
         //wp_startup_customizer_register_project_templates
-        // add theme theming
+        // enable this function disable blank pages (without post loops)
         //add_filter('template_include', array( $this ,'wp_startup_template_file_replacements' ) );
 	}
 	/**
@@ -120,7 +116,8 @@ class PageTemplater {
         // Return page template if we have a custom one defined
 		if ( isset( $this->templates[get_post_meta(
 			$post->ID, '_wp_page_template', true
-		)] ) ) {
+		)] )
+           ) {
             // Get the page template
             $filepath = apply_filters( 'page_templater_plugin_dir_path',  plugin_dir_path( __FILE__ ) .'templates/' );
             $file =  $filepath . get_post_meta(
@@ -128,17 +125,18 @@ class PageTemplater {
             );
             // Just to be safe, we check if the file exist first
             if ( file_exists( $file ) ) {
-                return $file;
-            } else {
-                echo $file;
-            }
-		}
-        // get theme settings
-        // theme overwrite on?
-        // from customizer option (or plugin)
-        // load the basic theme if selected
-        if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) == true ){
-            $template = plugin_dir_path( __FILE__ ) .'templates/basic/index.php';
+                //return $file;
+                $template = $file;
+            } //else {
+                //echo $file;
+            //}
+		}else if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) != '0' && get_option( 'wp_startup_maintheme_option' ) != '1'){
+
+            // get theme settings
+            // theme overwrite on?
+            // from customizer option (or plugin)
+            // load the basic theme if selected
+            $template = plugin_dir_path( __FILE__ ) .'templates/'.get_option( 'wp_startup_maintheme_option' ).'/index.php';
         }
 
 		// Return template
@@ -147,25 +145,29 @@ class PageTemplater {
 	}
     /**
      * Inject template files to replace common files
+
     public function wp_startup_template_file_replacements( $template ){
         // source above and  https://wordpress.stackexchange.com/questions/72544/how-can-i-use-a-file-in-my-plugin-as-a-replacement-for-single-php-on-custom-post
+
         if(  !is_front_page() && 'single-post.php' != $template ){ // catch all other than pages //..is_singular('post')
-            $template = plugin_dir_path( __FILE__ ) .'templates/basic-template.php';
+            $template = plugin_dir_path( __FILE__ ) .'templates/basic/index.php';
         }
         return $template;
     }
-    */
+     */
+
+
      /**
      * Adjust customizer
      * https://kb.wpbeaverbuilder.com/article/357-remove-a-customizer-panel
      */
     public function wp_startup_customizer_register_project_templates() {
-        // default sections: title_tagline, colors, header_image, background_image, nav, and static_front_page
-        //$wp_customize->remove_control('display_header_text');
-        //$wp_customize->remove_section('colors');
+
         // load customizer options
-        //require_once( 'customizer.php' );
-        //wp_startup_add_customizer_options_templates();
+        require_once( 'customizer.php' );
+        wp_startup_add_customizer_options_templates();
+
+
     }
 }
 

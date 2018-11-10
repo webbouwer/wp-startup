@@ -59,30 +59,28 @@ class wpstartup_postlist_widget extends WP_Widget {
 		echo $args['before_title'] . $title . $args['after_title'];
 
 
+        // Category related posts
+        $catsrel = "";
 
+        //$posttags = get_the_tags();
+        $postcats = get_the_category();
 
-
-
-			// Category related posts
-			$catsrel = "";
-			//$posttags = get_the_tags();
-			$postcats = get_the_category();
-			if ($postcats) {
+        if ($postcats) {
 			foreach($postcats as $tag) {
 				$catsrel .= ',' . $tag->name;
 			}
-			}
-			$catsrel = substr($catsrel, 1); // remove first comma
+		}
+		$catsrel = substr($catsrel, 1); // remove first comma
 
-			// Tag related posts
-			$tagsrel = "";
-			$posttags = get_the_tags();
-			if ($posttags) {
+		// Tag related posts
+		$tagsrel = "";
+		$posttags = get_the_tags();
+		if ($posttags) {
 			foreach($posttags as $tag) {
 				$tagsrel .= ',' . $tag->name;
 			}
-			}
-			$tagsrel = substr($tagsrel, 1); // remove first comma
+		}
+		$tagsrel = substr($tagsrel, 1); // remove first comma
 
 
 		// list the post accoording to settings category/related
@@ -141,7 +139,9 @@ class wpstartup_postlist_widget extends WP_Widget {
 
 
 		if($dsp_date == 1 ){
-		echo '<span class="post-date time-ago">'.wp_time_ago(get_the_time( 'U' )).' </span>';
+            echo '<span class="post-date time-ago">';
+            wp_startup_time_ago( get_the_time( 'U' ) );
+            echo '</span>';
 		}
 
 		if($dsp_date == 2 ){
@@ -153,7 +153,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		}
 
 		if($dsp_author != 0 ){
-		echo '<span class="post-author">'.get_the_author().' </span>';
+		echo '<span class="post-author"> by '.get_the_author().' </span>';
 		}
 		echo '</div>';
 
@@ -162,7 +162,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		if ( has_post_thumbnail() && $dsp_image != 'none' ) {
 			$align = 'align-'.$dsp_image;
 			// check oriëntation
-			$orient = check_image_orientation( get_the_ID() );
+			$orient = wp_startup_check_image_orientation( get_the_ID() );
 			echo get_the_post_thumbnail( get_the_ID(), 'medium', array( 'class' => $align.' '.$orient )); //the_post_thumbnail('big-thumb');
 
     	}
@@ -170,9 +170,9 @@ class wpstartup_postlist_widget extends WP_Widget {
 		// Post intro content
 			// preg_replace('/(?i)<a([^>]+)>(.+?)<\/a>/','', get_the_excerpt() );
 		if( $excerptlength != 0 ){
-
+        $content = apply_filters('the_content', get_the_content() );
 		echo '<p>';
-		the_excerpt_length( $excerptlength, false );
+        echo wp_startup_truncate( $content, $excerptlength, '', false, true ); //the_excerpt_length( $excerptlength, false );
 		echo '</p>';
 
 		}
@@ -231,7 +231,7 @@ class wpstartup_postlist_widget extends WP_Widget {
 		$post_category = '';
 		}
 
-		$catarr = get_categories_select();
+		$catarr = wp_startup_get_categories_select();
 		?>
 		<p><label for="<?php echo $this->get_field_id( 'post_category' ); ?>">Posts category or related:</label>
 		<select name="<?php echo $this->get_field_name( 'post_category' ); ?>" id="<?php echo $this->get_field_id( 'post_category' ); ?>">

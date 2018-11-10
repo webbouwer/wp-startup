@@ -51,7 +51,7 @@ Author URI: http://makeyoulivebetter.org.ua/
 
 
 
-class Menu_Image_Plugin {
+class WP_Startup_Menu_Image_Plugin {
 	/**
 	 * Self provided image sizes for most menu usage.
 	 *
@@ -246,7 +246,7 @@ class Menu_Image_Plugin {
 	 * @return string
 	 */
 	public function menu_image_edit_nav_menu_walker_filter() {
-		return 'Menu_Image_Walker_Nav_Menu_Edit';
+		return 'WP_Startup_Menu_Image_Walker_Nav_Menu_Edit';
 	}
 	/**
 	 * Load menu image meta for each menu item.
@@ -702,10 +702,10 @@ class Menu_Image_Plugin {
 	}
 }
 
-$menu_image = new Menu_Image_Plugin();
+$menu_image = new WP_Startup_Menu_Image_Plugin();
 require_once(ABSPATH . 'wp-admin/includes/nav-menu.php');
 
-class Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
+class WP_Startup_Menu_Image_Walker_Nav_Menu_Edit extends Walker_Nav_Menu_Edit {
 	public function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 		global $_wp_nav_menu_max_depth;
 		$_wp_nav_menu_max_depth = $depth > $_wp_nav_menu_max_depth ? $depth : $_wp_nav_menu_max_depth;
