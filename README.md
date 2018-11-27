@@ -6,7 +6,7 @@ Do more with basic Wordpress
 The WP Startup plugin hooks into your basic Wordpress installation providing some obvious Wordpress core functionalities.
 
 
-###### Features:
+###### Features: 
  
 
 ##### Theme 
@@ -47,7 +47,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
 - Widgets
     - [x] WP Startup @ Github dashboard widget
     - [x] Postlist widget
-    - [ ] Breadcrumb widget
+    - [x] Breadcrumb widget
 - [x] Shortcodes in text widget
 
 ##### Component

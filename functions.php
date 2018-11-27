@@ -252,6 +252,7 @@ function wp_startup_widgets_init_func() {
 function wp_startup_widgets_func(){
 
     require_once( 'widgets/postlist.php' );
+    require_once( 'widgets/breadcrumbs.php' );
     require_once( 'widgets/dashboard.php' );
 
     add_action( 'widgets_init', 'wp_startup_widgets_register_func' );
@@ -260,6 +261,7 @@ function wp_startup_widgets_func(){
 function wp_startup_widgets_register_func() {
 
     register_widget( 'wpstartup_postlist_widget' );
+    register_widget( 'wpstartup_breadcrumbs_widget' );
 
 }
 
