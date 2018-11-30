@@ -32,13 +32,18 @@ $header_text_color = get_header_textcolor();
 // page content and sidebar width (jquery onresize)
 $sidewidth = 100;
 $mainwidth = 100; // extend with page / post settings
-$sidebarpos = get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right');
-if( $sidebarpos != 'hide' ){
+if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right' ) != 'hide' ){
     $sidewidth = get_theme_mod('wp_startup_theme_panel_elements_sidebarwidth', 23 );
     $mainwidth = 100 - $sidewidth;
 }
 
-
+// page meta options
+$useheaderimage = get_post_meta( get_the_ID() , "meta-page-headerimage", true);
+$usesidebar = get_post_meta( get_the_ID() , "meta-page-pagesidebardisplay", true);
+$usebeforewidgets = get_post_meta( get_the_ID() , "meta-page-beforewidgetsdisplay", true);
+$useafterwidgets = get_post_meta( get_the_ID() , "meta-page-afterwidgetsdisplay", true);
+$usesub1widgets = get_post_meta( get_the_ID() , "meta-page-subcontent1display", true);
+$usesub2widgets = get_post_meta( get_the_ID() , "meta-page-subcontent2display", true);
 
 
 // theme html output toplogo (custom_logo) or site title home link
@@ -148,6 +153,9 @@ function wp_startup_get_frontpage_sections(){
         }
     }
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -321,6 +329,8 @@ function wp_startup_get_frontpage_sections(){
                 wpstartup_toplogo_html();
                 echo '</div>';
 
+
+
                 // topbar menu
                 if( has_nav_menu('top') || has_nav_menu('primary') ){
                     // topbar menu is top & primary || default menu
@@ -364,44 +374,66 @@ function wp_startup_get_frontpage_sections(){
                 echo '<div class="clr"></div></div></div>';
 
 
-                // div header
-                $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
-                $mh = get_theme_mod('wp_startup_theme_header_image_height', 200 );
-                $header_bgimage = get_theme_mod('header_image');
 
-                // page meta options
-                $pid = $post->ID;
-                if( is_home() ){
-                    $pid = get_option( 'page_for_posts' );
-                }
-                $useheaderimage = get_post_meta( $pid , "meta-page-headerimage", true);
-
-                if( ( is_page() || is_single() || is_home() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $pid ), 'full' )  ){
-                    if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) ||  $header_set == 'all' ){
-                        $headerorient = wp_startup_check_image_orientation($pid);
-                        $bgimage = wp_get_attachment_image_src( get_post_thumbnail_id( $pid ), 'full' );
-                        if( $headerorient == 'portrait' ){
-                            $header_set = 'none';
-                            $bgimage = 0;
-                        }
-                        if(!empty( $bgimage ) ){
-                            $header_bgimage = $bgimage[0];
-                        }
+                /*
+                if( null !== wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' )  ){
+                    $headerorient = wp_startup_check_image_orientation($post->ID);
+                    $bgimage = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+                    if( $headerorient == 'portrait' ){
+                        $header_set = 'none';
+                        $bgimage = 0;
+                    }
+                    if(!empty( $bgimage ) ){
+                        $header_bgimage = $bgimage[0];
                     }
                 }
-                if ( ( ( get_header_image() || !empty( $header_bgimage ) ) && $useheaderimage != 'hide') &&
-                     ( $useheaderimage == 'replace'
-                      || $header_set != 'front'
-                      || ( $header_set == 'front' && ( ( is_home() && is_front_page() ) || is_front_page() ) )
-                     )
-                   ){
 
+                if( $useheaderimage == 'replace' && !empty( $bgimage ) ){
+                    // forced replace header with featured image if available
+                    $header_bgimage = $bgimage[0];
+                }
+
+                $displayheader = 0;
+                if( !empty( $header_bgimage ) && (
+                    ( $header_set === 'page' && is_page() )
+                    || ( $header_set === 'post' && is_single() )
+                    || ( $header_set === 'front' && ( is_home() || is_front_page() ) )
+                    // + page / post meta settings overwrite
+                    //&&  ( $useheaderimage != 'hide' || $useheaderimage == 'replace' )
+                    )
+                ){
+                    $displayheader = 1;
+                }
+
+                */
+
+                $displayheader = 1; // default display
+
+                $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
+                // page .. $useheaderimage
+                $mh = get_theme_mod('wp_startup_theme_header_image_height', 30 ); // percentage
+                $header_bgimage = get_theme_mod('header_image');
+
+                if( null !== wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' )  ){
+                    $headerorient = wp_startup_check_image_orientation($post->ID);
+                    $docimage = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+                    if( $headerorient == 'portrait' ){
+                        $header_set = 'none';
+                        $docimage = 0;
+                    }
+                    if(!empty( $bgimage ) ){
+                        $header_bgimage = $docimage[0];
+                    }
+                }
+
+
+
+
+                if( $displayheader == 1 && !empty($header_bgimage)  && !empty($docimage)){
                     echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;background-size:cover;background-repeat:no-repeat;min-height:'.$mh.'px;">';
-
                 }else{
                     echo '<div id="header">';
                 }
-
 
 
                 echo '<div class="outermargin">';
@@ -440,10 +472,11 @@ function wp_startup_get_frontpage_sections(){
 
 
 
-                echo '<div id="maincontainer" class="sidebar-'.$sidebarpos.'"><div class="outermargin">';
+                echo '<div id="maincontainer"><div class="outermargin">';
 
 
-                if( $sidebarpos == 'left'){
+
+                if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'left'){
                     echo '<div id="sidecontent" class="left" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
@@ -467,10 +500,16 @@ function wp_startup_get_frontpage_sections(){
                                         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
                                             <?php // wp_startup_theme_panel_settings_postimage
+
                                             $contentimage = '';
                                             $orient = wp_startup_check_image_orientation(get_the_ID());
                                             $cntimgset = get_theme_mod('wp_startup_theme_panel_settings_postimage', 'above');
-                                            if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) || ( $header_set == 'all' && ( is_page() || is_single() ) ) ){
+                                            if( ( $header_set == 'page' && is_page() )
+                                               || ( $header_set == 'post' && is_single() )
+                                               || ( $header_set == 'all' && ( is_page() || is_single() ) )
+                                               || ( $useheaderimage == 'replace'  && is_page() )
+                                               //|| ( $displayheader == 1 && !empty($docimage) )
+                                            ){
                                                 // in header
                                             }else{
                                                 //the_post_thumbnail('big-thumb');

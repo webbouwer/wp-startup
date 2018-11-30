@@ -74,7 +74,7 @@ function wp_startup_add_customizer_options_templates(){
                 'description'    => __( 'Header and featured images (if available) in WP startup themes. Header is displayed ', 'wp-startup' ),
                 'choices'        => array(
                     'none'   => __( 'for all content', 'wp-startup' ),
-                    'front'  => __( 'on frontpage only', 'wp-startup' ),
+                    'front'  => __( 'on frontpage/blogpage only', 'wp-startup' ),
                     'post'   => __( 'or replaced by single post featured image (if landscape size)', 'wp-startup' ),
                     'page'   => __( 'or replaced by page featured image (if landscape size)', 'wp-startup' ),
                     'all'    => __( 'or replaced by any page or post featured image (if landscape size)', 'wp-startup' ),

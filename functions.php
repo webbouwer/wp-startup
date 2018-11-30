@@ -6,6 +6,7 @@
 function wp_startup_pagethemes_func(){
 
     require_once( 'templates.php' );
+    require_once( 'metaboxes.php' );
     add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
 
     // Extend theme wp_nav_menu() locations for wp-startup themes

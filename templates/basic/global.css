@@ -335,8 +335,13 @@ clear:both;
 }
 
 
-#maincontent .page,
-#maincontent .post
+.sidebar-left #maincontent .page,
+.sidebar-left #maincontent .post
+{
+margin-left:3%;
+}
+.sidebar-right #maincontent .page,
+.sidebar-right #maincontent .post
 {
 margin-right:3%;
 }
@@ -426,10 +431,23 @@ li.menu-item-has-children > a:after
 content: " ►";
 }
 
-#sidemenu li.menu-item-has-children > a:after
+#sidemenu ul li ul li.menu-item-has-children > a:after
 {
-content: " ▼";
+content: " ▼"; /* ▼ */
 }
+
+
+.sidebar-left #sidemenu ul:first-child > li.menu-item-has-children > a:after
+{
+content: " ►"; /* ▼ */
+}
+.sidebar-right #sidemenu ul:first-child > li.menu-item-has-children > a:after
+{
+content: " ◄"; /* ▼ */
+}
+
+
+
 li.menu-item-has-children.dropped > a:after,
 li.menu-item-has-children.dropped:hover > a:after,
 #bottommenu ul.menu > li.menu-item-has-children > a:after,
@@ -503,12 +521,39 @@ left:100%;
 }
 
 
+.sidebar-left #sidemenu ul.nav-menu li > ul.sub-menu,
+.sidebar-left #sidemenu ul.menu li > ul.sub-menu
+{
+position:absolute;
+top:0px;
+left:100%;
+z-index:101;
+}
+.sidebar-right #sidemenu ul.nav-menu li > ul.sub-menu,
+.sidebar-right #sidemenu ul.menu li > ul.sub-menu
+{
+position:absolute;
+top:0px;
+right:100%;
+z-index:101;
+}
+
+#sidemenu ul.nav-menu li ul.sub-menu li ul.sub-menu,
+#sidemenu ul.menu li ul.sub-menu li ul.sub-menu
+{
+position:relative;
+left:0px;
+}
+
+/*
 #sidemenu ul.nav-menu li ul.sub-menu,
 #sidemenu ul.menu li ul.sub-menu
 {
 position:relative;
 left:0px;
 }
+*/
+
 
 
 ul.nav-menu > li ul,
