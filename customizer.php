@@ -82,7 +82,26 @@ function wp_startup_add_customizer_options_templates(){
     	)));
 
 
+
+
         // Content mods
+        $wp_customize->add_setting( 'wp_startup_theme_panel_settings_colorstyle' , array(
+		'default' => 'light',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_settings_colorstyle', array(
+                'label'          => __( 'Theme color type', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_settings',
+                'settings'       => 'wp_startup_theme_panel_settings_colorstyle',
+                'type'           => 'radio',
+                'description'    => __( 'Theme color style in WP startup themes', 'wp-startup' ),
+                'choices'        => array(
+                    'light'   => __( 'Light theme', 'wp-startup' ),
+                    'dark'   => __( 'Dark theme', 'wp-startup' ),
+            	)
+    	)));
+
+
         $wp_customize->add_setting( 'wp_startup_theme_panel_settings_postimage' , array(
 		'default' => 'above',
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
@@ -118,6 +137,7 @@ function wp_startup_add_customizer_options_templates(){
         // Elements mods
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_upperbar' , array(
 		'default' => 'show',
+        'priority'   => 10,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_upperbar', array(
@@ -136,6 +156,7 @@ function wp_startup_add_customizer_options_templates(){
 
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebar' , array(
 		'default' => 'right',
+        'priority'   => 20,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_sidebar', array(
@@ -153,6 +174,7 @@ function wp_startup_add_customizer_options_templates(){
 
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebarwidth' , array(
 		'default' => 23,
+        'priority'   => 30,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_sidebarwidth', array(
@@ -162,6 +184,41 @@ function wp_startup_add_customizer_options_templates(){
                 'type'           => 'number',
                 'description'    => __( 'Sidebar width in WP startup themes', 'wp-startup' ),
     	)));
+
+    $wp_customize->add_setting( 'wp_startup_theme_panel_elements_beforecontent' , array(
+		'default' => 'hide',
+        'priority'   => 60,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_beforecontent', array(
+                'label'          => __( 'Before content display post view', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_beforecontent',
+                'type'           => 'select',
+                'description'    => __( 'Display the before content widgets on single-post pages.', 'wp-startup' ),
+                'choices'        => array(
+                    'hide'   => __( 'Hide this for every post', 'wp-startup' ),
+                    'show'   => __( 'Display with every post', 'wp-startup' ),
+            	)
+    	)));
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_aftercontent' , array(
+		'default' => 'hide',
+        'priority'   => 70,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_aftercontent', array(
+                'label'          => __( 'After content display post view', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_aftercontent',
+                'type'           => 'select',
+                'description'    => __( 'Display the after content widgets on single-post pages.', 'wp-startup' ),
+                'choices'        => array(
+                    'hide'   => __( 'Hide this for every post', 'wp-startup' ),
+                    'show'   => __( 'Display with every post', 'wp-startup' ),
+            	)
+    	)));
+
 
         // extend title_tagline
 

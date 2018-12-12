@@ -23,20 +23,63 @@ function wpstartup_theme_stylesheet(){
 // the current page/post data
 global $post;
 
+
+// page id (or reference id)
+$pid = $post->ID;
+if( is_home() ){
+    $pid = get_option( 'page_for_posts' );
+}
+
+
 // determine header image
 $header_image = get_header_image();
 
 // header textcolor
 $header_text_color = get_header_textcolor();
 
+
+
+
 // page content and sidebar width (jquery onresize)
 $sidewidth = 100;
-$mainwidth = 100; // extend with page / post settings
+$mainwidth = 100;
+
+// extend with page / post settings
+$colorstyle = get_theme_mod('wp_startup_theme_panel_settings_colorstyle', 'light');
 $sidebarpos = get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right');
+
+
+$usebeforepost = get_theme_mod('wp_startup_theme_panel_elements_beforecontent', 'hide');
+$useafterpost = get_theme_mod('wp_startup_theme_panel_elements_aftercontent', 'hide');
+
+$usesidebar = 'default';
+$usesidebar = get_post_meta( $pid , "meta-page-pagesidebardisplay", true);
+
+
+$usebeforewidgets = get_post_meta( $pid , "meta-page-beforewidgetsdisplay", true);
+$useafterwidgets = get_post_meta( $pid , "meta-page-afterwidgetsdisplay", true);
+
+if( is_single() && !is_page() ){
+    $usebeforewidgets = $usebeforepost;
+    $useafterwidgets = $useafterpost;
+}
+
+
+$subcontent1display = get_post_meta($pid, "meta-page-subcontent1display", true);
+$subcontent2display = get_post_meta($pid, "meta-page-subcontent2display", true);
+
+if( $usesidebar == 'left' || $usesidebar == 'right'){
+    $sidebarpos = $usesidebar;
+}
+if( $usesidebar == 'hide'){
+    $sidebarpos = 'hide';
+}
+
 if( $sidebarpos != 'hide' ){
     $sidewidth = get_theme_mod('wp_startup_theme_panel_elements_sidebarwidth', 23 );
     $mainwidth = 100 - $sidewidth;
 }
+
 
 
 
@@ -196,10 +239,10 @@ function wp_startup_get_frontpage_sections(){
         // content & sidebar on load/resizeEnd
         function setContentWidth(){
             if($(window).width() <= 680 ){
-                $('#maincontent,#sidecontent').css({ 'width': '100%' });
+                $('#maincontent,#sidecontent,#topmenubox,#upperbarmenu,#contactbox,#upperbar-widget').css({ 'width': '100%' });
             }else{
-                $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
-                $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
+                $('#topmenubox,#upperbarmenu,#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
+                $('#contactbox,#upperbar-widget,#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
             }
         }
 
@@ -208,11 +251,10 @@ function wp_startup_get_frontpage_sections(){
         $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 ); ?>
         function setHeaderHeight(){
 
-
-                var percentPxHeight = <?php echo $hmh; ?>;
-                if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
-                   var percentPxHeight = $(window).height() / 100 * <?php echo $hph; ?>;
-                }
+            var percentPxHeight = <?php echo $hmh; ?>;
+            if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
+                var percentPxHeight = $(window).height() / 100 * <?php echo $hph; ?>;
+            }
             if( $('#header').css('background-image') !== 'none'){
                 $('#header').css({ 'min-height': percentPxHeight });
             }
@@ -222,7 +264,7 @@ function wp_startup_get_frontpage_sections(){
         // menu's on load/resizeEnd
         function setResponsiveMenu(){
 
-            if($(window).width() <= 680 ){ // small screen css & js
+            if($(window).width() <= 680 || isTouch() ){ // small screen css & js
                 // add click/touch control
                 $('body').unbind().on( 'click touchend', '.menutoggle,li.menu-item-has-children > a', function(event){
                   if (event.preventDefault) {
@@ -231,6 +273,7 @@ function wp_startup_get_frontpage_sections(){
                     event.returnValue = false;
                   }
                   event.stopPropagation(); // parent no click
+
                   if ($(this).parent().hasClass('dropped')) {
                     if ($(this).hasClass('menutoggle')) {
                         // close all menu's including this
@@ -258,11 +301,24 @@ function wp_startup_get_frontpage_sections(){
                 });
 
             }else{ // large screen pure css
+
                 $('body').find('ul li.parentClone').remove(); // remove parent clones
                 $('body').find('.innerpadding, ul li.menu-item-has-children').removeClass('dropped'); // return to closed states
-                $('.menutoggle,li.menu-item-has-children > a').unbind('click'); // unbind click/touch events
+                $('.menutoggle,li.menu-item-has-children > a').unbind('click touchend'); // unbind click/touch events
             }
         }
+
+        // DEVICE isTouch
+        function isTouch(){
+            var el = document.createElement('div');
+            el.setAttribute('ongesturestart', 'return;');
+            if(typeof el.ongesturestart == "function" ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
 
         // on window resize
         function doneWindowResizing(){
@@ -286,7 +342,7 @@ function wp_startup_get_frontpage_sections(){
 
 </script>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class( 'theme-'.$colorstyle ); ?>>
      <div id="pagecontainer" class="site">
 
 
@@ -369,11 +425,6 @@ function wp_startup_get_frontpage_sections(){
                 $mh = get_theme_mod('wp_startup_theme_header_image_height', 200 );
                 $header_bgimage = get_theme_mod('header_image');
 
-                // page meta options
-                $pid = $post->ID;
-                if( is_home() ){
-                    $pid = get_option( 'page_for_posts' );
-                }
                 $useheaderimage = get_post_meta( $pid , "meta-page-headerimage", true);
 
                 if( ( is_page() || is_single() || is_home() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $pid ), 'full' )  ){
@@ -438,12 +489,10 @@ function wp_startup_get_frontpage_sections(){
                     echo '<div class="clr"></div>';
                 }
 
-
-
+                // main content
                 echo '<div id="maincontainer" class="sidebar-'.$sidebarpos.'"><div class="outermargin">';
 
-
-                if( $sidebarpos == 'left'){
+                if( $sidebarpos == 'left' ){
                     echo '<div id="sidecontent" class="left" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
@@ -451,7 +500,7 @@ function wp_startup_get_frontpage_sections(){
 
                  echo '<div id="maincontent" style="width:'.$mainwidth.'%;">';
 
-                   if( wp_startup_is_sidebar_active( 'before-widget' ) ){ ?>
+                   if( wp_startup_is_sidebar_active( 'before-widget' ) && $usebeforewidgets != 'hide' ){ ?>
                     <div id="before-content">
                         <?php wpstartup_widgetarea_html( 'before-widget' ); ?>
                     </div>
@@ -512,7 +561,9 @@ function wp_startup_get_frontpage_sections(){
 
                                             if( is_single() || is_page() ){
 
-                                                echo get_the_content();
+                                                $getPost = get_the_content(); // echo get_the_content();
+                                                $postformatted = wpautop( $getPost );
+                                                echo $postformatted;
 
                                             }else{
 
@@ -534,7 +585,7 @@ function wp_startup_get_frontpage_sections(){
                         ?>
                         </section>
 
-                        <?php if( wp_startup_is_sidebar_active( 'after-widget' ) ){ ?>
+                        <?php if( wp_startup_is_sidebar_active( 'after-widget' ) && $useafterwidgets != 'hide' ){ ?>
                         <div id="after-content">
                             <?php wpstartup_widgetarea_html( 'after-widget' ); ?>
                         </div>
@@ -548,21 +599,27 @@ function wp_startup_get_frontpage_sections(){
 
                 echo '<div class="clr"></div></div>';
 
-                if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'right'){
+                if( $sidebarpos == 'right' ){
                     echo '<div id="sidecontent" class="right" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
                 }
 
-
-
                 echo '<div class="clr"></div></div></div>';
 
 
-                echo '<div id="subcontainer"><div class="outermargin"><div id="subcontent">';
-                wpstartup_widgetarea_html( 'subcontent-widget-1' );
-                wpstartup_widgetarea_html( 'subcontent-widget-2' );
-                echo '<div class="clr"></div></div></div></div>';
+                if( ( wp_startup_is_sidebar_active( 'subcontent-widget-1' ) || wp_startup_is_sidebar_active( 'subcontent-widget-2' ) )
+                   && ( $subcontent1display != 'hide' || $subcontent2display != 'hide' ) ){
+                    echo '<div id="subcontainer"><div class="outermargin"><div id="subcontent">';
+                    if( wp_startup_is_sidebar_active( 'subcontent-widget-1' ) && $subcontent1display != 'hide'){
+                        wpstartup_widgetarea_html( 'subcontent-widget-1' );
+                    }
+                    if( wp_startup_is_sidebar_active( 'subcontent-widget-2' ) && $subcontent2display != 'hide'){
+                        wpstartup_widgetarea_html( 'subcontent-widget-2' );
+                    }
+                    echo '<div class="clr"></div></div></div></div>';
+                }
+
                 ?>
 
                 <?php

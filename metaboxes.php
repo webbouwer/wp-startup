@@ -32,6 +32,7 @@ $headeroptions = array(
     'all'    => __( 'custom display or page featured image', 'wp-startup' ),
 );
 $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
+
 ?>
 <p><label for="meta-page-headerimage"><?php echo __('Header image', 'wp-startup'); ?></label>
 <select name="meta-page-headerimage" id="meta-page-headerimage">
@@ -40,36 +41,40 @@ $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none'
 <option value="hide" <?php selected( $useheaderimage, 'hide' ); ?>><?php echo __('Hide', 'wp-startup'); ?></option>
 </select>
 </p>
-
+<?php
+$sidebar_set = get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right');
+?>
 <p><label for="meta-page-pagesidebardisplay"><?php echo __('Sidebar display', 'wp-startup'); ?></label>
 <select name="meta-page-pagesidebardisplay" id="meta-page-pagesidebardisplay">
-<option value="none" <?php selected( $pagesidebardisplay, 'no' ); ?>><?php echo __('No sidebar', 'wp-startup'); ?></option>
-<option value="hide" <?php selected( $pagesidebardisplay, 'yes' ); ?>><?php echo __('Display sidebar', 'wp-startup'); ?></option>
+<option value="default" <?php selected( $pagesidebardisplay, 'default' ); ?>><?php echo __('Default display ('.$sidebar_set.')', 'wp-startup'); ?></option>
+<option value="hide" <?php selected( $pagesidebardisplay, 'hide' ); ?>><?php echo __('Hide sidebar', 'wp-startup'); ?></option>
+<option value="left" <?php selected( $pagesidebardisplay, 'left' ); ?>><?php echo __('Display sidebar left', 'wp-startup'); ?></option>
+<option value="right" <?php selected( $pagesidebardisplay, 'right' ); ?>><?php echo __('Display sidebar right', 'wp-startup'); ?></option>
 </select>
 </p>
 <p><label for="meta-page-beforewidgetsdisplay"><?php echo __('Before-content Widgets', 'wp-startup'); ?></label>
 <select name="meta-page-beforewidgetsdisplay" id="meta-page-beforewidgetsdisplay">
-<option value="hide" <?php selected( $beforewidgetsdisplay, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 <option value="show" <?php selected( $beforewidgetsdisplay, 'show' ); ?>><?php echo __('Display before content', 'wp-startup'); ?></option>
+<option value="hide" <?php selected( $beforewidgetsdisplay, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 </select>
 </p>
 <p><label for="meta-page-afterwidgetsdisplay"><?php echo __('After-content Widgets', 'wp-startup'); ?></label>
 <select name="meta-page-afterwidgetsdisplay" id="meta-page-afterwidgetsdisplay">
-<option value="hide" <?php selected( $afterwidgetsdisplay, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 <option value="show" <?php selected( $afterwidgetsdisplay, 'show' ); ?>><?php echo __('Display after content', 'wp-startup'); ?></option>
+<option value="hide" <?php selected( $afterwidgetsdisplay, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 </select>
 </p>
 
 <p><label for="meta-page-subcontent1display"><?php echo __('Subcontent Widgets 1', 'wp-startup'); ?></label>
 <select name="meta-page-subcontent1display" id="meta-page-subcontent1display">
-<option value="hide" <?php selected( $subcontent1display, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 <option value="show" <?php selected( $subcontent1display, 'show' ); ?>><?php echo __('Display', 'wp-startup'); ?></option>
+<option value="hide" <?php selected( $subcontent1display, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 </select>
 </p>
 <p><label for="meta-page-subcontent2display"><?php echo __('Subcontent Widgets 2', 'wp-startup'); ?></label>
 <select name="meta-page-subcontent2display" id="meta-page-subcontent2display">
-<option value="hide" <?php selected( $subcontent2display, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 <option value="show" <?php selected( $subcontent2display, 'show' ); ?>><?php echo __('Display', 'wp-startup'); ?></option>
+<option value="hide" <?php selected( $subcontent2display, 'hide' ); ?>><?php echo __('Do not display', 'wp-startup'); ?></option>
 </select>
 </p>
 
@@ -86,32 +91,32 @@ $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none'
 //}
 
 
-function save_page_meta_box($post_id, $post, $update)
+function save_page_meta_box($pid, $post, $update)
 {
     if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
-        return $post_id;
+        return $pid;
 
-    if(!current_user_can("edit_post", $post_id))
-        return $post_id;
+    if(!current_user_can("edit_post", $pid))
+        return $pid;
 
     if( isset( $_POST['meta-page-headerimage'] ) )
-        update_post_meta( $post_id, 'meta-page-headerimage', esc_attr(     $_POST['meta-page-headerimage'] ) );
+        update_post_meta( $pid, 'meta-page-headerimage', esc_attr(     $_POST['meta-page-headerimage'] ) );
 
     if( isset( $_POST['meta-page-pagesidebardisplay'] ) )
-        update_post_meta( $post_id, 'meta-page-pagesidebardisplay', esc_attr( $_POST['meta-page-pagesidebardisplay'] ) );
+        update_post_meta( $pid, 'meta-page-pagesidebardisplay', esc_attr( $_POST['meta-page-pagesidebardisplay'] ) );
 
 
     if( isset( $_POST['meta-page-beforewidgetsdisplay'] ) )
-        update_post_meta( $post_id, 'meta-page-beforewidgetsdisplay', esc_attr( $_POST['meta-page-beforewidgetsdisplay'] ) );
+        update_post_meta( $pid, 'meta-page-beforewidgetsdisplay', esc_attr( $_POST['meta-page-beforewidgetsdisplay'] ) );
 
     if( isset( $_POST['meta-page-afterwidgetsdisplay'] ) )
-        update_post_meta( $post_id, 'meta-page-afterwidgetsdisplay', esc_attr( $_POST['meta-page-afterwidgetsdisplay'] ) );
+        update_post_meta( $pid, 'meta-page-afterwidgetsdisplay', esc_attr( $_POST['meta-page-afterwidgetsdisplay'] ) );
 
     if( isset( $_POST['meta-page-subcontent1display'] ) )
-        update_post_meta( $post_id, 'meta-page-subcontent1display', esc_attr( $_POST['meta-page-subcontent1display'] ) );
+        update_post_meta( $pid, 'meta-page-subcontent1display', esc_attr( $_POST['meta-page-subcontent1display'] ) );
 
     if( isset( $_POST['meta-page-subcontent2display'] ) )
-        update_post_meta( $post_id, 'meta-page-subcontent2display', esc_attr( $_POST['meta-page-subcontent2display'] ) );
+        update_post_meta( $pid, 'meta-page-subcontent2display', esc_attr( $_POST['meta-page-subcontent2display'] ) );
 
 
 
