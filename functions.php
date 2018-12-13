@@ -6,7 +6,9 @@
 function wp_startup_pagethemes_func(){
 
     require_once( 'templates.php' );
+
     require_once( 'metaboxes.php' );
+
     add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
 
     // Extend theme wp_nav_menu() locations for wp-startup themes
@@ -71,7 +73,10 @@ function create_wpstartup_menu() {
  * De-register default theme styles (used in specifc page templates)
  */
 function wp_startup_theme_deregister_func() {
-
+  wp_deregister_style('twentynineteen-style');
+  wp_deregister_style('twentynineteen-fonts');
+  wp_deregister_style('twentyeightteen-style');
+  wp_deregister_style('twentyeightteen-fonts');
   wp_deregister_style('twentyseventeen-style');
   wp_deregister_style('twentyseventeen-fonts');
   wp_deregister_style('twentysixteen-style');

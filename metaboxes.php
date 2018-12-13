@@ -1,19 +1,19 @@
 <?php
 /********** PAGE CUSTOM META FIELDS **********/
-function add_page_meta_box()
+function wp_startup_add_page_meta_box()
 {
     add_meta_box(
-        "page-custom-meta-box",
+        "wp-startup-page-custom-meta-box",
         "Page Elements",
-        "page_meta_custom_fields",
+        "wp_startup_page_meta_custom_fields",
         "page",
         "side",
         "high",
         null);
 }
-add_action("add_meta_boxes", "add_page_meta_box");
+add_action("add_meta_boxes", "wp_startup_add_page_meta_box");
 
-function page_meta_custom_fields($object)
+function wp_startup_page_meta_custom_fields($object)
 {
 wp_nonce_field(basename(__FILE__), "meta-box-nonce");
 $useheaderimage = get_post_meta($object->ID, "meta-page-headerimage", true);
@@ -91,7 +91,7 @@ $sidebar_set = get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right')
 //}
 
 
-function save_page_meta_box($pid, $post, $update)
+function wp_startup_save_page_meta_box($pid, $post, $update)
 {
     if (!isset($_POST["meta-box-nonce"]) || !wp_verify_nonce($_POST["meta-box-nonce"], basename(__FILE__)))
         return $pid;
@@ -122,7 +122,7 @@ function save_page_meta_box($pid, $post, $update)
 
 
 }
-add_action("save_post", "save_page_meta_box", 10, 3);
+add_action("save_post", "wp_startup_save_page_meta_box", 10, 3);
 
 
 ?>
