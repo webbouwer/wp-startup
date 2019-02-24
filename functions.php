@@ -44,7 +44,7 @@ function wp_startup_theme_global_func() {
     // add_theme_support()
 	// add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
     add_theme_support( 'custom-background' );
-
+    add_theme_support( 'custom-header' );
     add_theme_support( 'gutenberg', array(
 
         // Theme supports wide images, galleries and videos.

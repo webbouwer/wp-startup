@@ -5,7 +5,6 @@ function wp_startup_add_customizer_options_templates(){
 
         global $wp_customize;
 
-
         $wp_customize->remove_control('display_header_text');
         $wp_customize->remove_control('header_video');
         $wp_customize->remove_control('external_header_video');
@@ -16,6 +15,7 @@ function wp_startup_add_customizer_options_templates(){
             'title'    => __('WP startup theme', 'wp-startup'),
             'priority' => 10,
         ));
+
         // add sections
         $wp_customize->add_section('wp_startup_theme_panel_settings', array(
             'title'    => __('Settings', 'wp-startup'),
@@ -122,7 +122,7 @@ function wp_startup_add_customizer_options_templates(){
     	)));
         // excerpt length
         $wp_customize->add_setting( 'wp_startup_theme_panel_settings_excerptlength', array(
-          'default' => 12,
+          'default' => 150,
           'sanitize_callback' => 'wp_startup_theme_sanitize_default',
         ) );
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_settings_excerptlength', array(
@@ -130,7 +130,7 @@ function wp_startup_add_customizer_options_templates(){
           'section' => 'wp_startup_theme_panel_settings', // Add a default or your own section
           'settings'=> 'wp_startup_theme_panel_settings_excerptlength',
           'label' => __( 'Excerpt length' ),
-          'description' => __( 'Add here the max. amount of words in the post excerpts (list intro texts).' ),
+          'description' => __( 'Add here the max. amount of characters in the post excerpts (list intro texts).' ),
         )));
 
 
