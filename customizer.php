@@ -5,7 +5,6 @@ function wp_startup_add_customizer_options_templates(){
 
         global $wp_customize;
 
-
         $wp_customize->remove_control('display_header_text');
         $wp_customize->remove_control('header_video');
         $wp_customize->remove_control('external_header_video');
@@ -16,7 +15,13 @@ function wp_startup_add_customizer_options_templates(){
             'title'    => __('WP startup theme', 'wp-startup'),
             'priority' => 10,
         ));
+
         // add sections
+        $wp_customize->add_section('wp_startup_theme_panel_settings', array(
+            'title'    => __('Settings', 'wp-startup'),
+            'panel'  => 'wp_startup_theme_panel',
+            'priority' => 100,
+        ));
         $wp_customize->add_section('wp_startup_theme_panel_content', array(
             'title'    => __('Content', 'wp-startup'),
             'panel'  => 'wp_startup_theme_panel',
@@ -69,7 +74,7 @@ function wp_startup_add_customizer_options_templates(){
                 'description'    => __( 'Header and featured images (if available) in WP startup themes. Header is displayed ', 'wp-startup' ),
                 'choices'        => array(
                     'none'   => __( 'for all content', 'wp-startup' ),
-                    'front'  => __( 'on frontpage only', 'wp-startup' ),
+                    'front'  => __( 'on frontpage/blogpage only', 'wp-startup' ),
                     'post'   => __( 'or replaced by single post featured image (if landscape size)', 'wp-startup' ),
                     'page'   => __( 'or replaced by page featured image (if landscape size)', 'wp-startup' ),
                     'all'    => __( 'or replaced by any page or post featured image (if landscape size)', 'wp-startup' ),
@@ -77,17 +82,36 @@ function wp_startup_add_customizer_options_templates(){
     	)));
 
 
+
+
         // Content mods
-        $wp_customize->add_setting( 'wp_startup_theme_panel_content_postimage' , array(
+        $wp_customize->add_setting( 'wp_startup_theme_panel_settings_colorstyle' , array(
+		'default' => 'light',
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_settings_colorstyle', array(
+                'label'          => __( 'Theme color type', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_settings',
+                'settings'       => 'wp_startup_theme_panel_settings_colorstyle',
+                'type'           => 'radio',
+                'description'    => __( 'Theme color style in WP startup themes', 'wp-startup' ),
+                'choices'        => array(
+                    'light'   => __( 'Light theme', 'wp-startup' ),
+                    'dark'   => __( 'Dark theme', 'wp-startup' ),
+            	)
+    	)));
+
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_settings_postimage' , array(
 		'default' => 'above',
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
-        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_postimage', array(
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_settings_postimage', array(
                 'label'          => __( 'Featured image', 'wp-startup' ),
-                'section'        => 'wp_startup_theme_panel_content',
-                'settings'       => 'wp_startup_theme_panel_content_postimage',
+                'section'        => 'wp_startup_theme_panel_settings',
+                'settings'       => 'wp_startup_theme_panel_settings_postimage',
                 'type'           => 'radio',
-                'description'    => __( 'Featured image display in WP startup themes (if not replace header)', 'wp-startup' ),
+                'description'    => __( 'Posts(list) Featured Image display in WP startup themes (if not replacing header)', 'wp-startup' ),
                 'choices'        => array(
                     'above'   => __( 'Wide images before title, portrait image besides text', 'wp-startup' ),
                     'left'   => __( 'Left besides title/text', 'wp-startup' ),
@@ -97,22 +121,23 @@ function wp_startup_add_customizer_options_templates(){
             	)
     	)));
         // excerpt length
-        $wp_customize->add_setting( 'wp_startup_theme_panel_content_excerptlength', array(
-          'default' => 12,
+        $wp_customize->add_setting( 'wp_startup_theme_panel_settings_excerptlength', array(
+          'default' => 150,
           'sanitize_callback' => 'wp_startup_theme_sanitize_default',
         ) );
-        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_excerptlength', array(
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_settings_excerptlength', array(
           'type' => 'number',
-          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
-          'settings'=> 'wp_startup_theme_panel_content_excerptlength',
+          'section' => 'wp_startup_theme_panel_settings', // Add a default or your own section
+          'settings'=> 'wp_startup_theme_panel_settings_excerptlength',
           'label' => __( 'Excerpt length' ),
-          'description' => __( 'Add here the max. amount of words in the post excerpts (intro words for lists).' ),
+          'description' => __( 'Add here the max. amount of characters in the post excerpts (list intro texts).' ),
         )));
 
 
         // Elements mods
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_upperbar' , array(
 		'default' => 'show',
+        'priority'   => 10,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_upperbar', array(
@@ -131,6 +156,7 @@ function wp_startup_add_customizer_options_templates(){
 
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebar' , array(
 		'default' => 'right',
+        'priority'   => 20,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_sidebar', array(
@@ -148,6 +174,7 @@ function wp_startup_add_customizer_options_templates(){
 
         $wp_customize->add_setting( 'wp_startup_theme_panel_elements_sidebarwidth' , array(
 		'default' => 23,
+        'priority'   => 30,
 		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
     	));
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_sidebarwidth', array(
@@ -157,6 +184,41 @@ function wp_startup_add_customizer_options_templates(){
                 'type'           => 'number',
                 'description'    => __( 'Sidebar width in WP startup themes', 'wp-startup' ),
     	)));
+
+    $wp_customize->add_setting( 'wp_startup_theme_panel_elements_beforecontent' , array(
+		'default' => 'hide',
+        'priority'   => 60,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_beforecontent', array(
+                'label'          => __( 'Before content display post view', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_beforecontent',
+                'type'           => 'select',
+                'description'    => __( 'Display the before content widgets on single-post pages.', 'wp-startup' ),
+                'choices'        => array(
+                    'hide'   => __( 'Hide this for every post', 'wp-startup' ),
+                    'show'   => __( 'Display with every post', 'wp-startup' ),
+            	)
+    	)));
+
+        $wp_customize->add_setting( 'wp_startup_theme_panel_elements_aftercontent' , array(
+		'default' => 'hide',
+        'priority'   => 70,
+		'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+    	));
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_elements_aftercontent', array(
+                'label'          => __( 'After content display post view', 'wp-startup' ),
+                'section'        => 'wp_startup_theme_panel_elements',
+                'settings'       => 'wp_startup_theme_panel_elements_aftercontent',
+                'type'           => 'select',
+                'description'    => __( 'Display the after content widgets on single-post pages.', 'wp-startup' ),
+                'choices'        => array(
+                    'hide'   => __( 'Hide this for every post', 'wp-startup' ),
+                    'show'   => __( 'Display with every post', 'wp-startup' ),
+            	)
+    	)));
+
 
         // extend title_tagline
 
@@ -174,6 +236,33 @@ function wp_startup_add_customizer_options_templates(){
           'description' => __( 'Logo max width in px.' ),
         )));
 
+        // company office adress info
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_contact_info', array(
+          'default' => '',
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( 'wp_startup_theme_panel_content_contact_info', array(
+          'type' => 'textarea',
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
+          'label' => __( 'Contact info' ),
+          'description' => __( 'Contact info text' ),
+        ) );
+
+        // company office adress info
+        $wp_customize->add_setting( 'wp_startup_theme_panel_content_office_address', array(
+          'default' => '',
+          'sanitize_callback' => 'wp_startup_theme_sanitize_default',
+        ) );
+
+        $wp_customize->add_control( 'wp_startup_theme_panel_content_office_address', array(
+          'type' => 'textarea',
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
+          'label' => __( 'Address info' ),
+          'description' => __( 'Address info text' ),
+        ) );
+
+
         // tel number
         $wp_customize->add_setting( 'wp_startup_theme_panel_content_telephone', array(
           'default' => '',
@@ -182,7 +271,7 @@ function wp_startup_add_customizer_options_templates(){
 
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_telephone', array(
           'type' => 'text',
-          'section' => 'title_tagline', // Add a default or your own section
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
           'settings'=> 'wp_startup_theme_panel_content_telephone',
           'label' => __( 'Telephone' ),
           'description' => __( 'Add here the site main contact telephone number.' ),
@@ -195,7 +284,7 @@ function wp_startup_add_customizer_options_templates(){
         ) );
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_email', array(
           'type' => 'text',
-          'section' => 'title_tagline', // Add a default or your own section
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
           'settings'=> 'wp_startup_theme_panel_content_email',
           'label' => __( 'Email' ),
           'description' => __( 'Add here the site main contact email address.' ),
@@ -207,7 +296,7 @@ function wp_startup_add_customizer_options_templates(){
         ) );
         $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'wp_startup_theme_panel_content_copyright', array(
           'type' => 'text',
-          'section' => 'title_tagline', // Add a default or your own section
+          'section' => 'wp_startup_theme_panel_content', // Add a default or your own section
           'settings'=> 'wp_startup_theme_panel_content_copyright',
           'label' => __( 'Copyright' ),
           'description' => __( 'Add here the site bottom copyright textline.' ),

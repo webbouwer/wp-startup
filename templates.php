@@ -55,7 +55,7 @@ class PageTemplater {
 			'template_include',
 			array( $this, 'view_project_template')
 		);
-		// [replace] Add your templates to this array.
+		// [replaced] Add your templates to this array.
 		/*$this->templates = array(
 			'blank-template.php' => 'Blank 2 Template',
 		);
@@ -68,7 +68,7 @@ class PageTemplater {
             $this->templates[ $path['basename']."/index.php" ] = $path['filename'];
         }
 
-        // add customizer customized
+        // add customizer customized options
         add_action( 'customize_register', array( $this,  'wp_startup_customizer_register_project_templates' ), 11 );
 
         //wp_startup_customizer_register_project_templates
@@ -113,8 +113,11 @@ class PageTemplater {
         // hacking the theme
         // Get global post
 		global $post;
+
         // Return page template if we have a custom one defined
-		if ( isset( $this->templates[get_post_meta(
+		// and activate template options accoordingly
+
+        if ( isset( $this->templates[get_post_meta(
 			$post->ID, '_wp_page_template', true
 		)] )
            ) {
@@ -130,6 +133,9 @@ class PageTemplater {
             } //else {
                 //echo $file;
             //}
+
+
+
 		}else if( get_option( 'wp_startup_maintheme_option' ) != '' && get_option( 'wp_startup_maintheme_option' ) != '0' && get_option( 'wp_startup_maintheme_option' ) != '1'){
 
             // get theme settings

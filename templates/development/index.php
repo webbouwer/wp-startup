@@ -23,19 +23,64 @@ function wpstartup_theme_stylesheet(){
 // the current page/post data
 global $post;
 
+
+// page id (or reference id)
+$pid = $post->ID;
+if( is_home() ){
+    $pid = get_option( 'page_for_posts' );
+}
+
+
 // determine header image
 $header_image = get_header_image();
 
 // header textcolor
 $header_text_color = get_header_textcolor();
 
+
+
+
 // page content and sidebar width (jquery onresize)
 $sidewidth = 100;
-$mainwidth = 100; // extend with page / post settings
-if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right' ) != 'hide' ){
+$mainwidth = 100;
+
+// extend with page / post settings
+$colorstyle = get_theme_mod('wp_startup_theme_panel_settings_colorstyle', 'light');
+$sidebarpos = get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right');
+
+
+$usebeforepost = get_theme_mod('wp_startup_theme_panel_elements_beforecontent', 'hide');
+$useafterpost = get_theme_mod('wp_startup_theme_panel_elements_aftercontent', 'hide');
+
+$usesidebar = 'default';
+$usesidebar = get_post_meta( $pid , "meta-page-pagesidebardisplay", true);
+
+
+$usebeforewidgets = get_post_meta( $pid , "meta-page-beforewidgetsdisplay", true);
+$useafterwidgets = get_post_meta( $pid , "meta-page-afterwidgetsdisplay", true);
+
+if( is_single() && !is_page() ){
+    $usebeforewidgets = $usebeforepost;
+    $useafterwidgets = $useafterpost;
+}
+
+
+$subcontent1display = get_post_meta($pid, "meta-page-subcontent1display", true);
+$subcontent2display = get_post_meta($pid, "meta-page-subcontent2display", true);
+
+if( $usesidebar == 'left' || $usesidebar == 'right'){
+    $sidebarpos = $usesidebar;
+}
+if( $usesidebar == 'hide'){
+    $sidebarpos = 'hide';
+}
+
+if( $sidebarpos != 'hide' ){
     $sidewidth = get_theme_mod('wp_startup_theme_panel_elements_sidebarwidth', 23 );
     $mainwidth = 100 - $sidewidth;
 }
+
+
 
 
 
@@ -69,6 +114,9 @@ function wpstartup_menu_html( $menu ){
 
                 if( has_nav_menu( $nm ) ){
                     echo '<div id="'.$nm.'menubox"><div id="'.$nm.'menu" class=""><nav><div class="innerpadding">';
+                    //if( $nm == 'top' ){
+                    echo '<div class="menutoggle"><span>menu</span></div>';
+                    //}
                     wp_nav_menu( array( 'theme_location' => $nm ) );
                     echo '<div class="clr"></div></div></nav></div></div>';
                 }
@@ -76,6 +124,9 @@ function wpstartup_menu_html( $menu ){
         }else if( has_nav_menu( $menu ) ){
             // single menu
             echo '<div id="'.$menu.'menubox"><div id="'.$menu.'menu" class=""><nav><div class="innerpadding">';
+            //if( $menu == 'top' ){
+                echo '<div class="menutoggle"><span>menu</span></div>';
+            //}
             wp_nav_menu( array( 'theme_location' => $menu , 'menu_class' => 'nav-menu' ) );
             echo '<div class="clr"></div></div></nav></div></div>';
         }
@@ -106,7 +157,7 @@ function wpstartup_widgetarea_html( $id, $type = false ){
 function wpstartup_sidebar_html(){
 
                     if( has_nav_menu('side') ){
-                        echo '<div id="sidemenu">';
+                        echo '<div id="sidebarmenu">';
                         wpstartup_menu_html( 'side' );
                         echo '<div class="clr"></div></div>';
                     }
@@ -185,38 +236,97 @@ function wp_startup_get_frontpage_sections(){
 
     $(window).load(function(){
 
-        // content & sidebar size
+        // content & sidebar on load/resizeEnd
         function setContentWidth(){
-
             if($(window).width() <= 680 ){
-                $('#maincontent,#sidecontent').css({ 'width': '100%' });
+                $('#maincontent,#sidecontent,#topmenubox,#upperbarmenu,#contactbox,#upperbar-widget').css({ 'width': '100%' });
             }else{
-                $('#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
-                $('#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
+                $('#topmenubox,#upperbarmenu,#maincontent').css({ 'width': '<?php echo $mainwidth; ?>%' });
+                $('#contactbox,#upperbar-widget,#sidecontent').css({ 'width': '<?php echo $sidewidth; ?>%' });
             }
         }
 
-
-
-        // header height
+        // header height on load/resizeEnd
         <?php $hph = get_theme_mod('wp_startup_theme_header_image_height', 40 );
-        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 );
-
-        ?>
+        $hmh = get_theme_mod('wp_startup_theme_header_image_minheight', 200 ); ?>
         function setHeaderHeight(){
+
             var percentPxHeight = <?php echo $hmh; ?>;
             if( <?php echo $hmh; ?> < ( $(window).height() / 100 * <?php echo $hph; ?> ) ){
-               var percentPxHeight = $(window).height() / 100 * <?php echo $hph; ?>;
+                var percentPxHeight = $(window).height() / 100 * <?php echo $hph; ?>;
             }
-            $('#header').css({ 'min-height': percentPxHeight });
+            if( $('#header').css('background-image') !== 'none'){
+                $('#header').css({ 'min-height': percentPxHeight });
+            }
+
         }
 
+        // menu's on load/resizeEnd
+        function setResponsiveMenu(){
+
+            if($(window).width() <= 680 || isTouch() ){ // small screen css & js
+                // add click/touch control
+                $('body').unbind().on( 'click touchend', '.menutoggle,li.menu-item-has-children > a', function(event){
+                  if (event.preventDefault) {
+                    event.preventDefault();
+                  } else {
+                    event.returnValue = false;
+                  }
+                  event.stopPropagation(); // parent no click
+
+                  if ($(this).parent().hasClass('dropped')) {
+                    if ($(this).hasClass('menutoggle')) {
+                        // close all menu's including this
+                        $('.menutoggle').parent().removeClass('dropped');
+                    } else {
+                        // close this submenu
+                        $(this).parent().removeClass('dropped');
+                        // and all other child menu's
+                        $(this).parent().find('ul li.menu-item-has-children').removeClass('dropped'); // closed state
+                    }
+                    $(this).parent().find('ul li.parentClone').remove(); // onclose remove parent clones
+                  } else {
+                    if ($(this).hasClass('menutoggle')) {
+                      // close all menu's
+                      $('.menutoggle, ul li.menu-item-has-children > a').parent().removeClass('dropped');
+                    }else{
+                        // clone parent link to sublevel
+                        $(this).parent().find('ul:first').prepend( $(this).clone() );
+                        // wrap parentClone class link
+                        $(this).parent().find('ul:first a:first').wrap('<li class="menu-item parentClone" />');
+                    }
+                    $(this).parent().addClass('dropped'); // dropped state
+                  }
+
+                });
+
+            }else{ // large screen pure css
+
+                $('body').find('ul li.parentClone').remove(); // remove parent clones
+                $('body').find('.innerpadding, ul li.menu-item-has-children').removeClass('dropped'); // return to closed states
+                $('.menutoggle,li.menu-item-has-children > a').unbind('click touchend'); // unbind click/touch events
+            }
+        }
+
+        // DEVICE isTouch
+        function isTouch(){
+            var el = document.createElement('div');
+            el.setAttribute('ongesturestart', 'return;');
+            if(typeof el.ongesturestart == "function" ){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+
+        // on window resize
         function doneWindowResizing(){
+            setResponsiveMenu();
             setHeaderHeight();
             setContentWidth();
         }
         doneWindowResizing();
-
 
         // resize
         var resizeId;
@@ -232,7 +342,7 @@ function wp_startup_get_frontpage_sections(){
 
 </script>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class( 'theme-'.$colorstyle ); ?>>
      <div id="pagecontainer" class="site">
 
 
@@ -284,27 +394,43 @@ function wp_startup_get_frontpage_sections(){
 
 
                 // contactbox
-                if( get_theme_mod('wp_startup_theme_panel_content_email', '') != '' || get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
+                if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''
+                    || get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''
+                    || get_theme_mod('wp_startup_theme_panel_content_office_address', '') != ''
+                    || get_theme_mod('wp_startup_theme_panel_content_contact_info', '') != ''){
+
                     echo '<div id="contactbox">';
+
+                        if( get_theme_mod('wp_startup_theme_panel_content_contact_info', '') != ''){
+                            echo '<div class="contactinfo">'.get_theme_mod('wp_startup_theme_panel_content_contact_info').'</div>';
+                        }
+                        if( get_theme_mod('wp_startup_theme_panel_content_office_address', '') != ''){
+                            echo '<div class="addressinfo">'.get_theme_mod('wp_startup_theme_panel_content_office_address').'</div>';
+                        }
                         if( get_theme_mod('wp_startup_theme_panel_content_email', '') != ''){
                             echo '<a class="emaillink" href="mailto:'.get_theme_mod('wp_startup_theme_panel_content_email').'">'.get_theme_mod('wp_startup_theme_panel_content_email').'</a>';
                         }
                         if( get_theme_mod('wp_startup_theme_panel_content_telephone', '') != ''){
                             echo '<a class="tellink" href="tel:'.get_theme_mod('wp_startup_theme_panel_content_telephone').'">'.get_theme_mod('wp_startup_theme_panel_content_telephone').'</a>';
                         }
+
                     echo '<div class="clr"></div></div>';
                 }
 
                 echo '<div class="clr"></div></div></div>';
 
+
                 // div header
                 $header_set = get_theme_mod('wp_startup_theme_panel_elements_postheader', 'none' );
                 $mh = get_theme_mod('wp_startup_theme_header_image_height', 200 );
                 $header_bgimage = get_theme_mod('header_image');
-                if( ( is_page() || is_single() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' )  ){
+
+                $useheaderimage = get_post_meta( $pid , "meta-page-headerimage", true);
+
+                if( ( is_page() || is_single() || is_home() ) && $header_set != 'none' && null !== wp_get_attachment_image_src( get_post_thumbnail_id( $pid ), 'full' )  ){
                     if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) ||  $header_set == 'all' ){
-                        $headerorient = wp_startup_check_image_orientation($post->ID);
-                        $bgimage = wp_get_attachment_image_src( get_post_thumbnail_id( $post->ID ), 'full' );
+                        $headerorient = wp_startup_check_image_orientation($pid);
+                        $bgimage = wp_get_attachment_image_src( get_post_thumbnail_id( $pid ), 'full' );
                         if( $headerorient == 'portrait' ){
                             $header_set = 'none';
                             $bgimage = 0;
@@ -314,14 +440,20 @@ function wp_startup_get_frontpage_sections(){
                         }
                     }
                 }
-                if ( ( get_header_image() || !empty( $bgimage ) )
-                    && ( $header_set != 'front' || ( get_header_image() && $header_set == 'front' && is_front_page() ) ) ){
+                if ( ( ( get_header_image() || !empty( $header_bgimage ) ) && $useheaderimage != 'hide') &&
+                     ( $useheaderimage == 'replace'
+                      || $header_set != 'front'
+                      || ( $header_set == 'front' && ( ( is_home() && is_front_page() ) || is_front_page() ) )
+                     )
+                   ){
 
                     echo  '<div id="header" class="header_image" style="background-image:url('.$header_bgimage.');background-position:center;background-size:cover;background-repeat:no-repeat;min-height:'.$mh.'px;">';
 
                 }else{
                     echo '<div id="header">';
                 }
+
+
 
                 echo '<div class="outermargin">';
                 if( wp_startup_is_sidebar_active( 'header-widget-1' ) ){
@@ -331,6 +463,9 @@ function wp_startup_get_frontpage_sections(){
                 wpstartup_widgetarea_html( 'header-widget-2' );
                 }
                 echo '<div class="clr"></div></div></div>';
+
+
+
 
                 echo '<div id="topcontent"><div class="outermargin">';
 
@@ -354,10 +489,10 @@ function wp_startup_get_frontpage_sections(){
                     echo '<div class="clr"></div>';
                 }
 
-                echo '<div id="maincontainer"><div class="outermargin">';
+                // main content
+                echo '<div id="maincontainer" class="sidebar-'.$sidebarpos.'"><div class="outermargin">';
 
-
-                if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'left'){
+                if( $sidebarpos == 'left' ){
                     echo '<div id="sidecontent" class="left" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
@@ -365,7 +500,7 @@ function wp_startup_get_frontpage_sections(){
 
                  echo '<div id="maincontent" style="width:'.$mainwidth.'%;">';
 
-                   if( wp_startup_is_sidebar_active( 'before-widget' ) ){ ?>
+                   if( wp_startup_is_sidebar_active( 'before-widget' ) && $usebeforewidgets != 'hide' ){ ?>
                     <div id="before-content">
                         <?php wpstartup_widgetarea_html( 'before-widget' ); ?>
                     </div>
@@ -380,10 +515,10 @@ function wp_startup_get_frontpage_sections(){
                                         ?>
                                         <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-                                            <?php // wp_startup_theme_panel_content_postimage
+                                            <?php // wp_startup_theme_panel_settings_postimage
                                             $contentimage = '';
                                             $orient = wp_startup_check_image_orientation(get_the_ID());
-                                            $cntimgset = get_theme_mod('wp_startup_theme_panel_content_postimage', 'above');
+                                            $cntimgset = get_theme_mod('wp_startup_theme_panel_settings_postimage', 'above');
                                             if( ( $header_set == 'page' && is_page() ) || ( $header_set == 'post' && is_single() ) || ( $header_set == 'all' && ( is_page() || is_single() ) ) ){
                                                 // in header
                                             }else{
@@ -393,6 +528,11 @@ function wp_startup_get_frontpage_sections(){
                                                 }
                                                 $contentimage = get_the_post_thumbnail( get_the_ID(), 'big-thumb', array( 'class' => 'post-image align-'.$cntimgset.' '.$orient ));
                                             }
+
+                                            if( !is_single() && !is_page() ){
+                                                $contentimage = '<a class="imagelink" href="'.get_the_permalink().'">'.$contentimage.'</a>';
+                                            }
+
                                             if( ($cntimgset == 'above' || $cntimgset == 'left' || $cntimgset == 'right') && $contentimage != ''){
                                                 echo $contentimage;
                                             }
@@ -421,12 +561,14 @@ function wp_startup_get_frontpage_sections(){
 
                                             if( is_single() || is_page() ){
 
-                                                echo get_the_content();
+                                                $getPost = get_the_content(); // echo get_the_content();
+                                                $postformatted = wpautop( $getPost );
+                                                echo $postformatted;
 
                                             }else{
 
                                                 echo '<p>';
-                                                $textlength = get_theme_mod('wp_startup_theme_panel_content_excerptlength', 15);
+                                                $textlength = get_theme_mod('wp_startup_theme_panel_settings_excerptlength', 15);
                                                 //wp_startup_the_excerpt_length( $textlength, true );  // the_excerpt();
                                                 $content = apply_filters('the_content', get_the_content() );
                                                 echo wp_startup_truncate( $content, $textlength, '', true, true ); // $text, $length = 100, $ending = '...', $exact = true, $considerHtml = false
@@ -443,7 +585,7 @@ function wp_startup_get_frontpage_sections(){
                         ?>
                         </section>
 
-                        <?php if( wp_startup_is_sidebar_active( 'after-widget' ) ){ ?>
+                        <?php if( wp_startup_is_sidebar_active( 'after-widget' ) && $useafterwidgets != 'hide' ){ ?>
                         <div id="after-content">
                             <?php wpstartup_widgetarea_html( 'after-widget' ); ?>
                         </div>
@@ -457,34 +599,42 @@ function wp_startup_get_frontpage_sections(){
 
                 echo '<div class="clr"></div></div>';
 
-                if( get_theme_mod('wp_startup_theme_panel_elements_sidebar', 'right') == 'right'){
+                if( $sidebarpos == 'right' ){
                     echo '<div id="sidecontent" class="right" style="width:'.$sidewidth.'%;">';
                     wpstartup_sidebar_html();
                     echo '<div class="clr"></div></div>';
                 }
 
-
-
                 echo '<div class="clr"></div></div></div>';
 
 
-                echo '<div id="subcontainer"><div class="outermargin"><div id="subcontent">';
-                wpstartup_widgetarea_html( 'subcontent-widget-1' );
-                wpstartup_widgetarea_html( 'subcontent-widget-2' );
-                echo '<div class="clr"></div></div></div></div>';
+                if( ( wp_startup_is_sidebar_active( 'subcontent-widget-1' ) || wp_startup_is_sidebar_active( 'subcontent-widget-2' ) )
+                   && ( $subcontent1display != 'hide' || $subcontent2display != 'hide' ) ){
+                    echo '<div id="subcontainer"><div class="outermargin"><div id="subcontent">';
+                    if( wp_startup_is_sidebar_active( 'subcontent-widget-1' ) && $subcontent1display != 'hide'){
+                        wpstartup_widgetarea_html( 'subcontent-widget-1' );
+                    }
+                    if( wp_startup_is_sidebar_active( 'subcontent-widget-2' ) && $subcontent2display != 'hide'){
+                        wpstartup_widgetarea_html( 'subcontent-widget-2' );
+                    }
+                    echo '<div class="clr"></div></div></div></div>';
+                }
+
                 ?>
 
                 <?php
 
                 echo '<div id="footercontainer"><div class="outermargin"><div id="footercontent">';
+
                 wpstartup_widgetarea_html( 'bottom-widget-1' );
-                wpstartup_widgetarea_html( 'bottom-widget-2' );
 
                 if( has_nav_menu('bottom') ){
                     // main menu
                     wpstartup_menu_html( 'bottom' );
                 }
 
+
+                wpstartup_widgetarea_html( 'bottom-widget-2' );
 
                 wpstartup_widgetarea_html( 'footer-widget-1' );
 

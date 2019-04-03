@@ -3,7 +3,7 @@
 Plugin Name: WP Startup
 Plugin URI:  https://github.com/webbouwer/wp-startup
 Description: Do more with a basic WP install
-Version:     0.4
+Version:     0.5.2
 Author:      Webbouwer
 Author URI:  http://webdesigndenhaag.net
 Text Domain: wp-startup
@@ -43,7 +43,7 @@ class WPstartup{
     public $data = [];
 
 
-    public function WPstartup() {
+    public function __construct() {
 
 
         // get plugin data
