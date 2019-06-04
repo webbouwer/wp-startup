@@ -1,9 +1,10 @@
 # WP Startup 
-Do more with basic Wordpress
+Do more with basic Wordpress - for education and development only
  
 ### Development version
 
 The WP Startup plugin hooks into your basic Wordpress installation providing some obvious Wordpress core functionalities.
+The code and it's functionalities can be used in other plugins and themes.
 
 
 ###### Features: 
