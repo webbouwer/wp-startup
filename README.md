@@ -39,10 +39,10 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
           - [x] full height in percentage
           - [x] use post and/or page featured images 
         - Twentyseventeen Frontpage sections available
-      - Post Display settings (metabox)
-        - [ ] Page menu's & widgets display
-        - [ ] Post menu's & widgets display
-        
+        - Post Display settings (metabox)
+     
+     - Maybe add page menu's, post menu's & widgets display
+
 ##### Widget
 - Widgets
     - [x] WP Startup @ Github dashboard widget
