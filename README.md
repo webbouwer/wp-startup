@@ -15,7 +15,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
     - [x] widget area's
     - [x] background image customizer option
     - [x] blank theme (empty html page)
-    - [ ] basic theme (blank setup)
+    - [x] basic theme (blank setup)
       - Menu's (including image & description)
         - [x] uppermenu multilevel drop overlay
         - [x] topmenu (besides logo) multilevel drop overlay
