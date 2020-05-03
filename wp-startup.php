@@ -43,7 +43,7 @@ class WPstartup{
     public $data = [];
 
 
-    public function WPstartup() {
+    public function __construct() {
 
 
         // get plugin data

@@ -1,0 +1,31 @@
+/* root variables */
+
+:root
+{
+	/* LIGHT */
+	--lightbgcolor: #ffffff;
+	--lighttextcolor: #01040D;
+	--lightlinkcolor: #2e343b;
+
+
+    /* DARK */
+	--darkbgcolor: #0D1018;
+	--darktextcolor: #3E4355;
+	--darklinkcolor: #37504B;
+
+}
+
+
+body.theme-light
+{
+    font-family: "Helvetica", arial, sans-serif;
+    background-color:white;
+    color: gray;
+}
+
+body.theme-dark
+{
+    font-family: "Helvetica", arial, sans-serif;
+    background-color:black;
+    color: darkgray;
+}

@@ -1,9 +1,10 @@
 # WP Startup 
-Do more with basic Wordpress
+Do more with basic Wordpress - for education and development only
  
 ### Development version
 
 The WP Startup plugin hooks into your basic Wordpress installation providing some obvious Wordpress core functionalities.
+The code and it's functionalities can be used in other plugins and themes.
 
 
 ###### Features: 
@@ -15,7 +16,7 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
     - [x] widget area's
     - [x] background image customizer option
     - [x] blank theme (empty html page)
-    - [ ] basic theme (blank setup)
+    - [x] basic theme (blank setup)
       - Menu's (including image & description)
         - [x] uppermenu multilevel drop overlay
         - [x] topmenu (besides logo) multilevel drop overlay
@@ -39,10 +40,10 @@ The WP Startup plugin hooks into your basic Wordpress installation providing som
           - [x] full height in percentage
           - [x] use post and/or page featured images 
         - Twentyseventeen Frontpage sections available
-      - Post Display settings (metabox)
-        - [ ] Page menu's & widgets display
-        - [ ] Post menu's & widgets display
-        
+        - Post Display settings (metabox)
+     
+     - Maybe add page menu's, post menu's & widgets display
+
 ##### Widget
 - Widgets
     - [x] WP Startup @ Github dashboard widget

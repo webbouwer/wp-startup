@@ -6,7 +6,9 @@
 function wp_startup_pagethemes_func(){
 
     require_once( 'templates.php' );
+
     require_once( 'metaboxes.php' );
+
     add_action( 'plugins_loaded', array( 'PageTemplater', 'get_instance' ) );
 
     // Extend theme wp_nav_menu() locations for wp-startup themes
@@ -42,7 +44,19 @@ function wp_startup_theme_global_func() {
     // add_theme_support()
 	// add_image_size( 'panorama', 1800, 640, array( 'center', 'center' ) );
     add_theme_support( 'custom-background' );
+    add_theme_support( 'custom-header' );
+    add_theme_support( 'gutenberg', array(
 
+        // Theme supports wide images, galleries and videos.
+        'wide-images' => true,
+        // Make specific theme colors available in the editor.
+        'colors' => array(
+            '#ffffff',
+            '#000000',
+            '#cccccc',
+        ),
+
+    ));
 }
 
 /**
@@ -67,22 +81,42 @@ function create_wpstartup_menu() {
 	//$wp_admin_bar->add_menu(array('parent' => $menu_id, 'title' => __('Startup'), 'id' => 'wp-startup-home', 'href' => home_url().'/wp-admin/admin.php?page=wp_startup_optionpage', 'meta' => array('target' => '_self')));
 }
 
+
 /**
  * De-register default theme styles (used in specifc page templates)
- */
+*/
 function wp_startup_theme_deregister_func() {
-
+  wp_deregister_style('twentynineteen-style');
+  wp_deregister_style('twentynineteen-fonts');
+  wp_deregister_style('twentyeightteen-style');
+  wp_deregister_style('twentyeightteen-fonts');
   wp_deregister_style('twentyseventeen-style');
   wp_deregister_style('twentyseventeen-fonts');
   wp_deregister_style('twentysixteen-style');
   wp_deregister_style('twentysixteen-fonts');
   wp_deregister_style('twentyfifteen-style');
   wp_deregister_style('twentyfifteen-fonts');
+}
 
+function wp_startup_remove_all_theme_styles() {
+    global $wp_styles;
+    $wp_styles->queue = array();
 }
 
 
+/**
+* Enqueue editor styles for Gutenberg
 
+function theme_slug_editor_styles() {
+    wp_enqueue_style( 'theme-slug-editor-style', plugins_url().'/wp-startup/templates/onepage/style.css' );
+}
+add_action( 'enqueue_block_editor_assets', 'theme_slug_editor_styles' );
+*/
+function wp_startup_add_editor_styles() {
+    remove_editor_styles();
+    add_editor_style( plugins_url().'/wp-startup/templates/onepage/style.css' );
+}
+add_action( 'init', 'wp_startup_add_editor_styles' );
 
 /**
  * WP startup Customized Widgets & Areas

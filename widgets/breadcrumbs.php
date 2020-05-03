@@ -36,7 +36,7 @@ public function widget( $args, $instance ) {
     echo $args['before_title'] . $title . $args['after_title'];
 
     // output
-    custom_breadcrumbs($instance);
+    wp_startup_custom_breadcrumbs($instance);
 
     echo $args['after_widget'];
 
@@ -97,7 +97,7 @@ public function update( $new_instance, $old_instance ) {
 
 
 // Breadcrumbs function
-function custom_breadcrumbs( $opt ) {
+function wp_startup_custom_breadcrumbs( $opt ) {
 
     // Settings
     $separator          = '&gt;';

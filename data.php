@@ -13,7 +13,7 @@ class WPstartupData{
 
 
     /** @var new data */
-    public function WPstartupData(){
+    public function __construct(){
 
         $this->WPstartup_data_pages();
 
